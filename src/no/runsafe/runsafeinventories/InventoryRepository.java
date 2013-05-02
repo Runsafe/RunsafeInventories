@@ -46,11 +46,13 @@ public class InventoryRepository extends Repository
 		if (data == null)
 			return null; // We have no inventory, so no need to return a blank one.
 
+		long level = (Long) data.get("level");
+
 		return new PlayerInventory(
 				owner,
 				inventoryName,
 				(String) data.get("inventory"),
-				(Integer) data.get("level"),
+				(int) level,
 				(Float) data.get("experience")
 		);
 	}
