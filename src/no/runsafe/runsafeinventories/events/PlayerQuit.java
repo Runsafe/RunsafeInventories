@@ -14,6 +14,7 @@ public class PlayerQuit implements IPlayerQuitEvent
 	@Override
 	public void OnPlayerQuit(RunsafePlayerQuitEvent event)
 	{
+		// Save on logout in-case we need to use the data during maintenance.
 		this.inventoryHandler.saveInventory(event.getPlayer());
 	}
 

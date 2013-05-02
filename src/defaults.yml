@@ -1,1 +1,5 @@
-option: value
+universes:
+  survival:
+  - world
+  - world_nether
+  - world_the_end
