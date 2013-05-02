@@ -1,6 +1,5 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
 public class PlayerInventory
@@ -31,11 +30,6 @@ public class PlayerInventory
 	public String getPlayerName()
 	{
 		return this.owner;
-	}
-
-	public RunsafePlayer getPlayer()
-	{
-		return RunsafeServer.Instance.getPlayer(this.owner);
 	}
 
 	public String getInventoryString()
