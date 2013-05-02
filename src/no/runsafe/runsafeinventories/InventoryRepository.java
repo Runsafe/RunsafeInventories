@@ -46,11 +46,13 @@ public class InventoryRepository extends Repository
 		if (data == null)
 			return null; // We have no inventory, so no need to return a blank one.
 
-		String inventory = (String) data.get("inventory");
-		Integer level = (Integer) data.get("level");
-		Float xp = (Float) data.get("experience");
-
-		return new PlayerInventory(owner, inventoryName, inventory, level, xp);
+		return new PlayerInventory(
+				owner,
+				inventoryName,
+				(String) data.get("inventory"),
+				(Integer) data.get("level"),
+				(Float) data.get("experience")
+		);
 	}
 
 	public void wipeWorld(String worldName)
