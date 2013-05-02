@@ -14,7 +14,7 @@ public class PlayerTeleport implements IPlayerTeleportEvent
 	@Override
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
-		if (!event.getTo().getWorld().equals(event.getFrom().getWorld()))
+		if (!event.getTo().getWorld().getName().equals(event.getFrom().getWorld().getName()))
 		{
 			this.output.write("We detect that " + event.getPlayer() + " is about to change world");
 		}
