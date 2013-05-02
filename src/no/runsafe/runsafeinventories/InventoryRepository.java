@@ -11,9 +11,10 @@ import java.util.Map;
 
 public class InventoryRepository extends Repository
 {
-	public InventoryRepository(IDatabase database)
+	public InventoryRepository(IDatabase database, UniverseHandler universeHandler)
 	{
 		this.database = database;
+		this.universeHandler = universeHandler;
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class InventoryRepository extends Repository
 	public PlayerInventory getInventory(RunsafePlayer player)
 	{
 		String owner = player.getName();
-		String inventoryName = player.getWorld().getName(); // TODO: Universe implementation
+		String inventoryName = this.universeHandler.getUniverseName(player.getWorld());
 
 		Map<String, Object> data = database.QueryRow(
 				"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
@@ -84,4 +85,5 @@ public class InventoryRepository extends Repository
 	}
 
 	private IDatabase database;
+	private UniverseHandler universeHandler;
 }

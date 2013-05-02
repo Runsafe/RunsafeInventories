@@ -4,14 +4,17 @@ import no.runsafe.framework.server.player.RunsafePlayer;
 
 public class InventoryHandler
 {
-	public InventoryHandler(InventoryRepository inventoryRepository)
+	public InventoryHandler(InventoryRepository inventoryRepository, UniverseHandler universeHandler)
 	{
 		this.inventoryRepository = inventoryRepository;
+		this.universeHandler = universeHandler;
 	}
 
 	public void saveInventory(RunsafePlayer player)
 	{
-		this.inventoryRepository.saveInventory(new PlayerInventory(player)); // Save
+		this.inventoryRepository.saveInventory(
+				new PlayerInventory(player, this.universeHandler.getUniverseName(player.getWorld()))
+		); // Save
 	}
 
 	public void handlePreWorldChange(RunsafePlayer player)
@@ -36,4 +39,5 @@ public class InventoryHandler
 	}
 
 	private InventoryRepository inventoryRepository;
+	private UniverseHandler universeHandler;
 }

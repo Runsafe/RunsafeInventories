@@ -4,9 +4,9 @@ import no.runsafe.framework.server.player.RunsafePlayer;
 
 public class PlayerInventory
 {
-	public PlayerInventory(RunsafePlayer player)
+	public PlayerInventory(RunsafePlayer player, String inventoryName)
 	{
-		this.inventoryName = player.getWorld().getName(); // TODO: Use universes
+		this.inventoryName = inventoryName;
 		this.inventoryString = player.getInventory().serialize();
 		this.owner = player.getName();
 		this.experience = player.getXP();
