@@ -22,9 +22,8 @@ public class InventoryRepository extends Repository
 		return "runsafeInventories";
 	}
 
-	public void saveInventory(RunsafePlayer player)
+	public void saveInventory(PlayerInventory inventory)
 	{
-		PlayerInventory inventory = new PlayerInventory(player);
 		database.Execute(
 				"INSERT INTO runsafeInventories (inventory, level, experience) VALUES(?, ?, ?)"+
 						" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?" +
