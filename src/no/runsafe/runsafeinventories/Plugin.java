@@ -1,12 +1,27 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.runsafeinventories.commands.WipeWorld;
+import no.runsafe.runsafeinventories.events.PlayerTeleport;
+import no.runsafe.runsafeinventories.events.PlayerWorldChange;
 
 public class Plugin extends RunsafePlugin
 {
 	@Override
 	protected void PluginSetup()
 	{
-		addComponent(SomeComponent.class); // Replace this with your own components, this is just an example.
+		// Handlers
+		this.addComponent(InventoryHandler.class);
+		this.addComponent(UniverseHandler.class);
+
+		// Repositories
+		this.addComponent(InventoryRepository.class);
+
+		// Commands
+		this.addComponent(WipeWorld.class);
+
+		// Events
+		this.addComponent(PlayerTeleport.class);
+		this.addComponent(PlayerWorldChange.class);
 	}
 }
