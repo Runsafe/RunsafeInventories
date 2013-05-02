@@ -49,9 +49,9 @@ public class InventoryRepository extends Repository
 		return new PlayerInventory(
 				owner,
 				inventoryName,
-				(String) data.get("inventory"),
-				(Integer) data.get("level"),
-				(Float) data.get("experience")
+				((String) data.get("inventory")),
+				((Integer) data.get("level")),
+				((Float) data.get("experience"))
 		);
 	}
 
