@@ -13,7 +13,7 @@ public class PlayerInventory
 		this.level = player.getLevel();
 	}
 
-	public PlayerInventory(String owner, String inventoryName, String inventory, Integer level, Float experience)
+	public PlayerInventory(String owner, String inventoryName, String inventory, int level, float experience)
 	{
 		this.owner = owner;
 		this.inventoryName = inventoryName;
@@ -37,12 +37,12 @@ public class PlayerInventory
 		return this.inventoryString;
 	}
 
-	public Integer getLevel()
+	public int getLevel()
 	{
 		return this.level;
 	}
 
-	public Float getExperience()
+	public float getExperience()
 	{
 		return this.experience;
 	}
@@ -50,6 +50,6 @@ public class PlayerInventory
 	private String inventoryName;
 	private String owner;
 	private String inventoryString;
-	private Integer level;
-	private Float experience;
+	private int level;
+	private float experience;
 }
