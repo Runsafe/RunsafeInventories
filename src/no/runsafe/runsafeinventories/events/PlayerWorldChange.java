@@ -1,7 +1,6 @@
 package no.runsafe.runsafeinventories.events;
 
 import no.runsafe.framework.event.player.IPlayerChangedWorldEvent;
-import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.event.player.RunsafePlayerChangedWorldEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
