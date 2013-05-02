@@ -50,7 +50,7 @@ public class InventoryRepository extends Repository
 				owner,
 				inventoryName,
 				(String) data.get("inventory"),
-				Integer.valueOf((String) data.get("level")),
+				(Integer) data.get("level"),
 				(Float) data.get("experience")
 		);
 	}
