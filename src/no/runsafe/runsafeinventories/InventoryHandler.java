@@ -9,9 +9,14 @@ public class InventoryHandler
 		this.inventoryRepository = inventoryRepository;
 	}
 
-	public void handlePreWorldChange(RunsafePlayer player)
+	public void saveInventory(RunsafePlayer player)
 	{
 		this.inventoryRepository.saveInventory(new PlayerInventory(player)); // Save
+	}
+
+	public void handlePreWorldChange(RunsafePlayer player)
+	{
+		this.saveInventory(player); // Save inventory
 		player.getInventory().clear(); // Clear inventory
 		player.setXP(0); // Remove all XP
 		player.setLevel(0); // Remove all levels

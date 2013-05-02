@@ -2,6 +2,7 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafePlugin;
 import no.runsafe.runsafeinventories.commands.WipeWorld;
+import no.runsafe.runsafeinventories.events.PlayerQuit;
 import no.runsafe.runsafeinventories.events.PlayerTeleport;
 import no.runsafe.runsafeinventories.events.PlayerWorldChange;
 
@@ -23,5 +24,6 @@ public class Plugin extends RunsafePlugin
 		// Events
 		this.addComponent(PlayerTeleport.class);
 		this.addComponent(PlayerWorldChange.class);
+		this.addComponent(PlayerQuit.class);
 	}
 }
