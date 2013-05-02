@@ -20,9 +20,14 @@ public class InventoryHandler
 	public void handlePostWorldChange(RunsafePlayer player)
 	{
 		PlayerInventory inventory = this.inventoryRepository.getInventory(player); // Get inventory
-		player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
-		player.setLevel(inventory.getLevel()); // Restore level
-		player.setXP(inventory.getExperience()); // Restore experience
+
+		// If we are null, the player had no stored inventory.
+		if (inventory != null)
+		{
+			player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
+			player.setLevel(inventory.getLevel()); // Restore level
+			player.setXP(inventory.getExperience()); // Restore experience
+		}
 	}
 
 	private InventoryRepository inventoryRepository;
