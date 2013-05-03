@@ -17,6 +17,7 @@ public class PlayerQuitOrDeath implements IPlayerQuitEvent, IPlayerDeathEvent
 	@Override
 	public void OnPlayerDeathEvent(RunsafePlayerDeathEvent event)
 	{
+		event.getEntity().getInventory().clear();
 		this.SaveInventory(event.getEntity());
 	}
 
