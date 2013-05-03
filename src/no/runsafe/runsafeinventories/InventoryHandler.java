@@ -23,8 +23,12 @@ public class InventoryHandler
 	public void handlePreWorldChange(RunsafePlayer player)
 	{
 		this.saveInventory(player); // Save inventory
-		this.output.fine("Wiping inventory for " + player.getName());
+		this.wipe(player);
+	}
 
+	public void wipe(RunsafePlayer player)
+	{
+		this.output.fine("Wiping inventory for " + player.getName());
 		player.getInventory().clear(); // Clear inventory
 		player.setXP(0); // Remove all XP
 		player.setLevel(0); // Remove all levels
