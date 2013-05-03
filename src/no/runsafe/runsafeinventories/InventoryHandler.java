@@ -24,6 +24,7 @@ public class InventoryHandler
 	{
 		this.saveInventory(player); // Save inventory
 		this.output.fine("Wiping inventory for " + player.getName());
+
 		player.getInventory().clear(); // Clear inventory
 		player.setXP(0); // Remove all XP
 		player.setLevel(0); // Remove all levels
@@ -40,6 +41,7 @@ public class InventoryHandler
 			player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
 			player.setLevel(inventory.getLevel()); // Restore level
 			player.setXP(inventory.getExperience()); // Restore experience
+			player.updateInventory();
 		}
 	}
 
