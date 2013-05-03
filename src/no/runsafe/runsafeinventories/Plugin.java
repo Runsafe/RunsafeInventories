@@ -1,12 +1,12 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.RunsafePlugin;
+import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.runsafeinventories.commands.WipeWorld;
 import no.runsafe.runsafeinventories.events.PlayerQuit;
 import no.runsafe.runsafeinventories.events.PlayerTeleport;
 import no.runsafe.runsafeinventories.events.PlayerWorldChange;
 
-public class Plugin extends RunsafePlugin
+public class Plugin extends RunsafeConfigurablePlugin
 {
 	@Override
 	protected void PluginSetup()
