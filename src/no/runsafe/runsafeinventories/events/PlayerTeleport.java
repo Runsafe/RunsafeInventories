@@ -7,9 +7,10 @@ import no.runsafe.runsafeinventories.UniverseHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent
 {
-	public PlayerTeleport(InventoryHandler inventoryHandler)
+	public PlayerTeleport(InventoryHandler inventoryHandler, UniverseHandler universeHandler)
 	{
 		this.inventoryHandler = inventoryHandler;
+		this.universeHandler = universeHandler;
 	}
 
 	@Override
