@@ -20,15 +20,17 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	@Override
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
-		this.output.fine("Detected teleport event: " + event.getPlayer().getName());
-		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), event.getPlayer());
+		RunsafePlayer player = event.getPlayer();
+		this.output.fine("Detected teleport event: " + player.getName());
+		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), player);
 	}
 
 	@Override
 	public void OnPlayerPortalEvent(RunsafePlayerPortalEvent event)
 	{
-		this.output.fine("Detected portal event: " + event.getPlayer().getName());
-		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), event.getPlayer());
+		RunsafePlayer player = event.getPlayer();
+		this.output.fine("Detected portal event: " + player.getName());
+		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), player);
 	}
 
 	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
