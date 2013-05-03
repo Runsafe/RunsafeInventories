@@ -2,8 +2,7 @@ name: RunsafeInventories
 main: no.runsafe.runsafeinventories.Plugin
 version: 1.0.@BUILD@
 authors: [Kruithne]
-depend: []
-description:
+description: Plugin for controlling inventories across worlds
 commands:
   wipeworld:
     description: Removes all database inventories for a world.
