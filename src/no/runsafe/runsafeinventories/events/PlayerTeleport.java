@@ -1,11 +1,15 @@
 package no.runsafe.runsafeinventories.events;
 
+import no.runsafe.framework.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeWorld;
+import no.runsafe.framework.server.event.player.RunsafePlayerPortalEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerTeleportEvent;
+import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
-public class PlayerTeleport implements IPlayerTeleportEvent
+public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
 	public PlayerTeleport(InventoryHandler inventoryHandler, IOutput output)
 	{
@@ -17,9 +21,20 @@ public class PlayerTeleport implements IPlayerTeleportEvent
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
 		this.output.fine("Detected teleport event: " + event.getPlayer().getName());
-		// Check if we're about to teleport to another world.
-		if (!event.getTo().getWorld().getName().equals(event.getFrom().getWorld().getName()))
-			this.inventoryHandler.handlePreWorldChange(event.getPlayer());
+		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), event.getPlayer());
+	}
+
+	@Override
+	public void OnPlayerPortalEvent(RunsafePlayerPortalEvent event)
+	{
+		this.output.fine("Detected portal event: " + event.getPlayer().getName());
+		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), event.getPlayer());
+	}
+
+	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
+	{
+		if (!to.getName().equals(from.getName()))
+			this.inventoryHandler.handlePreWorldChange(player);
 	}
 
 	private InventoryHandler inventoryHandler;
