@@ -4,9 +4,9 @@ import no.runsafe.framework.event.player.IPlayerQuitEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
-public class PlayerQuitOrDeath implements IPlayerQuitEvent
+public class PlayerQuit implements IPlayerQuitEvent
 {
-	public PlayerQuitOrDeath(InventoryHandler inventoryHandler)
+	public PlayerQuit(InventoryHandler inventoryHandler)
 	{
 		this.inventoryHandler = inventoryHandler;
 	}
