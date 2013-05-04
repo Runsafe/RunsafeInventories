@@ -18,6 +18,7 @@ public class PlayerDeath implements IPlayerDeathEvent
 	{
 		this.output.fine("Detected death event for " + event.getEntity().getName());
 		this.inventoryHandler.wipeInventory(event.getEntity());
+		this.inventoryHandler.saveInventory(event.getEntity());
 	}
 
 	private InventoryHandler inventoryHandler;

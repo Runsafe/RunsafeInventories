@@ -23,7 +23,6 @@ public class InventoryHandler
 	public void handlePreWorldChange(RunsafePlayer player)
 	{
 		this.saveInventory(player); // Save inventory
-
 		this.wipeInventory(player);
 	}
 
