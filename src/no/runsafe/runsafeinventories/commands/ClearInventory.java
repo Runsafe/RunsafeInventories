@@ -36,7 +36,7 @@ public class ClearInventory extends ExecutableCommand
 				{
 					player.getInventory().clear();
 					player.updateInventory();
-					return "&2Inventory for " + player.getPrettyName() + " cleared.";
+					return "&2Inventory for " + player.getPrettyName() + " &2cleared.";
 				}
 				return "&cThat player is offline.";
 			}
