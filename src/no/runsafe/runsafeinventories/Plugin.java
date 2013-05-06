@@ -1,6 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
+import no.runsafe.runsafeinventories.commands.ClearInventory;
 import no.runsafe.runsafeinventories.commands.WipeWorld;
 import no.runsafe.runsafeinventories.events.*;
 
@@ -18,6 +19,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 
 		// Commands
 		this.addComponent(WipeWorld.class);
+		this.addComponent(ClearInventory.class);
 
 		// Events
 		this.addComponent(PlayerTeleport.class);
