@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
+import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
 import java.util.HashMap;
@@ -28,10 +29,14 @@ public class ClearInventory extends ExecutableCommand
 			RunsafePlayer player = RunsafeServer.Instance.getPlayer(arguments[0]);
 			if (player != null)
 			{
+				if (player instanceof RunsafeAmbiguousPlayer)
+					return player.toString();
+
 				if (player.isOnline())
 				{
 					player.getInventory().clear();
 					player.updateInventory();
+					return "&2Inventory for " + player.getPrettyName() + " cleared.";
 				}
 				return "&cThat player is offline.";
 			}
