@@ -28,13 +28,14 @@ public class ClearInventory extends ExecutableCommand
 			RunsafePlayer player = RunsafeServer.Instance.getPlayer(arguments[0]);
 			if (player != null)
 			{
-				player.getInventory().clear();
-				player.updateInventory();
+				if (player.isOnline())
+				{
+					player.getInventory().clear();
+					player.updateInventory();
+				}
+				return "&cThat player is offline.";
 			}
-			else
-			{
-				executor.sendColouredMessage("&cThat player does not exist.");
-			}
+			return "&cThat player does not exist.";
 		}
 		else
 		{
@@ -43,13 +44,9 @@ public class ClearInventory extends ExecutableCommand
 				RunsafePlayer player = (RunsafePlayer) executor;
 				player.getInventory().clear();
 				player.updateInventory();
-				player.sendColouredMessage("&2Your inventory has been cleared.");
+				return "&2Your inventory has been cleared.";
 			}
-			else
-			{
-				executor.sendColouredMessage("&cPlease specify the player who you wish to clear.");
-			}
+			return "&cPlease specify the player you wish to clear.";
 		}
-		return null;
 	}
 }
