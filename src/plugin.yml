@@ -9,3 +9,5 @@ commands:
   clearinventory:
     description: Clears a players inventory
     aliases: [ci]
+  dropitems:
+    description: Causes a player to drop all of their items.
