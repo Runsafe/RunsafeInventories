@@ -11,3 +11,6 @@ commands:
     aliases: [ci]
   dropitems:
     description: Causes a player to drop all of their items.
+  switchinventory:
+    description: Switches a players inventory.
+    aliases: [si]
