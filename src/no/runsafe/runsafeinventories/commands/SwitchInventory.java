@@ -13,7 +13,7 @@ public class SwitchInventory extends PlayerCommand
 {
 	public SwitchInventory()
 	{
-		super("switchinventory", "Moves a players inventory to the target.", "runsafe.inventory.switch", "source", "target");
+		super("switchinventory", "Moves a players inventory to the target.", "runsafe.inventories.switch", "source", "target");
 	}
 
 	@Override
@@ -36,13 +36,14 @@ public class SwitchInventory extends PlayerCommand
 
 		RunsafeInventory targetInventory = target.getInventory();
 		RunsafeInventory sourceInventory = source.getInventory();
-		targetInventory.clear();
 
-		for (RunsafeItemStack itemStack : sourceInventory.getContents())
-		{
-			sourceInventory.remove(itemStack);
-			targetInventory.addItems(itemStack);
-		}
+		targetInventory.clear();
+		targetInventory.unserialize(sourceInventory.serialize());
+
+		sourceInventory.clear();
+
+		source.updateInventory();
+		target.updateInventory();
 
 		return String.format("Inventory of %s moved to %s.", source.getPrettyName(), target.getPrettyName());
 	}
