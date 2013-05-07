@@ -27,7 +27,7 @@ public class RestoreInventory extends ExecutableCommand
 		if (player instanceof RunsafeAmbiguousPlayer)
 			return player.toString();
 
-		if (this.history.restore(player))
+		if (!this.history.restore(player))
 			return "&cThere is no stored restoration data for this players inventory.";
 
 		player.updateInventory();
