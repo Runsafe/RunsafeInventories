@@ -13,6 +13,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		this.addComponent(InventoryHandler.class);
 		this.addComponent(UniverseHandler.class);
 		this.addComponent(InventoryHistory.class);
+		this.addComponent(InventoryViewer.class);
 
 		// Repositories
 		this.addComponent(InventoryRepository.class);
