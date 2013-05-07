@@ -1,5 +1,5 @@
 # default config.yml
-
+defaultOpenInventoryUniverse: survival
 universes:
   survival:
   - world
