@@ -14,3 +14,6 @@ commands:
   switchinventory:
     description: Switches a players inventory.
     aliases: [si]
+  restoreinventory:
+    description: Restores a players inventory.
+    aliases: [ri]

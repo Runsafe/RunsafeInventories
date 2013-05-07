@@ -3,16 +3,19 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
+import no.runsafe.framework.server.inventory.RunsafeInventory;
 import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.HashMap;
 
 public class ClearInventory extends ExecutableCommand
 {
-	public ClearInventory()
+	public ClearInventory(InventoryHistory history)
 	{
 		super("clearinventory", "Clears a players inventory", "runsafe.inventories.clear");
+		this.history = history;
 	}
 
 	@Override
@@ -34,7 +37,9 @@ public class ClearInventory extends ExecutableCommand
 
 				if (player.isOnline())
 				{
-					player.getInventory().clear();
+					RunsafeInventory inventory = player.getInventory();
+					this.history.save(player.getName(), inventory);
+					inventory.clear();
 					player.updateInventory();
 					return "&2Inventory for " + player.getPrettyName() + " &2cleared.";
 				}
@@ -47,11 +52,15 @@ public class ClearInventory extends ExecutableCommand
 			if (executor instanceof RunsafePlayer)
 			{
 				RunsafePlayer player = (RunsafePlayer) executor;
-				player.getInventory().clear();
+				RunsafeInventory inventory = player.getInventory();
+				this.history.save(player.getName(), inventory);
+				inventory.clear();
 				player.updateInventory();
 				return "&2Your inventory has been cleared.";
 			}
 			return "&cPlease specify the player you wish to clear.";
 		}
 	}
+
+	private InventoryHistory history;
 }

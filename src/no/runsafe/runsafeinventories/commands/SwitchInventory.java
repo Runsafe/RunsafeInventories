@@ -3,17 +3,18 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.command.player.PlayerCommand;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.inventory.RunsafeInventory;
-import no.runsafe.framework.server.item.RunsafeItemStack;
 import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.HashMap;
 
 public class SwitchInventory extends PlayerCommand
 {
-	public SwitchInventory()
+	public SwitchInventory(InventoryHistory history)
 	{
 		super("switchinventory", "Moves a players inventory to the target.", "runsafe.inventories.switch", "source", "target");
+		this.history = history;
 	}
 
 	@Override
@@ -37,6 +38,9 @@ public class SwitchInventory extends PlayerCommand
 		RunsafeInventory targetInventory = target.getInventory();
 		RunsafeInventory sourceInventory = source.getInventory();
 
+		this.history.save(target.getName(), targetInventory);
+		this.history.save(source.getName(), sourceInventory);
+
 		targetInventory.clear();
 		targetInventory.unserialize(sourceInventory.serialize());
 
@@ -47,4 +51,6 @@ public class SwitchInventory extends PlayerCommand
 
 		return String.format("Inventory of %s moved to %s.", source.getPrettyName(), target.getPrettyName());
 	}
+
+	private InventoryHistory history;
 }

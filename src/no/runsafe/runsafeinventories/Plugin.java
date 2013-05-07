@@ -1,10 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
-import no.runsafe.runsafeinventories.commands.ClearInventory;
-import no.runsafe.runsafeinventories.commands.DropItems;
-import no.runsafe.runsafeinventories.commands.SwitchInventory;
-import no.runsafe.runsafeinventories.commands.WipeWorld;
+import no.runsafe.runsafeinventories.commands.*;
 import no.runsafe.runsafeinventories.events.*;
 
 public class Plugin extends RunsafeConfigurablePlugin
@@ -15,6 +12,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		// Handlers
 		this.addComponent(InventoryHandler.class);
 		this.addComponent(UniverseHandler.class);
+		this.addComponent(InventoryHistory.class);
 
 		// Repositories
 		this.addComponent(InventoryRepository.class);
@@ -24,6 +22,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		this.addComponent(ClearInventory.class);
 		this.addComponent(DropItems.class);
 		this.addComponent(SwitchInventory.class);
+		this.addComponent(RestoreInventory.class);
 
 		// Events
 		this.addComponent(PlayerTeleport.class);
