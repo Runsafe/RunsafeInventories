@@ -17,3 +17,6 @@ commands:
   restoreinventory:
     description: Restores a players inventory.
     aliases: [ri]
+  openinventory:
+    description: Opens a players inventory.
+    aliases: [oi, openinv]

@@ -23,6 +23,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		this.addComponent(DropItems.class);
 		this.addComponent(SwitchInventory.class);
 		this.addComponent(RestoreInventory.class);
+		this.addComponent(OpenInventory.class);
 
 		// Events
 		this.addComponent(PlayerTeleport.class);

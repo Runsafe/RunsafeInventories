@@ -36,7 +36,8 @@ public class InventoryHandler
 
 	public void handlePostWorldChange(RunsafePlayer player)
 	{
-		PlayerInventory inventory = this.inventoryRepository.getInventory(player); // Get inventory
+		String universeName = this.universeHandler.getUniverseName(player.getWorld().getName());
+		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory
 
 		// If we are null, the player had no stored inventory.
 		if (inventory != null)

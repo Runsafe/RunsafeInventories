@@ -29,6 +29,11 @@ public class UniverseHandler implements IConfigurationChanged
 		return this.getUniverseName(world.getName());
 	}
 
+	public boolean universeExists(String universeName)
+	{
+		return this.universes.containsValue(universeName);
+	}
+
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
