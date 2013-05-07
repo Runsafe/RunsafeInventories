@@ -3,7 +3,6 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.inventory.RunsafeInventory;
 import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
@@ -28,12 +27,9 @@ public class RestoreInventory extends ExecutableCommand
 		if (player instanceof RunsafeAmbiguousPlayer)
 			return player.toString();
 
-		RunsafeInventory inventory = this.history.get(player.getName());
-
-		if (inventory == null)
+		if (this.history.restore(player))
 			return "&cThere is no stored restoration data for this players inventory.";
 
-		player.getInventory().unserialize(inventory.serialize());
 		player.updateInventory();
 		return "The inventory for " + player.getPrettyName() + " has been restored.";
 	}

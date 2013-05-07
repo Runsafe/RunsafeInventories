@@ -3,7 +3,6 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.inventory.RunsafeInventory;
 import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
@@ -37,9 +36,8 @@ public class ClearInventory extends ExecutableCommand
 
 				if (player.isOnline())
 				{
-					RunsafeInventory inventory = player.getInventory();
-					this.history.save(player.getName(), inventory);
-					inventory.clear();
+					this.history.save(player);
+					player.getInventory().clear();
 					player.updateInventory();
 					return "&2Inventory for " + player.getPrettyName() + " &2cleared.";
 				}
@@ -52,9 +50,8 @@ public class ClearInventory extends ExecutableCommand
 			if (executor instanceof RunsafePlayer)
 			{
 				RunsafePlayer player = (RunsafePlayer) executor;
-				RunsafeInventory inventory = player.getInventory();
-				this.history.save(player.getName(), inventory);
-				inventory.clear();
+				this.history.save(player);
+				player.getInventory().clear();
 				player.updateInventory();
 				return "&2Your inventory has been cleared.";
 			}

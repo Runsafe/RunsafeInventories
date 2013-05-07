@@ -1,23 +1,25 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.server.inventory.RunsafeInventory;
+import no.runsafe.framework.server.player.RunsafePlayer;
 
 import java.util.HashMap;
 
 public class InventoryHistory
 {
-	public void save(String playerName, RunsafeInventory inventory)
+	public void save(RunsafePlayer player)
 	{
-		this.history.put(playerName, inventory);
+		this.history.put(player.getName(), player.getInventory().serialize());
 	}
 
-	public RunsafeInventory get(String playerName)
+	public boolean restore(RunsafePlayer player)
 	{
-		if (this.history.containsKey(playerName))
-			return this.history.get(playerName);
-
-		return null;
+		if (this.history.containsKey(player.getName()))
+		{
+			player.getInventory().unserialize(this.history.get(player.getName()));
+			return true;
+		}
+		return false;
 	}
 
-	private HashMap<String, RunsafeInventory> history = new HashMap<String, RunsafeInventory>();
+	private HashMap<String, String> history = new HashMap<String, String>();
 }
