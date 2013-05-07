@@ -38,8 +38,8 @@ public class SwitchInventory extends PlayerCommand
 		RunsafeInventory targetInventory = target.getInventory();
 		RunsafeInventory sourceInventory = source.getInventory();
 
-		this.history.save(target.getName(), targetInventory);
-		this.history.save(source.getName(), sourceInventory);
+		this.history.save(target);
+		this.history.save(source);
 
 		targetInventory.clear();
 		targetInventory.unserialize(sourceInventory.serialize());
