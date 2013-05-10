@@ -8,3 +8,4 @@ commands:
     description: Removes all database inventories for a world.
   inventory:
     description: Inventory handling commands
+    aliases: [inv]
