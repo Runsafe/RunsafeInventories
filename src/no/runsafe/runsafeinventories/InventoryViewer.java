@@ -6,6 +6,7 @@ import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.inventory.RunsafeInventory;
 import no.runsafe.framework.server.inventory.RunsafeInventoryType;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 public class InventoryViewer implements IConfigurationChanged
 {

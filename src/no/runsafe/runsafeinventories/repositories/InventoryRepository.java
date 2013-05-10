@@ -1,8 +1,9 @@
-package no.runsafe.runsafeinventories;
+package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.Repository;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;

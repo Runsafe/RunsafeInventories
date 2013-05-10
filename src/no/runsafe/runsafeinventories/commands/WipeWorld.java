@@ -2,7 +2,7 @@ package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
-import no.runsafe.runsafeinventories.InventoryRepository;
+import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 import java.util.HashMap;
 

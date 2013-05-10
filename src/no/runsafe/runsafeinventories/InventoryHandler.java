@@ -2,13 +2,16 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.repositories.InventoryRepository;
+import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 public class InventoryHandler
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, UniverseHandler universeHandler, IOutput output)
+	public InventoryHandler(InventoryRepository inventoryRepository, UniverseHandler universeHandler, TemplateRepository templateRepository, IOutput output)
 	{
 		this.inventoryRepository = inventoryRepository;
 		this.universeHandler = universeHandler;
+		this.templateRepository = templateRepository;
 		this.output = output;
 	}
 
@@ -48,9 +51,16 @@ public class InventoryHandler
 			player.setXP(inventory.getExperience()); // Restore experience
 			player.updateInventory();
 		}
+		else
+		{
+			// Lets check if we can give them a template.
+			this.templateRepository.setToTemplate(universeName, player.getInventory());
+		}
 	}
 
 	private InventoryRepository inventoryRepository;
 	private UniverseHandler universeHandler;
+	private TemplateRepository templateRepository;
+
 	private IOutput output;
 }
