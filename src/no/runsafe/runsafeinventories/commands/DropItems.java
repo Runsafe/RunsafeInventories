@@ -14,7 +14,7 @@ public class DropItems extends ExecutableCommand
 {
 	public DropItems()
 	{
-		super("dropitems", "Causes a player to drop all of their items", "runsafe.inventories.drop");
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop");
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
+import no.runsafe.framework.command.Command;
 import no.runsafe.runsafeinventories.commands.*;
 import no.runsafe.runsafeinventories.events.*;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
@@ -23,12 +24,15 @@ public class Plugin extends RunsafeConfigurablePlugin
 
 		// Commands
 		this.addComponent(WipeWorld.class);
-		this.addComponent(ClearInventory.class);
-		this.addComponent(DropItems.class);
-		this.addComponent(SwitchInventory.class);
-		this.addComponent(RestoreInventory.class);
-		this.addComponent(OpenInventory.class);
-		this.addComponent(CreateTemplate.class);
+
+		Command inventoryCommand = new Command("inventory", "Inventory handling commands", null);
+		inventoryCommand.addSubCommand(getInstance(DropItems.class));
+		inventoryCommand.addSubCommand(getInstance(SwitchInventory.class));
+		inventoryCommand.addSubCommand(getInstance(OpenInventory.class));
+		inventoryCommand.addSubCommand(getInstance(RestoreInventory.class));
+		inventoryCommand.addSubCommand(getInstance(CreateTemplate.class));
+		inventoryCommand.addSubCommand(getInstance(ClearInventory.class));
+		this.addComponent(inventoryCommand);
 
 		// Events
 		this.addComponent(PlayerTeleport.class);

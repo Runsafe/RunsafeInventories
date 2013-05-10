@@ -13,7 +13,7 @@ public class RestoreInventory extends ExecutableCommand
 {
 	public RestoreInventory(InventoryHistory history)
 	{
-		super("restoreinventory", "Reverts the last inventory switch/deletion", "runsafe.inventories.restore", "player");
+		super("restore", "Reverts the last inventory switch/deletion", "runsafe.inventories.restore", "player");
 		this.history = history;
 	}
 

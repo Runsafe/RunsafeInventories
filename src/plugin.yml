@@ -6,17 +6,5 @@ description: Plugin for controlling inventories across worlds
 commands:
   wipeworld:
     description: Removes all database inventories for a world.
-  clearinventory:
-    description: Clears a players inventory
-    aliases: [ci]
-  dropitems:
-    description: Causes a player to drop all of their items.
-  switchinventory:
-    description: Switches a players inventory.
-    aliases: [si]
-  restoreinventory:
-    description: Restores a players inventory.
-    aliases: [ri]
-  openinventory:
-    description: Opens a players inventory.
-    aliases: [oi, openinv]
+  inventory:
+    description: Inventory handling commands
