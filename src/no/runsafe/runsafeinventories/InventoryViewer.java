@@ -38,7 +38,7 @@ public class InventoryViewer implements IConfigurationChanged
 		if (inventoryData == null)
 			return false;
 
-		RunsafeInventory inventory = RunsafeServer.Instance.createInventory(null, RunsafeInventoryType.PLAYER);
+		RunsafeInventory inventory = RunsafeServer.Instance.createInventory(null, RunsafeInventoryType.PLAYER, String.format("%s's Inventory", owner.getName()));
 		inventory.unserialize(inventoryData.getInventoryString());
 		viewer.openInventory(inventory);
 
