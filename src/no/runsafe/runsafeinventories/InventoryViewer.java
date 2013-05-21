@@ -10,9 +10,10 @@ import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 public class InventoryViewer implements IConfigurationChanged
 {
-	public InventoryViewer(InventoryRepository repository)
+	public InventoryViewer(InventoryRepository repository, UniverseHandler universeHandler)
 	{
 		this.repository = repository;
+		this.universeHandler = universeHandler;
 	}
 
 	public boolean viewUniverseInventory(RunsafePlayer viewer, RunsafePlayer owner)
@@ -22,8 +23,18 @@ public class InventoryViewer implements IConfigurationChanged
 
 	public boolean viewUniverseInventory(RunsafePlayer viewer, RunsafePlayer owner, String universeName)
 	{
-		PlayerInventory inventoryData = this.repository.getInventory(owner, universeName);
+		// Is the player online and in the same world? If so, get their current inventory from memory.
+		if (owner.isOnline())
+		{
+			if (this.universeHandler.getUniverseName(owner.getWorld()).equalsIgnoreCase(universeName))
+			{
+				viewer.openInventory(owner.getInventory());
+				return true;
+			}
+		}
 
+		// Player is not online, pull inventory data from database.
+		PlayerInventory inventoryData = this.repository.getInventory(owner, universeName);
 		if (inventoryData == null)
 			return false;
 
@@ -47,4 +58,5 @@ public class InventoryViewer implements IConfigurationChanged
 
 	private InventoryRepository repository;
 	private String defaultUniverse;
+	private UniverseHandler universeHandler;
 }
