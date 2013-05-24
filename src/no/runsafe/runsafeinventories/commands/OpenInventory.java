@@ -36,7 +36,8 @@ public class OpenInventory extends PlayerCommand
 		{
 			String universeName = arguments[0];
 			if (!this.universeHandler.universeExists(universeName))
-				return "&cThe universe you are looking for does not exist.";
+				if (!this.universeHandler.worldExists(universeName))
+					return "&cThe universe/world you are looking for does not exist.";
 
 			if (!this.inventoryViewer.viewUniverseInventory(executor, target, universeName))
 				return "&cThat player does not have an inventory in that universe.";
