@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories;
 import no.runsafe.framework.configuration.IConfiguration;
 import no.runsafe.framework.event.IConfigurationChanged;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.RunsafeWorld;
 
 import java.util.HashMap;
@@ -32,6 +33,11 @@ public class UniverseHandler implements IConfigurationChanged
 	public boolean universeExists(String universeName)
 	{
 		return this.universes.containsValue(universeName);
+	}
+
+	public boolean worldExists(String worldName)
+	{
+		return RunsafeServer.Instance.getWorld(worldName) != null;
 	}
 
 	@Override
