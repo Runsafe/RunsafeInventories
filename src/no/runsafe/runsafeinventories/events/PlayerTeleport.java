@@ -1,15 +1,14 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerPortalEvent;
-import no.runsafe.framework.event.player.IPlayerTeleportEvent;
+import no.runsafe.framework.event.player.IPlayerPortal;
+import no.runsafe.framework.event.player.IPlayerTeleport;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeWorld;
-import no.runsafe.framework.server.event.player.RunsafePlayerPortalEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerTeleportEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
-public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
+public class PlayerTeleport implements IPlayerTeleport, IPlayerPortal
 {
 	public PlayerTeleport(InventoryHandler inventoryHandler, IOutput output)
 	{
@@ -18,19 +17,17 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	}
 
 	@Override
-	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
+	public void OnPlayerTeleport(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
 	{
-		RunsafePlayer player = event.getPlayer();
 		this.output.fine("Detected teleport event: " + player.getName());
-		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), player);
+		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
 	}
 
 	@Override
-	public void OnPlayerPortalEvent(RunsafePlayerPortalEvent event)
+	public void OnPlayerPortal(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
 	{
-		RunsafePlayer player = event.getPlayer();
 		this.output.fine("Detected portal event: " + player.getName());
-		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), player);
+		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
 	}
 
 	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
