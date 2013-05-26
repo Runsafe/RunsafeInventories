@@ -17,17 +17,19 @@ public class PlayerTeleport implements IPlayerTeleport, IPlayerPortal
 	}
 
 	@Override
-	public void OnPlayerTeleport(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
+	public boolean OnPlayerTeleport(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
 	{
 		this.output.fine("Detected teleport event: " + player.getName());
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
+		return true;
 	}
 
 	@Override
-	public void OnPlayerPortal(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
+	public boolean OnPlayerPortal(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
 	{
 		this.output.fine("Detected portal event: " + player.getName());
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
+		return true;
 	}
 
 	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
