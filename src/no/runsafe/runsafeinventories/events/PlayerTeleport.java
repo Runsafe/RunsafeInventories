@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories.events;
 import no.runsafe.framework.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.output.IOutput;
+import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeWorld;
 import no.runsafe.framework.server.event.player.RunsafePlayerPortalEvent;
 import no.runsafe.framework.server.event.player.RunsafePlayerTeleportEvent;
@@ -29,8 +30,11 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	public void OnPlayerPortalEvent(RunsafePlayerPortalEvent event)
 	{
 		RunsafePlayer player = event.getPlayer();
-		this.output.fine("Detected portal event: " + player.getName());
-		this.checkTeleportEvent(event.getTo().getWorld(), event.getFrom().getWorld(), player);
+		RunsafeLocation to = event.getTo();
+		RunsafeLocation from = event.getFrom();
+
+		if (player != null && to != null && from != null)
+			this.checkTeleportEvent(to.getWorld(), from.getWorld(), player);
 	}
 
 	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
