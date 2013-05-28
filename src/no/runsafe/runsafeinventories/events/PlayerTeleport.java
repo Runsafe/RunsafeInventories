@@ -1,14 +1,16 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerPortal;
-import no.runsafe.framework.event.player.IPlayerTeleport;
+import no.runsafe.framework.event.player.IPlayerPortalEvent;
+import no.runsafe.framework.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.output.IOutput;
 import no.runsafe.framework.server.RunsafeLocation;
 import no.runsafe.framework.server.RunsafeWorld;
+import no.runsafe.framework.server.event.player.RunsafePlayerPortalEvent;
+import no.runsafe.framework.server.event.player.RunsafePlayerTeleportEvent;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
-public class PlayerTeleport implements IPlayerTeleport, IPlayerPortal
+public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
 	public PlayerTeleport(InventoryHandler inventoryHandler, IOutput output)
 	{
@@ -17,19 +19,21 @@ public class PlayerTeleport implements IPlayerTeleport, IPlayerPortal
 	}
 
 	@Override
-	public boolean OnPlayerTeleport(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
+	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
-		this.output.fine("Detected teleport event: " + player.getName());
-		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
-		return true;
+		this.output.fine("Detected teleport event: " + event.getPlayer().getName());
+		RunsafeLocation from = event.getFrom();
+		RunsafeLocation to = event.getTo();
+		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
 	}
 
 	@Override
-	public boolean OnPlayerPortal(RunsafePlayer player, RunsafeLocation from, RunsafeLocation to)
+	public void OnPlayerPortalEvent(RunsafePlayerPortalEvent event)
 	{
-		this.output.fine("Detected portal event: " + player.getName());
-		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), player);
-		return true;
+		this.output.fine("Detected portal event: " + event.getPlayer().getName());
+		RunsafeLocation from = event.getFrom();
+		RunsafeLocation to = event.getTo();
+		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
 	}
 
 	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, RunsafePlayer player)
@@ -41,4 +45,5 @@ public class PlayerTeleport implements IPlayerTeleport, IPlayerPortal
 
 	private InventoryHandler inventoryHandler;
 	private IOutput output;
+
 }
