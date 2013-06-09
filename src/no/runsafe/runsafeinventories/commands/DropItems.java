@@ -4,7 +4,7 @@ import no.runsafe.framework.command.ExecutableCommand;
 import no.runsafe.framework.server.ICommandExecutor;
 import no.runsafe.framework.server.RunsafeServer;
 import no.runsafe.framework.server.inventory.RunsafeInventory;
-import no.runsafe.framework.server.item.RunsafeItemStack;
+import no.runsafe.framework.server.item.meta.RunsafeMeta;
 import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.server.player.RunsafePlayer;
 
@@ -58,10 +58,10 @@ public class DropItems extends ExecutableCommand
 	{
 		RunsafeInventory inventory = player.getInventory();
 
-		for (RunsafeItemStack itemStack : inventory.getContents())
+		for (RunsafeMeta itemStack : inventory.getContents())
 		{
 			inventory.remove(itemStack);
-			player.getWorld().dropItem(player.getLocation(),  itemStack);
+			player.getWorld().dropItem(player.getLocation(), itemStack);
 		}
 
 		player.updateInventory();
