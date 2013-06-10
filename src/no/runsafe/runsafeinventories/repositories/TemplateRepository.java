@@ -2,12 +2,12 @@ package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.Repository;
+import no.runsafe.framework.database.Row;
 import no.runsafe.framework.server.inventory.RunsafeInventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TemplateRepository extends Repository
 {
@@ -34,12 +34,12 @@ public class TemplateRepository extends Repository
 
 	public void setToTemplate(String universe, RunsafeInventory playerInventory)
 	{
-		Map<String, Object> data = this.database.QueryRow(
+		Row data = this.database.QueryRow(
 			"SELECT inventory FROM runsafe_inventories_templates WHERE universeName = ?", universe
 		);
 
 		if (data != null)
-			playerInventory.unserialize((String) data.get("inventory"));
+			playerInventory.unserialize(data.String("inventory"));
 	}
 
 	@Override

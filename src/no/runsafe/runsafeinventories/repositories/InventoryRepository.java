@@ -2,13 +2,13 @@ package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.database.IDatabase;
 import no.runsafe.framework.database.Repository;
+import no.runsafe.framework.database.Row;
 import no.runsafe.framework.server.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InventoryRepository extends Repository
 {
@@ -38,7 +38,7 @@ public class InventoryRepository extends Repository
 	{
 		String owner = player.getName();
 
-		Map<String, Object> data = database.QueryRow(
+		Row data = database.QueryRow(
 				"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
 				owner, universeName
 		);
@@ -46,14 +46,14 @@ public class InventoryRepository extends Repository
 		if (data == null)
 			return null; // We have no inventory, so no need to return a blank one.
 
-		long level = (Long) data.get("level");
+		long level = data.Long("level");
 
 		return new PlayerInventory(
 				owner,
 				universeName,
-				(String) data.get("inventory"),
+				data.String("inventory"),
 				(int) level,
-				(Float) data.get("experience")
+				data.Float("experience")
 		);
 	}
 
