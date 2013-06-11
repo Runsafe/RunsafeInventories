@@ -1,8 +1,8 @@
 package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.internal.database.Repository;
-import no.runsafe.framework.internal.database.Row;
+import no.runsafe.framework.api.database.IRow;
+import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
@@ -38,7 +38,7 @@ public class InventoryRepository extends Repository
 	{
 		String owner = player.getName();
 
-		Row data = database.QueryRow(
+		IRow data = database.QueryRow(
 			"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
 			owner, universeName
 		);
