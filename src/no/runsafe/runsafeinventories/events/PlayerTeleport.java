@@ -1,13 +1,13 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerPortalEvent;
-import no.runsafe.framework.event.player.IPlayerTeleportEvent;
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.RunsafeLocation;
-import no.runsafe.framework.server.RunsafeWorld;
-import no.runsafe.framework.server.event.player.RunsafePlayerPortalEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerTeleportEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.player.IPlayerPortalEvent;
+import no.runsafe.framework.api.event.player.IPlayerTeleportEvent;
+import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeWorld;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerPortalEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerTeleportEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent

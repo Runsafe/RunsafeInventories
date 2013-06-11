@@ -1,8 +1,8 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerDeathEvent;
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.event.player.RunsafePlayerDeathEvent;
+import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerDeath implements IPlayerDeathEvent

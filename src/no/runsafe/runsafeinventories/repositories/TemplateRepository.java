@@ -1,9 +1,9 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.database.IDatabase;
-import no.runsafe.framework.database.Repository;
-import no.runsafe.framework.database.Row;
-import no.runsafe.framework.server.inventory.RunsafeInventory;
+import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.internal.database.Repository;
+import no.runsafe.framework.internal.database.Row;
+import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class TemplateRepository extends Repository
 		this.database.Execute(
 			"INSERT INTO `runsafe_inventories_templates` (universeName, inventory) VALUES(?,?) " +
 				"ON DUPLICATE KEY UPDATE inventory = ?",
-				universe, inventoryString, inventoryString
+			universe, inventoryString, inventoryString
 		);
 	}
 
@@ -48,10 +48,10 @@ public class TemplateRepository extends Repository
 		HashMap<Integer, List<String>> versions = new HashMap<Integer, List<String>>();
 		ArrayList<String> sql = new ArrayList<String>();
 		sql.add(
-				"CREATE TABLE `runsafe_inventories_templates` (" +
-						"`universeName` varchar(50) NOT NULL, " +
-						"`inventory` longtext, " +
-						"PRIMARY KEY (`universeName`)" +
+			"CREATE TABLE `runsafe_inventories_templates` (" +
+				"`universeName` varchar(50) NOT NULL, " +
+				"`inventory` longtext, " +
+				"PRIMARY KEY (`universeName`)" +
 				")"
 		);
 		versions.put(1, sql);

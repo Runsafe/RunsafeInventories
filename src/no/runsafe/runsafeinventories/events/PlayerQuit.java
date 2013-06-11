@@ -1,7 +1,7 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerQuitEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerQuitEvent;
+import no.runsafe.framework.api.event.player.IPlayerQuitEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerQuitEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerQuit implements IPlayerQuitEvent

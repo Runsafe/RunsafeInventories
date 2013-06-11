@@ -1,8 +1,8 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.event.player.IPlayerChangedWorldEvent;
-import no.runsafe.framework.server.event.player.RunsafePlayerChangedWorldEvent;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.event.player.IPlayerChangedWorldEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafePlayerChangedWorldEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 import no.runsafe.runsafeinventories.UniverseHandler;
 

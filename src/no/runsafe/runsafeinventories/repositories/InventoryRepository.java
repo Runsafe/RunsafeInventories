@@ -1,9 +1,9 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.database.IDatabase;
-import no.runsafe.framework.database.Repository;
-import no.runsafe.framework.database.Row;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.database.IDatabase;
+import no.runsafe.framework.internal.database.Repository;
+import no.runsafe.framework.internal.database.Row;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ public class InventoryRepository extends Repository
 	public void saveInventory(PlayerInventory inventory)
 	{
 		database.Execute(
-				"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience) VALUES(?, ?, ?, ?, ?)"+
-						" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?",
-				inventory.getPlayerName(), inventory.getInventoryName(),
-				inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(),
-				inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience()
+			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience) VALUES(?, ?, ?, ?, ?)" +
+				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?",
+			inventory.getPlayerName(), inventory.getInventoryName(),
+			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(),
+			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience()
 		);
 	}
 
@@ -39,8 +39,8 @@ public class InventoryRepository extends Repository
 		String owner = player.getName();
 
 		Row data = database.QueryRow(
-				"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-				owner, universeName
+			"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+			owner, universeName
 		);
 
 		if (data == null)
@@ -49,11 +49,11 @@ public class InventoryRepository extends Repository
 		long level = data.Long("level");
 
 		return new PlayerInventory(
-				owner,
-				universeName,
-				data.String("inventory"),
-				(int) level,
-				data.Float("experience")
+			owner,
+			universeName,
+			data.String("inventory"),
+			(int) level,
+			data.Float("experience")
 		);
 	}
 
@@ -69,13 +69,13 @@ public class InventoryRepository extends Repository
 		ArrayList<String> sql = new ArrayList<String>();
 
 		sql.add(
-				"CREATE TABLE `runsafeInventories` (" +
-						"`owner` varchar(50) NOT NULL," +
-						"`inventoryName` varchar(255) NOT NULL," +
-						"`inventory` longtext," +
-						"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
-						"`experience` float unsigned NOT NULL DEFAULT '0'," +
-						"PRIMARY KEY (`owner`,`inventoryName`)" +
+			"CREATE TABLE `runsafeInventories` (" +
+				"`owner` varchar(50) NOT NULL," +
+				"`inventoryName` varchar(255) NOT NULL," +
+				"`inventory` longtext," +
+				"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
+				"`experience` float unsigned NOT NULL DEFAULT '0'," +
+				"PRIMARY KEY (`owner`,`inventoryName`)" +
 				")"
 		);
 

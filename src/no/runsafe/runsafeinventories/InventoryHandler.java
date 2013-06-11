@@ -1,7 +1,7 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.output.IOutput;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
@@ -19,7 +19,7 @@ public class InventoryHandler
 	{
 		this.output.fine("Running force save for %s in %s", player.getName(), this.universeHandler.getUniverseName(player.getWorld()));
 		this.inventoryRepository.saveInventory(
-				new PlayerInventory(player, this.universeHandler.getUniverseName(player.getWorld()))
+			new PlayerInventory(player, this.universeHandler.getUniverseName(player.getWorld()))
 		); // Save
 	}
 

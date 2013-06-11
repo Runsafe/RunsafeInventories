@@ -1,10 +1,10 @@
 package no.runsafe.runsafeinventories.commands;
 
-import no.runsafe.framework.command.player.PlayerCommand;
-import no.runsafe.framework.server.RunsafeServer;
-import no.runsafe.framework.server.inventory.RunsafeInventory;
-import no.runsafe.framework.server.player.RunsafeAmbiguousPlayer;
-import no.runsafe.framework.server.player.RunsafePlayer;
+import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.minecraft.RunsafeServer;
+import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
+import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.HashMap;
