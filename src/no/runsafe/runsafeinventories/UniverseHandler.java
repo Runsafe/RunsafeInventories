@@ -5,6 +5,7 @@ import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,11 @@ public class UniverseHandler implements IConfigurationChanged
 	public boolean worldExists(String worldName)
 	{
 		return RunsafeServer.Instance.getWorld(worldName) != null;
+	}
+
+	public boolean isInUniverse(RunsafePlayer player, String universeName)
+	{
+		return this.getUniverseName(player.getWorld()).equals(universeName);
 	}
 
 	@Override
