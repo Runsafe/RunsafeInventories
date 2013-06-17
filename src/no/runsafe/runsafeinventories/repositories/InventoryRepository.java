@@ -26,11 +26,11 @@ public class InventoryRepository extends Repository
 	public void saveInventory(PlayerInventory inventory)
 	{
 		database.Execute(
-			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience) VALUES(?, ?, ?, ?, ?)" +
-				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?",
+			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience) VALUES(?, ?, ?, ?, ?, ?)" +
+				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
 			inventory.getPlayerName(), inventory.getInventoryName(),
-			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(),
-			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience()
+			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
+			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel()
 		);
 	}
 
@@ -39,7 +39,7 @@ public class InventoryRepository extends Repository
 		String owner = player.getName();
 
 		IRow data = database.QueryRow(
-			"SELECT inventory, level, experience FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
 			owner, universeName
 		);
 
@@ -53,7 +53,8 @@ public class InventoryRepository extends Repository
 			universeName,
 			data.String("inventory"),
 			(int) level,
-			data.Float("experience")
+			data.Float("experience"),
+			data.Integer("foodLevel")
 		);
 	}
 
@@ -78,8 +79,14 @@ public class InventoryRepository extends Repository
 				"PRIMARY KEY (`owner`,`inventoryName`)" +
 				")"
 		);
-
 		versions.put(1, sql);
+
+		sql.clear();
+		sql.add(
+				"ALTER TABLE `runsafeInventories`" +
+						"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`"
+		);
+		versions.put(2, sql);
 		return versions;
 	}
 

@@ -11,15 +11,17 @@ public class PlayerInventory
 		this.owner = player.getName();
 		this.experience = player.getXP();
 		this.level = player.getLevel();
+		this.foodLevel = player.getFoodLevel();
 	}
 
-	public PlayerInventory(String owner, String inventoryName, String inventory, int level, float experience)
+	public PlayerInventory(String owner, String inventoryName, String inventory, int level, float experience, int foodLevel)
 	{
 		this.owner = owner;
 		this.inventoryName = inventoryName;
 		this.inventoryString = inventory;
 		this.level = level;
 		this.experience = experience;
+		this.foodLevel = foodLevel;
 	}
 
 	public String getInventoryName()
@@ -47,9 +49,15 @@ public class PlayerInventory
 		return this.experience;
 	}
 
+	public int getFoodLevel()
+	{
+		return this.foodLevel;
+	}
+
 	private String inventoryName;
 	private String owner;
 	private String inventoryString;
 	private int level;
 	private float experience;
+	private int foodLevel;
 }
