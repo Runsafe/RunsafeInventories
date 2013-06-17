@@ -26,7 +26,7 @@ public class InventoryRepository extends Repository
 	public void saveInventory(PlayerInventory inventory)
 	{
 		database.Execute(
-			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience) VALUES(?, ?, ?, ?, ?, ?)" +
+			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
 			inventory.getPlayerName(), inventory.getInventoryName(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
