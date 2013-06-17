@@ -33,6 +33,7 @@ public class InventoryHandler
 		player.getInventory().clear(); // Clear inventory
 		player.setXP(0); // Remove all XP
 		player.setLevel(0); // Remove all levels
+		player.setFoodLevel(20);
 	}
 
 	public void handlePostWorldChange(RunsafePlayer player)
@@ -47,6 +48,7 @@ public class InventoryHandler
 			player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
 			player.setLevel(inventory.getLevel()); // Restore level
 			player.setXP(inventory.getExperience()); // Restore experience
+			player.setFoodLevel(inventory.getFoodLevel()); // Restore food level
 			player.updateInventory();
 		}
 		else
