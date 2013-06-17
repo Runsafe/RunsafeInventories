@@ -1,23 +1,27 @@
 package no.runsafe.runsafeinventories;
 
+import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.hook.IUniverseMapper;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UniverseHandler implements IConfigurationChanged
+public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 {
 	public UniverseHandler(IOutput output)
 	{
 		this.output = output;
 	}
 
+	@Deprecated
 	public String getUniverseName(String worldName)
 	{
 		if (this.universes.containsKey(worldName))
@@ -26,9 +30,10 @@ public class UniverseHandler implements IConfigurationChanged
 		return worldName;
 	}
 
+	@Deprecated
 	public String getUniverseName(RunsafeWorld world)
 	{
-		return this.getUniverseName(world.getName());
+		return world.GetUniverse().GetName();
 	}
 
 	public boolean universeExists(String universeName)
@@ -41,9 +46,32 @@ public class UniverseHandler implements IConfigurationChanged
 		return RunsafeServer.Instance.getWorld(worldName) != null;
 	}
 
+	@Deprecated
 	public boolean isInUniverse(RunsafePlayer player, String universeName)
 	{
 		return this.getUniverseName(player.getWorld()).equals(universeName);
+	}
+
+	@Override
+	public List<String> GetUniverses()
+	{
+		return Lists.newArrayList(worlds.keySet());
+	}
+
+	@Override
+	public List<String> GetWorlds(String universe)
+	{
+		if (!worlds.containsKey(universe))
+			return null;
+		return worlds.get(universe);
+	}
+
+	@Override
+	public String GetUniverse(String world)
+	{
+		if (universes.containsKey(world))
+			return universes.get(world);
+		return null;
 	}
 
 	@Override
@@ -57,9 +85,14 @@ public class UniverseHandler implements IConfigurationChanged
 			this.output.write(String.format("Universe %s found with %s worlds.", name, worlds.size()));
 			for (String worldName : worlds)
 				this.universes.put(worldName, name);
+
+			if (!this.worlds.containsKey(name))
+				this.worlds.put(name, new ArrayList<String>());
+			this.worlds.get(name).addAll(worlds);
 		}
 	}
 
 	private HashMap<String, String> universes = new HashMap<String, String>();
+	private HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
 	private IOutput output;
 }

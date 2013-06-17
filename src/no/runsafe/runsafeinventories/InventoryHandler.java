@@ -17,10 +17,9 @@ public class InventoryHandler
 
 	public void saveInventory(RunsafePlayer player)
 	{
-		this.output.fine("Running force save for %s in %s", player.getName(), this.universeHandler.getUniverseName(player.getWorld()));
-		this.inventoryRepository.saveInventory(
-			new PlayerInventory(player, this.universeHandler.getUniverseName(player.getWorld()))
-		); // Save
+		String universe = player.getWorld().GetUniverse().GetName();
+		this.output.fine("Running force save for %s in %s", player.getName(), universe);
+		this.inventoryRepository.saveInventory(new PlayerInventory(player, universe));
 	}
 
 	public void handlePreWorldChange(RunsafePlayer player)
@@ -39,7 +38,7 @@ public class InventoryHandler
 
 	public void handlePostWorldChange(RunsafePlayer player)
 	{
-		String universeName = this.universeHandler.getUniverseName(player.getWorld().getName());
+		String universeName = player.getWorld().GetUniverse().GetName();
 		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory
 
 		// If we are null, the player had no stored inventory.
