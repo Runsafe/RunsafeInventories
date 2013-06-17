@@ -23,7 +23,7 @@ public class CreateTemplate extends PlayerCommand
 	@Override
 	public String OnExecute(RunsafePlayer executor, HashMap<String, String> parameters, String[] arguments)
 	{
-		String universe = (arguments.length > 0) ? arguments[0] : executor.getWorld().GetUniverse().GetName();
+		String universe = (arguments.length > 0) ? arguments[0] : executor.getWorld().getUniverse().getName();
 		this.templateRepository.insertTemplate(universe, executor.getInventory());
 		return String.format("&2Created default inventory for %s using your inventory.", universe);
 	}

@@ -7,17 +7,16 @@ import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 public class InventoryHandler
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, UniverseHandler universeHandler, TemplateRepository templateRepository, IOutput output)
+	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IOutput output)
 	{
 		this.inventoryRepository = inventoryRepository;
-		this.universeHandler = universeHandler;
 		this.templateRepository = templateRepository;
 		this.output = output;
 	}
 
 	public void saveInventory(RunsafePlayer player)
 	{
-		String universe = player.getWorld().GetUniverse().GetName();
+		String universe = player.getWorld().getUniverse().getName();
 		this.output.fine("Running force save for %s in %s", player.getName(), universe);
 		this.inventoryRepository.saveInventory(new PlayerInventory(player, universe));
 	}
@@ -38,7 +37,7 @@ public class InventoryHandler
 
 	public void handlePostWorldChange(RunsafePlayer player)
 	{
-		String universeName = player.getWorld().GetUniverse().GetName();
+		String universeName = player.getWorld().getUniverse().getName();
 		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory
 
 		// If we are null, the player had no stored inventory.
@@ -58,7 +57,6 @@ public class InventoryHandler
 	}
 
 	private InventoryRepository inventoryRepository;
-	private UniverseHandler universeHandler;
 	private TemplateRepository templateRepository;
 
 	private IOutput output;

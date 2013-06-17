@@ -26,7 +26,7 @@ public class InventoryViewer implements IConfigurationChanged
 		// Is the player online and in the same world? If so, get their current inventory from memory.
 		if (owner.isOnline())
 		{
-			if (owner.getWorld().IsUniverse(universeName))
+			if (owner.isInUniverse(universeName))
 			{
 				viewer.openInventory(owner.getInventory());
 				return true;

@@ -33,7 +33,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 	@Deprecated
 	public String getUniverseName(RunsafeWorld world)
 	{
-		return world.GetUniverse().GetName();
+		return world.getUniverse().getName();
 	}
 
 	public boolean universeExists(String universeName)
