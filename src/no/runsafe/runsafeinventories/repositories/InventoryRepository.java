@@ -81,7 +81,7 @@ public class InventoryRepository extends Repository
 		);
 		versions.put(1, sql);
 
-		sql.clear();
+		sql = new ArrayList<String>();
 		sql.add(
 				"ALTER TABLE `runsafeInventories`" +
 						"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`"
