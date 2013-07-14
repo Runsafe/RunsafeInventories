@@ -1,7 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 
@@ -34,12 +33,11 @@ public class TemplateRepository extends Repository
 
 	public void setToTemplate(String universe, RunsafeInventory playerInventory)
 	{
-		IRow data = this.database.QueryRow(
+		String serialized = this.database.QueryString(
 			"SELECT inventory FROM runsafe_inventories_templates WHERE universeName = ?", universe
 		);
-
-		if (data != null)
-			playerInventory.unserialize(data.String("inventory"));
+		if (serialized != null)
+			playerInventory.unserialize(serialized);
 	}
 
 	@Override

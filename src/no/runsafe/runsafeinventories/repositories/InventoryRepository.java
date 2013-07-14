@@ -43,7 +43,7 @@ public class InventoryRepository extends Repository
 			owner, universeName
 		);
 
-		if (data == null)
+		if (data.isEmpty())
 			return null; // We have no inventory, so no need to return a blank one.
 
 		long level = data.Long("level");
