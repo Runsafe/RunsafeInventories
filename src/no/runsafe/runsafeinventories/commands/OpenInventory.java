@@ -7,7 +7,7 @@ import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
 import no.runsafe.runsafeinventories.UniverseHandler;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class OpenInventory extends PlayerCommand
 {
@@ -19,13 +19,13 @@ public class OpenInventory extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, HashMap<String, String> parameters)
+	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters)
 	{
 		return null;
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, HashMap<String, String> parameters, String[] arguments)
+	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters, String[] arguments)
 	{
 		RunsafePlayer target = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 

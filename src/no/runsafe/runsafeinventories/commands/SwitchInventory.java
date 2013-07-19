@@ -7,7 +7,7 @@ import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class SwitchInventory extends PlayerCommand
 {
@@ -18,7 +18,7 @@ public class SwitchInventory extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(RunsafePlayer executor, HashMap<String, String> parameters)
+	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters)
 	{
 		RunsafePlayer source = RunsafeServer.Instance.getPlayer(parameters.get("source"));
 		RunsafePlayer target = RunsafeServer.Instance.getPlayer(parameters.get("target"));

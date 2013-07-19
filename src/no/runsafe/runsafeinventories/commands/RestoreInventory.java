@@ -7,7 +7,7 @@ import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class RestoreInventory extends ExecutableCommand
 {
@@ -18,7 +18,7 @@ public class RestoreInventory extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		RunsafePlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 		if (player == null)

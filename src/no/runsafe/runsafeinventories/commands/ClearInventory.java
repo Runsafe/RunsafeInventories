@@ -7,7 +7,7 @@ import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class ClearInventory extends ExecutableCommand
 {
@@ -18,13 +18,13 @@ public class ClearInventory extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
 		return null;
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, HashMap<String, String> parameters, String[] arguments)
+	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters, String[] arguments)
 	{
 		if (arguments.length > 0)
 		{
