@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
@@ -13,7 +14,10 @@ public class SwitchInventory extends PlayerCommand
 {
 	public SwitchInventory(InventoryHistory history)
 	{
-		super("switch", "Moves a players inventory to the target.", "runsafe.inventories.switch", "source", "target");
+		super(
+			"switch", "Moves a players inventory to the target.", "runsafe.inventories.switch",
+			new PlayerArgument("source", true), new PlayerArgument("target", true)
+		);
 		this.history = history;
 	}
 

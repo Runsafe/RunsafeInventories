@@ -2,6 +2,7 @@ package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -13,7 +14,10 @@ public class RestoreInventory extends ExecutableCommand
 {
 	public RestoreInventory(InventoryHistory history)
 	{
-		super("restore", "Reverts the last inventory switch/deletion", "runsafe.inventories.restore", "player");
+		super(
+			"restore", "Reverts the last inventory switch/deletion", "runsafe.inventories.restore",
+			new PlayerArgument()
+		);
 		this.history = history;
 	}
 
