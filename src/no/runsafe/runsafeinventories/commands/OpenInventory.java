@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
@@ -13,7 +14,7 @@ public class OpenInventory extends PlayerCommand
 {
 	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler)
 	{
-		super("open", "Opens a players inventory", "runsafe.inventories.open", "player");
+		super("open", "Opens a players inventory", "runsafe.inventories.open", new PlayerArgument(), new UniverseArgument(universeHandler));
 		this.inventoryViewer = inventoryViewer;
 		this.universeHandler = universeHandler;
 	}
@@ -21,20 +22,14 @@ public class OpenInventory extends PlayerCommand
 	@Override
 	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters)
 	{
-		return null;
-	}
-
-	@Override
-	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters, String[] arguments)
-	{
 		RunsafePlayer target = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 
 		if (target instanceof RunsafeAmbiguousPlayer)
 			return target.toString();
 
-		if (arguments.length > 0)
+		if (parameters.containsKey("universe"))
 		{
-			String universeName = arguments[0];
+			String universeName = parameters.get("universe");
 			if (!this.universeHandler.universeExists(universeName) && !this.universeHandler.worldExists(universeName))
 				return "&cThe universe/world you are looking for does not exist.";
 

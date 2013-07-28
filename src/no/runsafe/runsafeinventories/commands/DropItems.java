@@ -2,6 +2,7 @@ package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
@@ -14,21 +15,15 @@ public class DropItems extends ExecutableCommand
 {
 	public DropItems()
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop");
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new PlayerArgument(false));
 	}
 
 	@Override
 	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
 	{
-		return null;
-	}
-
-	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters, String[] arguments)
-	{
-		if (arguments.length > 0)
+		if (parameters.containsKey("player"))
 		{
-			RunsafePlayer player = RunsafeServer.Instance.getPlayer(arguments[0]);
+			RunsafePlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 			if (player != null)
 			{
 				if (player instanceof RunsafeAmbiguousPlayer)

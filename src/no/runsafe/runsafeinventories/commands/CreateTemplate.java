@@ -2,28 +2,23 @@ package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.runsafeinventories.UniverseHandler;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 import java.util.Map;
 
 public class CreateTemplate extends PlayerCommand
 {
-	public CreateTemplate(TemplateRepository templateRepository)
+	public CreateTemplate(TemplateRepository templateRepository, UniverseHandler universeHandler)
 	{
-		super("createtemplate", "Creates a default inventory template", "runsafe.inventories.templates.create");
+		super("createtemplate", "Creates a default inventory template", "runsafe.inventories.templates.create", new UniverseArgument(universeHandler));
 		this.templateRepository = templateRepository;
 	}
 
 	@Override
 	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters)
 	{
-		return null;
-	}
-
-	@Override
-	public String OnExecute(RunsafePlayer executor, Map<String, String> parameters, String[] arguments)
-	{
-		String universe = (arguments.length > 0) ? arguments[0] : executor.getWorld().getUniverse().getName();
+		String universe = parameters.containsKey("universe") ? parameters.get("universe") : executor.getWorld().getUniverse().getName();
 		this.templateRepository.insertTemplate(universe, executor.getInventory());
 		return String.format("&2Created default inventory for %s using your inventory.", universe);
 	}
