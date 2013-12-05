@@ -1,6 +1,6 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.event.player.IPlayerRespawn;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -8,20 +8,20 @@ import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerRespawn implements IPlayerRespawn
 {
-	public PlayerRespawn(InventoryHandler inventoryHandler, IOutput output)
+	public PlayerRespawn(InventoryHandler inventoryHandler, IDebug debugger)
 	{
 		this.inventoryHandler = inventoryHandler;
-		this.output = output;
+		this.debugger = debugger;
 	}
 
 	@Override
 	public RunsafeLocation OnPlayerRespawn(RunsafePlayer player, RunsafeLocation location, boolean isBed)
 	{
-		this.output.fine("Got respawn event for " + player.getName());
+		this.debugger.debugFine("Got respawn event for %s", player.getName());
 		this.inventoryHandler.handlePostWorldChange(player);
 		return location;
 	}
 
 	private InventoryHandler inventoryHandler;
-	private IOutput output;
+	private IDebug debugger;
 }

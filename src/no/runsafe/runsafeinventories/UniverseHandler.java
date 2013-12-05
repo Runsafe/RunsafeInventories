@@ -2,7 +2,7 @@ package no.runsafe.runsafeinventories;
 
 import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
 import no.runsafe.framework.minecraft.RunsafeServer;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 {
-	public UniverseHandler(IOutput output)
+	public UniverseHandler(IConsole output)
 	{
 		this.output = output;
 	}
@@ -82,7 +82,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 		for (String name : section.keySet())
 		{
 			List<String> worlds = section.get(name);
-			this.output.write(String.format("Universe %s found with %s worlds.", name, worlds.size()));
+			this.output.logInformation("Universe %s found with %s worlds.", name, worlds.size());
 			for (String worldName : worlds)
 				this.universes.put(worldName, name);
 
@@ -94,5 +94,5 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 
 	private HashMap<String, String> universes = new HashMap<String, String>();
 	private HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
-	private IOutput output;
+	private IConsole output;
 }

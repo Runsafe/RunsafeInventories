@@ -1,6 +1,6 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.api.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -12,16 +12,16 @@ import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
-	public PlayerTeleport(InventoryHandler inventoryHandler, IOutput output)
+	public PlayerTeleport(InventoryHandler inventoryHandler, IDebug output)
 	{
 		this.inventoryHandler = inventoryHandler;
-		this.output = output;
+		this.debugger = output;
 	}
 
 	@Override
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
-		this.output.fine("Detected teleport event: " + event.getPlayer().getName());
+		this.debugger.debugFine("Detected teleport event: " + event.getPlayer().getName());
 		RunsafeLocation from = event.getFrom();
 		RunsafeLocation to = event.getTo();
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
@@ -33,7 +33,7 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 		if (event.isCancelled())
 			return;
 
-		this.output.fine("Detected portal event: " + event.getPlayer().getName());
+		this.debugger.debugFine("Detected portal event: " + event.getPlayer().getName());
 		RunsafeLocation from = event.getFrom();
 		RunsafeLocation to = event.getTo();
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
@@ -46,6 +46,6 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	}
 
 	private InventoryHandler inventoryHandler;
-	private IOutput output;
+	private IDebug debugger;
 
 }
