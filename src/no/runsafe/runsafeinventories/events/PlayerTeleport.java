@@ -1,11 +1,11 @@
 package no.runsafe.runsafeinventories.events;
 
 import no.runsafe.framework.api.IDebug;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.api.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeLocation;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerPortalEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerTeleportEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
@@ -39,7 +39,7 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
 	}
 
-	private void checkTeleportEvent(RunsafeWorld to, RunsafeWorld from, IPlayer player)
+	private void checkTeleportEvent(IWorld to, IWorld from, IPlayer player)
 	{
 		if (to != null && from != null && !to.equals(from))
 			this.inventoryHandler.handlePreWorldChange(player);

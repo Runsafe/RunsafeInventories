@@ -3,11 +3,11 @@ package no.runsafe.runsafeinventories;
 import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IConsole;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
-import no.runsafe.framework.minecraft.RunsafeWorld;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 	}
 
 	@Deprecated
-	public String getUniverseName(RunsafeWorld world)
+	public String getUniverseName(IWorld world)
 	{
 		return world.getUniverse().getName();
 	}
