@@ -1,7 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IDebug;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
@@ -14,20 +14,20 @@ public class InventoryHandler
 		this.debugger = output;
 	}
 
-	public void saveInventory(RunsafePlayer player)
+	public void saveInventory(IPlayer player)
 	{
 		String universe = player.getWorld().getUniverse().getName();
 		this.debugger.debugFine("Running force save for %s in %s", player.getName(), universe);
 		this.inventoryRepository.saveInventory(new PlayerInventory(player, universe));
 	}
 
-	public void handlePreWorldChange(RunsafePlayer player)
+	public void handlePreWorldChange(IPlayer player)
 	{
 		this.saveInventory(player); // Save inventory
 		this.wipeInventory(player);
 	}
 
-	public void wipeInventory(RunsafePlayer player)
+	public void wipeInventory(IPlayer player)
 	{
 		this.debugger.debugFine("Wiping inventory for %s", player.getName());
 		player.getInventory().clear(); // Clear inventory
@@ -36,7 +36,7 @@ public class InventoryHandler
 		player.setFoodLevel(20);
 	}
 
-	public void handlePostWorldChange(RunsafePlayer player)
+	public void handlePostWorldChange(IPlayer player)
 	{
 		String universeName = player.getWorld().getUniverse().getName();
 		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory

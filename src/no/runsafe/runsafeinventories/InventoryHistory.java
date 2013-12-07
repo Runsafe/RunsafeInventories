@@ -1,17 +1,17 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 import java.util.HashMap;
 
 public class InventoryHistory
 {
-	public void save(RunsafePlayer player)
+	public void save(IPlayer player)
 	{
 		this.history.put(player.getName(), player.getInventory().serialize());
 	}
 
-	public boolean restore(RunsafePlayer player)
+	public boolean restore(IPlayer player)
 	{
 		if (this.history.containsKey(player.getName()))
 		{

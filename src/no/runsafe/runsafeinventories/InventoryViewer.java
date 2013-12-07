@@ -2,10 +2,10 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventoryType;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 public class InventoryViewer implements IConfigurationChanged
@@ -16,12 +16,12 @@ public class InventoryViewer implements IConfigurationChanged
 		this.universeHandler = universeHandler;
 	}
 
-	public boolean viewUniverseInventory(RunsafePlayer viewer, RunsafePlayer owner)
+	public boolean viewUniverseInventory(IPlayer viewer, IPlayer owner)
 	{
 		return this.viewUniverseInventory(viewer, owner, this.defaultUniverse);
 	}
 
-	public boolean viewUniverseInventory(RunsafePlayer viewer, RunsafePlayer owner, String universeName)
+	public boolean viewUniverseInventory(IPlayer viewer, IPlayer owner, String universeName)
 	{
 		// Is the player online and in the same world? If so, get their current inventory from memory.
 		if (owner.isOnline())

@@ -3,9 +3,9 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public class ClearInventory extends ExecutableCommand
 	{
 		if (parameters.containsKey("player"))
 		{
-			RunsafePlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
+			IPlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 			if (player != null)
 			{
 				if (player instanceof RunsafeAmbiguousPlayer)
@@ -42,9 +42,9 @@ public class ClearInventory extends ExecutableCommand
 		}
 		else
 		{
-			if (executor instanceof RunsafePlayer)
+			if (executor instanceof IPlayer)
 			{
-				RunsafePlayer player = (RunsafePlayer) executor;
+				IPlayer player = (IPlayer) executor;
 				this.history.save(player);
 				player.getInventory().clear();
 				player.updateInventory();

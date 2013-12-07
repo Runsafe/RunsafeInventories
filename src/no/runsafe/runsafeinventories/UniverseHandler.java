@@ -5,9 +5,9 @@ import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IConsole;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 	}
 
 	@Deprecated
-	public boolean isInUniverse(RunsafePlayer player, String universeName)
+	public boolean isInUniverse(IPlayer player, String universeName)
 	{
 		return this.getUniverseName(player.getWorld()).equals(universeName);
 	}

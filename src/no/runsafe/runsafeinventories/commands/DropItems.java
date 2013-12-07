@@ -3,11 +3,11 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class DropItems extends ExecutableCommand
 	{
 		if (parameters.containsKey("player"))
 		{
-			RunsafePlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
+			IPlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
 			if (player != null)
 			{
 				if (player instanceof RunsafeAmbiguousPlayer)
@@ -40,16 +40,16 @@ public class DropItems extends ExecutableCommand
 		}
 		else
 		{
-			if (executor instanceof RunsafePlayer)
+			if (executor instanceof IPlayer)
 			{
-				this.dropItems((RunsafePlayer) executor);
+				this.dropItems((IPlayer) executor);
 				return "&cYour items have been dropped.";
 			}
 			return "&cPlease specify a player.";
 		}
 	}
 
-	private void dropItems(RunsafePlayer player)
+	private void dropItems(IPlayer player)
 	{
 		RunsafeInventory inventory = player.getInventory();
 

@@ -3,7 +3,7 @@ package no.runsafe.runsafeinventories.repositories;
 import no.runsafe.framework.api.database.IDatabase;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.Repository;
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class InventoryRepository extends Repository
 		);
 	}
 
-	public PlayerInventory getInventory(RunsafePlayer player, String universeName)
+	public PlayerInventory getInventory(IPlayer player, String universeName)
 	{
 		String owner = player.getName();
 

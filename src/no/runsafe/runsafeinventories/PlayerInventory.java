@@ -1,10 +1,10 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import no.runsafe.framework.api.player.IPlayer;
 
 public class PlayerInventory
 {
-	public PlayerInventory(RunsafePlayer player, String inventoryName)
+	public PlayerInventory(IPlayer player, String inventoryName)
 	{
 		this.inventoryName = inventoryName;
 		this.inventoryString = player.getInventory().serialize();
