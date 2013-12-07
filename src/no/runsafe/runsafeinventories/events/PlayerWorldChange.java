@@ -21,7 +21,7 @@ public class PlayerWorldChange implements IPlayerChangedWorldEvent
 		this.inventoryHandler.handlePostWorldChange(player);
 
 		// Remove any buff effects if we're changing universe
-		if (!event.getSourceWorld().IsConnected(player.getWorld()))
+		if (!event.getSourceWorld().isConnected(player.getWorld()))
 			player.removeBuffs();
 	}
 
