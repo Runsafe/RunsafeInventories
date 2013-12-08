@@ -1,11 +1,11 @@
 package no.runsafe.runsafeinventories.events;
 
 import no.runsafe.framework.api.IDebug;
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.api.event.player.IPlayerTeleportEvent;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerPortalEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerTeleportEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
@@ -22,8 +22,8 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
 		this.debugger.debugFine("Detected teleport event: " + event.getPlayer().getName());
-		RunsafeLocation from = event.getFrom();
-		RunsafeLocation to = event.getTo();
+		ILocation from = event.getFrom();
+		ILocation to = event.getTo();
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
 	}
 
@@ -34,8 +34,8 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 			return;
 
 		this.debugger.debugFine("Detected portal event: " + event.getPlayer().getName());
-		RunsafeLocation from = event.getFrom();
-		RunsafeLocation to = event.getTo();
+		ILocation from = event.getFrom();
+		ILocation to = event.getTo();
 		this.checkTeleportEvent(to == null ? null : to.getWorld(), from == null ? null : from.getWorld(), event.getPlayer());
 	}
 
