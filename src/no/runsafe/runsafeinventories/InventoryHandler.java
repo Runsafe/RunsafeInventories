@@ -58,8 +58,8 @@ public class InventoryHandler
 		}
 	}
 
-	private InventoryRepository inventoryRepository;
-	private TemplateRepository templateRepository;
+	private final InventoryRepository inventoryRepository;
+	private final TemplateRepository templateRepository;
 
-	private IDebug debugger;
+	private final IDebug debugger;
 }

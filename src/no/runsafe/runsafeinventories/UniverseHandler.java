@@ -3,11 +3,11 @@ package no.runsafe.runsafeinventories;
 import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IConsole;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +16,10 @@ import java.util.Map;
 
 public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 {
-	public UniverseHandler(IConsole output)
+	public UniverseHandler(IConsole output, IServer server)
 	{
 		this.output = output;
+		this.server = server;
 	}
 
 	@Deprecated
@@ -43,7 +44,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 
 	public boolean worldExists(String worldName)
 	{
-		return RunsafeServer.Instance.getWorld(worldName) != null;
+		return server.getWorld(worldName) != null;
 	}
 
 	@Deprecated
@@ -92,7 +93,8 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 		}
 	}
 
-	private HashMap<String, String> universes = new HashMap<String, String>();
-	private HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
-	private IConsole output;
+	private final HashMap<String, String> universes = new HashMap<String, String>();
+	private final HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
+	private final IConsole output;
+	private final IServer server;
 }

@@ -1,17 +1,18 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventoryType;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 public class InventoryViewer implements IConfigurationChanged
 {
-	public InventoryViewer(InventoryRepository repository, UniverseHandler universeHandler)
+	public InventoryViewer(IServer server, InventoryRepository repository, UniverseHandler universeHandler)
 	{
+		this.server = server;
 		this.repository = repository;
 		this.universeHandler = universeHandler;
 	}
@@ -38,7 +39,7 @@ public class InventoryViewer implements IConfigurationChanged
 		if (inventoryData == null)
 			return false;
 
-		RunsafeInventory inventory = RunsafeServer.Instance.createInventory(null, RunsafeInventoryType.PLAYER.getDefaultSize(), String.format("%s's Inventory", owner.getName()));
+		RunsafeInventory inventory = server.createInventory(null, RunsafeInventoryType.PLAYER.getDefaultSize(), String.format("%s's Inventory", owner.getName()));
 		inventory.unserialize(inventoryData.getInventoryString());
 		viewer.openInventory(inventory);
 
@@ -56,7 +57,8 @@ public class InventoryViewer implements IConfigurationChanged
 		this.defaultUniverse = configuration.getConfigValueAsString("defaultOpenInventoryUniverse");
 	}
 
-	private InventoryRepository repository;
+	private final IServer server;
+	private final InventoryRepository repository;
 	private String defaultUniverse;
-	private UniverseHandler universeHandler;
+	private final UniverseHandler universeHandler;
 }

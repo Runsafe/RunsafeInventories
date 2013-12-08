@@ -18,5 +18,5 @@ public class PlayerQuit implements IPlayerQuitEvent
 		this.inventoryHandler.saveInventory(event.getPlayer());
 	}
 
-	private InventoryHandler inventoryHandler;
+	private final InventoryHandler inventoryHandler;
 }

@@ -25,6 +25,6 @@ public class PlayerWorldChange implements IPlayerChangedWorldEvent
 			player.removeBuffs();
 	}
 
-	private InventoryHandler inventoryHandler;
-	private UniverseHandler universeHandler;
+	private final InventoryHandler inventoryHandler;
+	private final UniverseHandler universeHandler;
 }

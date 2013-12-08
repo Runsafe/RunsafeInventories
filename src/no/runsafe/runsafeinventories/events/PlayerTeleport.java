@@ -45,7 +45,7 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 			this.inventoryHandler.handlePreWorldChange(player);
 	}
 
-	private InventoryHandler inventoryHandler;
-	private IDebug debugger;
+	private final InventoryHandler inventoryHandler;
+	private final IDebug debugger;
 
 }

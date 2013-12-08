@@ -1,10 +1,10 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
@@ -13,9 +13,10 @@ import java.util.Map;
 
 public class DropItems extends ExecutableCommand
 {
-	public DropItems()
+	public DropItems(IServer server)
 	{
 		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new PlayerArgument(false));
+		this.server = server;
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class DropItems extends ExecutableCommand
 	{
 		if (parameters.containsKey("player"))
 		{
-			IPlayer player = RunsafeServer.Instance.getPlayer(parameters.get("player"));
+			IPlayer player = server.getPlayer(parameters.get("player"));
 			if (player != null)
 			{
 				if (player instanceof RunsafeAmbiguousPlayer)
@@ -61,4 +62,6 @@ public class DropItems extends ExecutableCommand
 
 		player.updateInventory();
 	}
+
+	private final IServer server;
 }

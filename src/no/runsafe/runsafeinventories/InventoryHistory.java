@@ -21,5 +21,5 @@ public class InventoryHistory
 		return false;
 	}
 
-	private HashMap<String, String> history = new HashMap<String, String>();
+	private final HashMap<String, String> history = new HashMap<String, String>();
 }

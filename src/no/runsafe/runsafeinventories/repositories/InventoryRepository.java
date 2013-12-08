@@ -90,5 +90,5 @@ public class InventoryRepository extends Repository
 		return versions;
 	}
 
-	private IDatabase database;
+	private final IDatabase database;
 }

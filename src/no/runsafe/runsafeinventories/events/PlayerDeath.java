@@ -21,6 +21,6 @@ public class PlayerDeath implements IPlayerDeathEvent
 		this.inventoryHandler.saveInventory(event.getEntity());
 	}
 
-	private InventoryHandler inventoryHandler;
-	private IDebug debugger;
+	private final InventoryHandler inventoryHandler;
+	private final IDebug debugger;
 }

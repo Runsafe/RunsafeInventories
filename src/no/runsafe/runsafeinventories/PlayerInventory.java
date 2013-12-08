@@ -54,10 +54,10 @@ public class PlayerInventory
 		return this.foodLevel;
 	}
 
-	private String inventoryName;
-	private String owner;
-	private String inventoryString;
-	private int level;
-	private float experience;
-	private int foodLevel;
+	private final String inventoryName;
+	private final String owner;
+	private final String inventoryString;
+	private final int level;
+	private final float experience;
+	private final int foodLevel;
 }

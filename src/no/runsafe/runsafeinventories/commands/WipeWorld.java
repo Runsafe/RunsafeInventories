@@ -26,5 +26,5 @@ public class WipeWorld extends ExecutableCommand
 		return String.format("Deleted all database inventories for the %s world", worldName);
 	}
 
-	private InventoryRepository inventoryRepository;
+	private final InventoryRepository inventoryRepository;
 }

@@ -22,6 +22,6 @@ public class PlayerRespawn implements IPlayerRespawn
 		return location;
 	}
 
-	private InventoryHandler inventoryHandler;
-	private IDebug debugger;
+	private final InventoryHandler inventoryHandler;
+	private final IDebug debugger;
 }

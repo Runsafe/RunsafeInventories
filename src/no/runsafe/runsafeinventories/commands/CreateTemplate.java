@@ -23,5 +23,5 @@ public class CreateTemplate extends PlayerCommand
 		return String.format("&2Created default inventory for %s using your inventory.", universe);
 	}
 
-	private TemplateRepository templateRepository;
+	private final TemplateRepository templateRepository;
 }

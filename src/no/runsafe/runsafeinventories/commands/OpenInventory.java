@@ -1,9 +1,9 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
 import no.runsafe.runsafeinventories.UniverseHandler;
@@ -12,17 +12,18 @@ import java.util.Map;
 
 public class OpenInventory extends PlayerCommand
 {
-	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler)
+	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler, IServer server)
 	{
 		super("open", "Opens a players inventory", "runsafe.inventories.open", new PlayerArgument(), new UniverseArgument(universeHandler));
 		this.inventoryViewer = inventoryViewer;
 		this.universeHandler = universeHandler;
+		this.server = server;
 	}
 
 	@Override
 	public String OnExecute(IPlayer executor, Map<String, String> parameters)
 	{
-		IPlayer target = RunsafeServer.Instance.getPlayer(parameters.get("player"));
+		IPlayer target = server.getPlayer(parameters.get("player"));
 
 		if (target instanceof RunsafeAmbiguousPlayer)
 			return target.toString();
@@ -47,6 +48,7 @@ public class OpenInventory extends PlayerCommand
 		return null;
 	}
 
-	private InventoryViewer inventoryViewer;
-	private UniverseHandler universeHandler;
+	private final InventoryViewer inventoryViewer;
+	private final UniverseHandler universeHandler;
+	private final IServer server;
 }
