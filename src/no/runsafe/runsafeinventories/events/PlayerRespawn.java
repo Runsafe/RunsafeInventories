@@ -1,8 +1,8 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.event.player.IPlayerRespawn;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.InventoryHandler;
 

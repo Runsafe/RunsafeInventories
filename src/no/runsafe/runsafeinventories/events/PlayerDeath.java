@@ -1,7 +1,7 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.api.IDebug;
 import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
 

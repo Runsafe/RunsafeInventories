@@ -1,6 +1,6 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.api.IDebug;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
