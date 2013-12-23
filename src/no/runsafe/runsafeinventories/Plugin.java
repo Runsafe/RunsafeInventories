@@ -14,7 +14,6 @@ public class Plugin extends RunsafeConfigurablePlugin
 	protected void pluginSetup()
 	{
 		// Framework features
-		addComponent(FrameworkHooks.class);
 		addComponent(Commands.class);
 		addComponent(Events.class);
 		addComponent(Database.class);
