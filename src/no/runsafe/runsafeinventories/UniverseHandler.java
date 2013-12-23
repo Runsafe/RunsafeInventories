@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories;
 import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.IUniverseManager;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
@@ -76,6 +77,12 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 	}
 
 	@Override
+	public void setManager(IUniverseManager manager)
+	{
+		this.manager = manager;
+	}
+
+	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		Map<String, List<String>> section = configuration.getConfigSectionsAsList("universes");
@@ -91,10 +98,12 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 				this.worlds.put(name, new ArrayList<String>());
 			this.worlds.get(name).addAll(worlds);
 		}
+		manager.flush();
 	}
 
 	private final HashMap<String, String> universes = new HashMap<String, String>();
 	private final HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
 	private final IConsole output;
 	private final IServer server;
+	private IUniverseManager manager;
 }
