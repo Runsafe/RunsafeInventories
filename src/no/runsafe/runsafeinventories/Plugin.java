@@ -2,10 +2,7 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.framework.api.command.Command;
-import no.runsafe.framework.features.Commands;
-import no.runsafe.framework.features.Database;
-import no.runsafe.framework.features.Events;
-import no.runsafe.framework.features.UniverseRegistration;
+import no.runsafe.framework.features.*;
 import no.runsafe.runsafeinventories.commands.*;
 import no.runsafe.runsafeinventories.events.*;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
@@ -17,6 +14,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 	protected void pluginSetup()
 	{
 		// Framework features
+		addComponent(FrameworkHooks.class);
 		addComponent(Commands.class);
 		addComponent(Events.class);
 		addComponent(Database.class);
