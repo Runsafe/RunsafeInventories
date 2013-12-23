@@ -4,10 +4,10 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class DropItems extends ExecutableCommand
 			IPlayer player = server.getPlayer(parameters.get("player"));
 			if (player != null)
 			{
-				if (player instanceof RunsafeAmbiguousPlayer)
+				if (player instanceof IAmbiguousPlayer)
 					return player.toString();
 
 				if (player.isOnline())

@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
@@ -25,7 +26,7 @@ public class OpenInventory extends PlayerCommand
 	{
 		IPlayer target = server.getPlayer(parameters.get("player"));
 
-		if (target instanceof RunsafeAmbiguousPlayer)
+		if (target instanceof IAmbiguousPlayer)
 			return target.toString();
 
 		if (parameters.containsKey("universe"))

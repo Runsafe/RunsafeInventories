@@ -3,9 +3,9 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.Map;
@@ -34,10 +34,10 @@ public class SwitchInventory extends PlayerCommand
 		if (target == null)
 			return "&cCould not find the target player";
 
-		if (source instanceof RunsafeAmbiguousPlayer)
+		if (source instanceof IAmbiguousPlayer)
 			return source.toString();
 
-		if (target instanceof RunsafeAmbiguousPlayer)
+		if (target instanceof IAmbiguousPlayer)
 			return target.toString();
 
 		RunsafeInventory targetInventory = target.getInventory();

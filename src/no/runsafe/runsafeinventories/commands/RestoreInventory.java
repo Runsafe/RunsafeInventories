@@ -4,8 +4,8 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public class RestoreInventory extends ExecutableCommand
 		if (player == null)
 			return "&cThat player does not exist";
 
-		if (player instanceof RunsafeAmbiguousPlayer)
+		if (player instanceof IAmbiguousPlayer)
 			return player.toString();
 
 		if (!this.history.restore(player))
