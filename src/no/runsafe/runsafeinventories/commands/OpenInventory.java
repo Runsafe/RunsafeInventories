@@ -5,7 +5,6 @@ import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
-import no.runsafe.framework.minecraft.player.RunsafeAmbiguousPlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
 import no.runsafe.runsafeinventories.UniverseHandler;
 
