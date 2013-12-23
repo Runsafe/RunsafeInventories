@@ -41,6 +41,7 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 
 	private void checkTeleportEvent(IWorld to, IWorld from, IPlayer player)
 	{
+		debugger.debugFine("Going from %s/%s to %s/%s", from.getName(), from.getUniverse().getName(), to.getName(), to.getUniverse().getName());
 		if (to != null && from != null && !to.equals(from))
 			this.inventoryHandler.handlePreWorldChange(player);
 	}
