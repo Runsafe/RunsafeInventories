@@ -25,7 +25,7 @@ public class InventoryRepository extends Repository
 
 	public void saveInventory(PlayerInventory inventory)
 	{
-		database.Execute(
+		database.execute(
 			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
 			inventory.getPlayerName(), inventory.getInventoryName(),
@@ -38,7 +38,7 @@ public class InventoryRepository extends Repository
 	{
 		String owner = player.getName();
 
-		IRow data = database.QueryRow(
+		IRow data = database.queryRow(
 			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
 			owner, universeName
 		);
@@ -60,7 +60,7 @@ public class InventoryRepository extends Repository
 
 	public void wipeWorld(String worldName)
 	{
-		this.database.Execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", worldName);
+		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", worldName);
 	}
 
 	@Override

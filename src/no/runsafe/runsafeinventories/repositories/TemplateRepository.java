@@ -24,7 +24,7 @@ public class TemplateRepository extends Repository
 	public void insertTemplate(String universe, RunsafeInventory inventory)
 	{
 		String inventoryString = inventory.serialize();
-		this.database.Execute(
+		database.execute(
 			"INSERT INTO `runsafe_inventories_templates` (universeName, inventory) VALUES(?,?) " +
 				"ON DUPLICATE KEY UPDATE inventory = ?",
 			universe, inventoryString, inventoryString
@@ -33,7 +33,7 @@ public class TemplateRepository extends Repository
 
 	public void setToTemplate(String universe, RunsafeInventory playerInventory)
 	{
-		String serialized = this.database.QueryString(
+		String serialized = database.queryString(
 			"SELECT inventory FROM runsafe_inventories_templates WHERE universeName = ?", universe
 		);
 		if (serialized != null)
