@@ -1,15 +1,8 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.database.IDatabase;
-import no.runsafe.framework.api.database.IRow;
-import no.runsafe.framework.api.database.Repository;
+import no.runsafe.framework.api.database.*;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 public class InventoryRepository extends Repository
 {
@@ -65,12 +58,11 @@ public class InventoryRepository extends Repository
 	}
 
 	@Override
-	public HashMap<Integer, List<String>> getSchemaUpdateQueries()
+	public ISchemaUpdate getSchemaUpdateQueries()
 	{
-		HashMap<Integer, List<String>> versions = new LinkedHashMap<Integer, List<String>>(2);
-		ArrayList<String> sql = new ArrayList<String>();
+		ISchemaUpdate update = new SchemaUpdate();
 
-		sql.add(
+		update.addQueries(
 			"CREATE TABLE `runsafeInventories` (" +
 				"`owner` varchar(50) NOT NULL," +
 				"`inventoryName` varchar(255) NOT NULL," +
@@ -78,17 +70,13 @@ public class InventoryRepository extends Repository
 				"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`experience` float unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`owner`,`inventoryName`)" +
-				")"
+			")"
 		);
-		versions.put(1, sql);
 
-		sql = new ArrayList<String>();
-		sql.add(
-				"ALTER TABLE `runsafeInventories`" +
-						"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`"
-		);
-		versions.put(2, sql);
-		return versions;
+		update.addQueries("ALTER TABLE `runsafeInventories`" +
+				"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
+
+		return update;
 	}
 
 	private final IDatabase database;
