@@ -2,10 +2,9 @@ package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.WorldArgument;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
-
-import java.util.Map;
 
 public class WipeWorld extends ExecutableCommand
 {
@@ -19,7 +18,7 @@ public class WipeWorld extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		String worldName = parameters.get("worldName");
 		this.inventoryRepository.wipeWorld(worldName);

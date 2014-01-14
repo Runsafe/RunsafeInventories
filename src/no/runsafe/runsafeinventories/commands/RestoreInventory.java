@@ -3,12 +3,11 @@ package no.runsafe.runsafeinventories.commands;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
-
-import java.util.Map;
 
 public class RestoreInventory extends ExecutableCommand
 {
@@ -23,7 +22,7 @@ public class RestoreInventory extends ExecutableCommand
 	}
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, Map<String, String> parameters)
+	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
 		IPlayer player = server.getPlayer(parameters.get("player"));
 		if (player == null)

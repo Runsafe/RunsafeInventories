@@ -1,11 +1,10 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.UniverseHandler;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
-
-import java.util.Map;
 
 public class CreateTemplate extends PlayerCommand
 {
@@ -16,7 +15,7 @@ public class CreateTemplate extends PlayerCommand
 	}
 
 	@Override
-	public String OnExecute(IPlayer executor, Map<String, String> parameters)
+	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		String universe = parameters.containsKey("universe") ? parameters.get("universe") : executor.getWorld().getUniverse().getName();
 		this.templateRepository.insertTemplate(universe, executor.getInventory());
