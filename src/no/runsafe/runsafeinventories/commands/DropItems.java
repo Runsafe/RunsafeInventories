@@ -4,8 +4,7 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.PlayerArgument;
-import no.runsafe.framework.api.player.IAmbiguousPlayer;
+import no.runsafe.framework.api.command.argument.SelfOrOnlinePlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
@@ -14,39 +13,21 @@ public class DropItems extends ExecutableCommand
 {
 	public DropItems(IServer server)
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new PlayerArgument(false));
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new SelfOrOnlinePlayer());
 		this.server = server;
 	}
 
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		if (parameters.containsKey("player"))
-		{
-			IPlayer player = server.getPlayer(parameters.get("player"));
-			if (player != null)
-			{
-				if (player instanceof IAmbiguousPlayer)
-					return player.toString();
-
-				if (player.isOnline())
-				{
-					this.dropItems(player);
-					return "&2Caused " + player.getPrettyName() + "&2 to drop their items.";
-				}
-				return "&cThat player is not online.";
-			}
+		IPlayer player = server.getPlayer(parameters.get("player"));
+		if (player == null)
 			return "&cThat player does not exist.";
-		}
-		else
-		{
-			if (executor instanceof IPlayer)
-			{
-				this.dropItems((IPlayer) executor);
-				return "&cYour items have been dropped.";
-			}
-			return "&cPlease specify a player.";
-		}
+
+		this.dropItems(player);
+		if (executor instanceof IPlayer && executor.getName().equals(player.getName()))
+			return "&cYour items have been dropped.";
+		return "&2Caused " + player.getPrettyName() + "&2 to drop their items.";
 	}
 
 	private void dropItems(IPlayer player)

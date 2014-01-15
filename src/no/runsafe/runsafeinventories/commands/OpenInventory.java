@@ -1,10 +1,9 @@
 package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.PlayerArgument;
 import no.runsafe.framework.api.command.player.PlayerCommand;
-import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
 import no.runsafe.runsafeinventories.UniverseHandler;
@@ -13,7 +12,7 @@ public class OpenInventory extends PlayerCommand
 {
 	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler, IServer server)
 	{
-		super("open", "Opens a players inventory", "runsafe.inventories.open", new PlayerArgument(), new UniverseArgument(universeHandler));
+		super("open", "Opens a players inventory", "runsafe.inventories.open", new AnyPlayerRequired(), new UniverseArgument(universeHandler));
 		this.inventoryViewer = inventoryViewer;
 		this.universeHandler = universeHandler;
 		this.server = server;
@@ -23,9 +22,6 @@ public class OpenInventory extends PlayerCommand
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		IPlayer target = server.getPlayer(parameters.get("player"));
-
-		if (target instanceof IAmbiguousPlayer)
-			return target.toString();
 
 		if (parameters.containsKey("universe"))
 		{

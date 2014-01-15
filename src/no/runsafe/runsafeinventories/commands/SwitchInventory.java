@@ -1,10 +1,10 @@
 package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.PlayerArgument;
+import no.runsafe.framework.api.command.argument.SelfOrAnyPlayer;
 import no.runsafe.framework.api.command.player.PlayerCommand;
-import no.runsafe.framework.api.player.IAmbiguousPlayer;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.runsafeinventories.InventoryHistory;
@@ -15,7 +15,7 @@ public class SwitchInventory extends PlayerCommand
 	{
 		super(
 			"switch", "Moves a players inventory to the target.", "runsafe.inventories.switch",
-			new PlayerArgument("source", true), new PlayerArgument("target", true)
+			new AnyPlayerRequired("source"), new SelfOrAnyPlayer("target")
 		);
 		this.history = history;
 		this.server = server;
@@ -32,12 +32,6 @@ public class SwitchInventory extends PlayerCommand
 
 		if (target == null)
 			return "&cCould not find the target player";
-
-		if (source instanceof IAmbiguousPlayer)
-			return source.toString();
-
-		if (target instanceof IAmbiguousPlayer)
-			return target.toString();
 
 		RunsafeInventory targetInventory = target.getInventory();
 		RunsafeInventory sourceInventory = source.getInventory();
