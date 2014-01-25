@@ -1,16 +1,14 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.database.*;
+import no.runsafe.framework.api.database.IRow;
+import no.runsafe.framework.api.database.ISchemaUpdate;
+import no.runsafe.framework.api.database.Repository;
+import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 public class InventoryRepository extends Repository
 {
-	public InventoryRepository(IDatabase database)
-	{
-		this.database = database;
-	}
-
 	@Override
 	public String getTableName()
 	{
@@ -70,14 +68,12 @@ public class InventoryRepository extends Repository
 				"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`experience` float unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`owner`,`inventoryName`)" +
-			")"
+				")"
 		);
 
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
-				"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
+			"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
 
 		return update;
 	}
-
-	private final IDatabase database;
 }

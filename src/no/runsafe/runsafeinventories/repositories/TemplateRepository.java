@@ -1,6 +1,5 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.database.IDatabase;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
@@ -8,11 +7,6 @@ import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 
 public class TemplateRepository extends Repository
 {
-	public TemplateRepository(IDatabase database)
-	{
-		this.database = database;
-	}
-
 	@Override
 	public String getTableName()
 	{
@@ -48,11 +42,9 @@ public class TemplateRepository extends Repository
 				"`universeName` varchar(50) NOT NULL, " +
 				"`inventory` longtext, " +
 				"PRIMARY KEY (`universeName`)" +
-			")"
+				")"
 		);
 
 		return update;
 	}
-
-	private final IDatabase database;
 }
