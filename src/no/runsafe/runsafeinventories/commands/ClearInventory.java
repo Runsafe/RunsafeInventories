@@ -1,28 +1,26 @@
 package no.runsafe.runsafeinventories.commands;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.SelfOrOnlinePlayer;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.InventoryHistory;
 
 public class ClearInventory extends ExecutableCommand
 {
-	public ClearInventory(InventoryHistory history, IServer server)
+	public ClearInventory(InventoryHistory history)
 	{
-		super("clear", "Clears a players inventory", "runsafe.inventories.clear", new SelfOrOnlinePlayer());
+		super("clear", "Clears a players inventory", "runsafe.inventories.clear", new Player.Online("player", false, true));
 		this.history = history;
-		this.server = server;
 	}
 
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		IPlayer player = server.getPlayer(parameters.get("player"));
+		IPlayer player = parameters.getValue("player");
 		if (player == null)
-			return "Player not found.";
+			return null;
 		this.history.save(player);
 		player.getInventory().clear();
 		player.updateInventory();
@@ -32,5 +30,4 @@ public class ClearInventory extends ExecutableCommand
 	}
 
 	private final InventoryHistory history;
-	private final IServer server;
 }

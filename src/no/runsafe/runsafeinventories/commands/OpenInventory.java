@@ -1,8 +1,7 @@
 package no.runsafe.runsafeinventories.commands;
 
-import no.runsafe.framework.api.IServer;
-import no.runsafe.framework.api.command.argument.AnyPlayerRequired;
 import no.runsafe.framework.api.command.argument.IArgumentList;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.InventoryViewer;
@@ -10,22 +9,20 @@ import no.runsafe.runsafeinventories.UniverseHandler;
 
 public class OpenInventory extends PlayerCommand
 {
-	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler, IServer server)
+	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler)
 	{
-		super("open", "Opens a players inventory", "runsafe.inventories.open", new AnyPlayerRequired(), new UniverseArgument(universeHandler));
+		super("open", "Opens a players inventory", "runsafe.inventories.open", new Player.Any().require(), new UniverseArgument(universeHandler));
 		this.inventoryViewer = inventoryViewer;
 		this.universeHandler = universeHandler;
-		this.server = server;
 	}
 
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		IPlayer target = server.getPlayer(parameters.get("player"));
-
-		if (parameters.containsKey("universe"))
+		IPlayer target = parameters.getValue("player");
+		String universeName = parameters.get("universe");
+		if (universeName != null)
 		{
-			String universeName = parameters.get("universe");
 			if (!this.universeHandler.universeExists(universeName) && !this.universeHandler.worldExists(universeName))
 				return "&cThe universe/world you are looking for does not exist.";
 
@@ -45,5 +42,4 @@ public class OpenInventory extends PlayerCommand
 
 	private final InventoryViewer inventoryViewer;
 	private final UniverseHandler universeHandler;
-	private final IServer server;
 }

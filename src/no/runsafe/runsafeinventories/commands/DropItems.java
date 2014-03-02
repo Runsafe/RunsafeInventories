@@ -4,25 +4,24 @@ import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
-import no.runsafe.framework.api.command.argument.SelfOrOnlinePlayer;
+import no.runsafe.framework.api.command.argument.Player;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 
 public class DropItems extends ExecutableCommand
 {
-	public DropItems(IServer server)
+	public DropItems()
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new SelfOrOnlinePlayer());
-		this.server = server;
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player.Online("player", false, true));
 	}
 
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		IPlayer player = server.getPlayer(parameters.get("player"));
+		IPlayer player = parameters.getValue("player");
 		if (player == null)
-			return "&cThat player does not exist.";
+			return null;
 
 		this.dropItems(player);
 		if (executor instanceof IPlayer && executor.getName().equals(player.getName()))
@@ -39,9 +38,6 @@ public class DropItems extends ExecutableCommand
 			inventory.remove(itemStack);
 			player.getWorld().dropItem(player.getLocation(), itemStack);
 		}
-
 		player.updateInventory();
 	}
-
-	private final IServer server;
 }
