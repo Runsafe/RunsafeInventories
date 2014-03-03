@@ -13,7 +13,7 @@ public class RestoreInventory extends ExecutableCommand
 	{
 		super(
 			"restore", "Reverts the last inventory switch/deletion", "runsafe.inventories.restore",
-			new Player.Any("player", false, true)
+			new Player.Any("player", true)
 		);
 		this.history = history;
 	}

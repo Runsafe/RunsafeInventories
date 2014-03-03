@@ -13,7 +13,7 @@ public class SwitchInventory extends PlayerCommand
 	{
 		super(
 			"switch", "Moves a players inventory to the target.", "runsafe.inventories.switch",
-			new Player.Any("source").require(), new Player.Any("target", false, true)
+			new Player.Any("source").require(), new Player.Any("target", true)
 		);
 		this.history = history;
 	}

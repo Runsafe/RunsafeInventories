@@ -13,7 +13,7 @@ public class DropItems extends ExecutableCommand
 {
 	public DropItems()
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player.Online("player", false, true));
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player.Online("player", true));
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.command.argument.IArgumentList;
 import no.runsafe.framework.api.command.player.PlayerCommand;
 import no.runsafe.framework.api.player.IPlayer;
@@ -17,7 +18,15 @@ public class CreateTemplate extends PlayerCommand
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		String universe = parameters.containsKey("universe") ? parameters.get("universe") : executor.getWorld().getUniverse().getName();
+		String universe = parameters.get("universe");
+		if (universe == null)
+		{
+			IWorld world = executor.getWorld();
+			if (world != null)
+				universe = world.getUniverse().getName();
+		}
+		if (universe == null)
+			return "Unable to locate universe.";
 		this.templateRepository.insertTemplate(universe, executor.getInventory());
 		return String.format("&2Created default inventory for %s using your inventory.", universe);
 	}
