@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
+import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
@@ -9,11 +10,13 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 
+import javax.annotation.Nonnull;
+
 public class DropItems extends ExecutableCommand
 {
 	public DropItems()
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player.Online("player", true));
+		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player().onlineOnly().defaultToExecutor());
 	}
 
 	@Override
@@ -36,7 +39,8 @@ public class DropItems extends ExecutableCommand
 		for (RunsafeMeta itemStack : inventory.getContents())
 		{
 			inventory.remove(itemStack);
-			player.getWorld().dropItem(player.getLocation(), itemStack);
+			ILocation location = player.getLocation();
+			location.getWorld().dropItem(location, itemStack);
 		}
 		player.updateInventory();
 	}

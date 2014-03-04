@@ -11,7 +11,7 @@ public class OpenInventory extends PlayerCommand
 {
 	public OpenInventory(InventoryViewer inventoryViewer, UniverseHandler universeHandler)
 	{
-		super("open", "Opens a players inventory", "runsafe.inventories.open", new Player.Any().require(), new UniverseArgument(universeHandler));
+		super("open", "Opens a players inventory", "runsafe.inventories.open", new Player().require(), new UniverseArgument(universeHandler));
 		this.inventoryViewer = inventoryViewer;
 		this.universeHandler = universeHandler;
 	}
