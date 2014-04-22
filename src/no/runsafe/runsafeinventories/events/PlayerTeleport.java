@@ -13,10 +13,9 @@ import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
-	public PlayerTeleport(InventoryHandler inventoryHandler, IConsole console, IDebug output)
+	public PlayerTeleport(InventoryHandler inventoryHandler, IDebug output)
 	{
 		this.inventoryHandler = inventoryHandler;
-		this.console = console;
 		this.debugger = output;
 	}
 
@@ -47,13 +46,9 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 		String goingTo = null;
 		if (from != null)
 			goingFrom = String.format("%s/%s", from.getName(), from.getUniverse().getName());
-		else
-			console.logWarning("Player %s portal event from world null!", player.getName());
 
 		if (to != null)
 			goingTo = String.format("%s/%s", to.getName(), to.getUniverse().getName());
-		else
-			console.logWarning("Player %s portal event to world null!", player.getName());
 
 		debugger.debugFine("Going from %s to %s", goingFrom, goingTo);
 		if (to != null && from != null && !to.equals(from))
@@ -61,6 +56,5 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 	}
 
 	private final InventoryHandler inventoryHandler;
-	private final IConsole console;
 	private final IDebug debugger;
 }
