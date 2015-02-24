@@ -5,6 +5,7 @@ import no.runsafe.framework.api.command.Command;
 import no.runsafe.framework.features.*;
 import no.runsafe.runsafeinventories.commands.*;
 import no.runsafe.runsafeinventories.events.*;
+import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
@@ -28,6 +29,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		// Repositories
 		this.addComponent(InventoryRepository.class);
 		this.addComponent(TemplateRepository.class);
+		addComponent(InventoryRegionRepository.class);
 
 		// Commands
 		this.addComponent(WipeWorld.class);
