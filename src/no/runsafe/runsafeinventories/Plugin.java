@@ -21,18 +21,18 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(UniverseRegistration.class);
 
 		// Handlers
-		this.addComponent(InventoryHandler.class);
-		this.addComponent(UniverseHandler.class);
-		this.addComponent(InventoryHistory.class);
-		this.addComponent(InventoryViewer.class);
+		addComponent(InventoryHandler.class);
+		addComponent(UniverseHandler.class);
+		addComponent(InventoryHistory.class);
+		addComponent(InventoryViewer.class);
 
 		// Repositories
-		this.addComponent(InventoryRepository.class);
-		this.addComponent(TemplateRepository.class);
+		addComponent(InventoryRepository.class);
+		addComponent(TemplateRepository.class);
 		addComponent(InventoryRegionRepository.class);
 
 		// Commands
-		this.addComponent(WipeWorld.class);
+		addComponent(WipeWorld.class);
 
 		Command inventoryCommand = new Command("inventory", "Inventory handling commands", null);
 		inventoryCommand.addSubCommand(getInstance(DropItems.class));
@@ -41,13 +41,13 @@ public class Plugin extends RunsafeConfigurablePlugin
 		inventoryCommand.addSubCommand(getInstance(RestoreInventory.class));
 		inventoryCommand.addSubCommand(getInstance(CreateTemplate.class));
 		inventoryCommand.addSubCommand(getInstance(ClearInventory.class));
-		this.addComponent(inventoryCommand);
+		addComponent(inventoryCommand);
 
 		// Events
-		this.addComponent(PlayerTeleport.class);
-		this.addComponent(PlayerWorldChange.class);
-		this.addComponent(PlayerQuit.class);
-		this.addComponent(PlayerRespawn.class);
-		this.addComponent(PlayerDeath.class);
+		addComponent(PlayerTeleport.class);
+		addComponent(PlayerWorldChange.class);
+		addComponent(PlayerQuit.class);
+		addComponent(PlayerRespawn.class);
+		addComponent(PlayerDeath.class);
 	}
 }
