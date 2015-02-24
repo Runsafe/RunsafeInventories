@@ -4,6 +4,7 @@ import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerPortalEvent;
 import no.runsafe.framework.api.event.player.IPlayerTeleportEvent;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerPortalEvent;
@@ -12,15 +13,18 @@ import no.runsafe.runsafeinventories.InventoryHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
-	public PlayerTeleport(InventoryHandler inventoryHandler, IDebug output)
+	public PlayerTeleport(InventoryHandler inventoryHandler, IDebug output, IConsole console)
 	{
 		this.inventoryHandler = inventoryHandler;
 		this.debugger = output;
+		this.console = console;
 	}
 
 	@Override
 	public void OnPlayerTeleport(RunsafePlayerTeleportEvent event)
 	{
+		console.logInformation("EVENT CAUGHT: Teleport (pre)");
+
 		this.debugger.debugFine("Detected teleport event: " + event.getPlayer().getName());
 		ILocation from = event.getFrom();
 		ILocation to = event.getTo();
@@ -56,4 +60,5 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 
 	private final InventoryHandler inventoryHandler;
 	private final IDebug debugger;
+	private final IConsole console;
 }
