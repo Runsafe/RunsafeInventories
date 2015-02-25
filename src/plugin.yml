@@ -2,6 +2,7 @@ name: RunsafeInventories
 main: no.runsafe.runsafeinventories.Plugin
 version: 1.0.@BUILD@
 authors: [Kruithne]
+depend: [RunsafeWorldGuardBridge]
 description: Plugin for controlling inventories across worlds
 commands:
   wipeworld:
