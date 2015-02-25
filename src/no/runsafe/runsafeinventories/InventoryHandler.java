@@ -17,9 +17,11 @@ public class InventoryHandler
 
 	public void saveInventory(IPlayer player)
 	{
-		String universe = player.getWorld().getUniverse().getName();
-		this.debugger.debugFine("Running force save for %s in %s", player.getName(), universe);
-		this.inventoryRepository.saveInventory(new PlayerInventory(player, universe));
+		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
+		String inventoryName = inventoryRegion == null ? player.getWorld().getUniverse().getName() : player.getWorldName() + "-" + inventoryRegion;
+
+		this.debugger.debugFine("Running force save for %s in %s", player.getName(), inventoryName);
+		this.inventoryRepository.saveInventory(new PlayerInventory(player, inventoryName));
 	}
 
 	public void handlePreWorldChange(IPlayer player)
