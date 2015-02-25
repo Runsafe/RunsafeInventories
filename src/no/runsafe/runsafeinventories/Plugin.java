@@ -19,6 +19,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(Events.class);
 		addComponent(Database.class);
 		addComponent(UniverseRegistration.class);
+		addComponent(FrameworkHooks.class);
 
 		// Handlers
 		addComponent(InventoryHandler.class);
