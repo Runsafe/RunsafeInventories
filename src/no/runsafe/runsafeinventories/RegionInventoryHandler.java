@@ -5,6 +5,8 @@ import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
+import no.runsafe.runsafeinventories.events.InventoryRegionEnter;
+import no.runsafe.runsafeinventories.events.InventoryRegionExit;
 import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
@@ -18,7 +20,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	/**
 	 * Constructor for RegionInventoryHandler
 	 * @param inventoryRegionRepository Inventory region repository instance.
-	 * @param worldGuard
+	 * @param worldGuard WorldGuard bridge instance.
 	 */
 	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard)
 	{
@@ -56,14 +58,25 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	}
 
 	/**
-	 * Add a region to the ignore list, preventing the next enter event from triggering an inventory change.
-	 * @param player The player who the event should be ignored for.
-	 * @param region The region which should be ignored.
+	 * Prevent the player's current regions from triggering entry events.
+	 * @param player The player to perform this on.
 	 */
-	public void ignoreRegion(IPlayer player, String region)
+	public void blacklistCurrentRegionsEntry(IPlayer player)
 	{
-		// Add the region to the ignore list.
-		ignoreEventRegions.add(getRegionKey(player, region));
+		// Get all current regions and blacklist their entry events.
+		for (String region : worldGuard.getApplicableRegions(player))
+			ignoreEntryEventRegions.add(getRegionKey(player, region));
+	}
+
+	/**
+	 * Prevent the player's current regions from triggering exit events.
+	 * @param player The player to perform this on.
+	 */
+	public void blacklistCurrentRegionsExit(IPlayer player)
+	{
+		// Get all current regions and blacklist their exit events.
+		for (String region : worldGuard.getApplicableRegions(player))
+			ignoreExitEventRegions.add(getRegionKey(player, region));
 	}
 
 	/**
@@ -71,10 +84,21 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * @param player The player who the event should be pardoned for.
 	 * @param region The region which should no longer be ignored.
 	 */
-	private void removeIgnoredRegion(IPlayer player, String region)
+	private void removeIgnoredRegionEntry(IPlayer player, String region)
 	{
 		// Remove the region from the ignore list.
-		ignoreEventRegions.remove(getRegionKey(player, region));
+		ignoreEntryEventRegions.remove(getRegionKey(player, region));
+	}
+
+	/**
+	 * Remove a region from the ignore list for a player, allowing it to trigger exit events again.
+	 * @param player The player who the event should be ignored for.
+	 * @param region The region which should no longer be ignored.
+	 */
+	private void removeIgnoredRegionExit(IPlayer player, String region)
+	{
+		// Remove the region from the ignore list.
+		ignoreExitEventRegions.remove(getRegionKey(player, region));
 	}
 
 	/**
@@ -83,9 +107,20 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * @param region The region to check the event for.
 	 * @return True if entry events for the specified region are being ignored.
 	 */
-	private boolean isRegionIgnored(IPlayer player, String region)
+	private boolean isRegionEntryIgnored(IPlayer player, String region)
 	{
-		return ignoreEventRegions.contains(getRegionKey(player, region));
+		return ignoreEntryEventRegions.contains(getRegionKey(player, region));
+	}
+
+	/**
+	 * Check if exit events for a specific region are currently ignored.
+	 * @param player The player to check the event for.
+	 * @param region The region to check the event for,
+	 * @return True if the event events for the specified region are being ignored.
+	 */
+	private boolean isRegionExitIgnored(IPlayer player, String region)
+	{
+		return ignoreExitEventRegions.contains(getRegionKey(player, region));
 	}
 
 	/**
@@ -117,26 +152,47 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	@Override
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
-		if (event.getEvent().equals("region.enter"))
+		String eventName = event.getEvent();
+
+		if (eventName.equals("region.enter") || eventName.equals("region.leave"))
 		{
 			Map<String, String> data = (Map<String, String>) event.getData();
 			IPlayer player = event.getPlayer();
 			String region = data.get("region");
 
-			if (!isRegionIgnored(player, region))
+			if (eventName.equals("region.enter"))
 			{
-				// We should update the players inventory for this region.
+				if (!isRegionEntryIgnored(player, region))
+				{
+					// Fire an inventory region enter event.
+					new InventoryRegionEnter(player, region).Fire();
+				}
+				else
+				{
+					// The region is ignored, so let's remove it so next time it isn't ignored.
+					removeIgnoredRegionEntry(player, region);
+				}
 			}
-			else
+			else if (eventName.equals("region.leave"))
 			{
-				// The region is ignored, so let's remove it so next time it isn't ignored.
-				removeIgnoredRegion(player, region);
+				// Handle region leaving.
+				if (!isRegionExitIgnored(player, region))
+				{
+					// Fire an inventory region exit event.
+					new InventoryRegionExit(player, region).Fire();
+				}
+				else
+				{
+					// The region is ignored, so let's remove it so next time it isn't ignored.
+					removeIgnoredRegionExit(player, region);
+				}
 			}
 		}
 	}
 
 	private final InventoryRegionRepository inventoryRegionRepository;
-	private List<String> ignoreEventRegions = new ArrayList<String>();
+	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
+	private List<String> ignoreExitEventRegions = new ArrayList<String>();
 	private HashMap<String, List<String>> inventoryRegions = new HashMap<String, List<String>>();
 	private final WorldGuardInterface worldGuard;
 }

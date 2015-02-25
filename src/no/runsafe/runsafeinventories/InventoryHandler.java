@@ -1,11 +1,15 @@
 package no.runsafe.runsafeinventories;
 
+import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
-public class InventoryHandler
+import java.util.Map;
+
+public class InventoryHandler implements IPlayerCustomEvent
 {
 	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler)
 	{
@@ -20,8 +24,13 @@ public class InventoryHandler
 		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
 		String inventoryName = inventoryRegion == null ? player.getWorld().getUniverse().getName() : player.getWorldName() + "-" + inventoryRegion;
 
-		this.debugger.debugFine("Running force save for %s in %s", player.getName(), inventoryName);
-		this.inventoryRepository.saveInventory(new PlayerInventory(player, inventoryName));
+		saveInventory(player, inventoryName);
+	}
+
+	private void saveInventory(IPlayer player, String inventoryName)
+	{
+		debugger.debugFine("Saving inventory %s for %s", inventoryName, player.getName());
+		inventoryRepository.saveInventory(new PlayerInventory(player, inventoryName));
 	}
 
 	public void handlePreWorldChange(IPlayer player)
@@ -65,6 +74,32 @@ public class InventoryHandler
 		{
 			// Lets check if we can give them a template.
 			this.templateRepository.setToTemplate(universeName, player.getInventory());
+		}
+	}
+
+	/**
+	 * Called when a custom event is fired from within the framework.
+	 * @param event Object containing event related data.
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
+	{
+		String eventName = event.getEvent();
+		if (eventName.startsWith("inventory.region."))
+		{
+			IPlayer player = event.getPlayer();
+			Map<String, String> data = (Map<String, String>) event.getData();
+
+			if (eventName.equals("inventory.region.enter"))
+			{
+				// ToDo: Load the player's inventory for this region.
+			}
+			else if (eventName.equals("inventory.region.exit"))
+			{
+				// Save the inventory for the region we left.
+				saveInventory(player, data.get("world") + "-" + data.get("region"));
+			}
 		}
 	}
 

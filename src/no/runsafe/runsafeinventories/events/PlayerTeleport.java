@@ -9,12 +9,14 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerPortalEvent;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerTeleportEvent;
 import no.runsafe.runsafeinventories.InventoryHandler;
+import no.runsafe.runsafeinventories.RegionInventoryHandler;
 
 public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 {
-	public PlayerTeleport(InventoryHandler inventoryHandler, IDebug output)
+	public PlayerTeleport(InventoryHandler inventoryHandler, RegionInventoryHandler regionInventoryHandler, IDebug output)
 	{
 		this.inventoryHandler = inventoryHandler;
+		this.regionInventoryHandler = regionInventoryHandler;
 		this.debugger = output;
 	}
 
@@ -51,9 +53,13 @@ public class PlayerTeleport implements IPlayerTeleportEvent, IPlayerPortalEvent
 
 		debugger.debugFine("Going from %s to %s", goingFrom, goingTo);
 		if (to != null && from != null && !to.equals(from))
-			this.inventoryHandler.handlePreWorldChange(player);
+		{
+			regionInventoryHandler.blacklistCurrentRegionsExit(player); // Blacklist current region exit events.
+			inventoryHandler.handlePreWorldChange(player);
+		}
 	}
 
 	private final InventoryHandler inventoryHandler;
+	private final RegionInventoryHandler regionInventoryHandler;
 	private final IDebug debugger;
 }
