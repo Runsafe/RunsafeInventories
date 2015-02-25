@@ -1,8 +1,10 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.database.ISchemaUpdate;
-import no.runsafe.framework.api.database.Repository;
-import no.runsafe.framework.api.database.SchemaUpdate;
+import no.runsafe.framework.api.database.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class InventoryRegionRepository extends Repository
 {
@@ -26,5 +28,22 @@ public class InventoryRegionRepository extends Repository
 		);
 
 		return update;
+	}
+
+	public HashMap<String, List<String>> getInventoryRegions()
+	{
+		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+
+		ISet result = database.query("SELECT `worldName`, `regionName` FROM runsafe_inventories_regions");
+		for (IRow row : result)
+		{
+			String worldName = row.String("worldName");
+			if (!map.containsKey(worldName))
+				map.put(worldName, new ArrayList<String>(1));
+
+			map.get(worldName).add(row.String("regionName"));
+		}
+
+		return map;
 	}
 }

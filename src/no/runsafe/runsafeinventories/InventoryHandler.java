@@ -7,11 +7,12 @@ import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 public class InventoryHandler
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output)
+	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler)
 	{
 		this.inventoryRepository = inventoryRepository;
 		this.templateRepository = templateRepository;
 		this.debugger = output;
+		this.regionInventoryHandler = regionInventoryHandler;
 	}
 
 	public void saveInventory(IPlayer player)
@@ -39,7 +40,14 @@ public class InventoryHandler
 	public void handlePostWorldChange(IPlayer player)
 	{
 		String universeName = player.getWorld().getUniverse().getName();
-		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory
+
+		PlayerInventory inventory;
+		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
+
+		if (inventoryRegion != null)
+			inventory = inventoryRepository.getInventoryForRegion(player, inventoryRegion);
+		else
+			inventory = inventoryRepository.getInventory(player, universeName); // Get inventory
 
 		// If we are null, the player had no stored inventory.
 		if (inventory != null)
@@ -60,6 +68,6 @@ public class InventoryHandler
 
 	private final InventoryRepository inventoryRepository;
 	private final TemplateRepository templateRepository;
-
 	private final IDebug debugger;
+	private final RegionInventoryHandler regionInventoryHandler;
 }
