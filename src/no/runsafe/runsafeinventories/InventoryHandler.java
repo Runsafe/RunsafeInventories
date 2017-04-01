@@ -11,20 +11,21 @@ import java.util.Map;
 
 public class InventoryHandler implements IPlayerCustomEvent
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler)
+	public InventoryHandler(InventoryRepository inventoryRepository,
+							TemplateRepository templateRepository,
+							IDebug output
+	)
 	{
 		this.inventoryRepository = inventoryRepository;
 		this.templateRepository = templateRepository;
 		this.debugger = output;
-		this.regionInventoryHandler = regionInventoryHandler;
 	}
 
 	public void saveInventory(IPlayer player)
 	{
-		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
-		String inventoryName = inventoryRegion == null ? player.getWorld().getUniverse().getName() : player.getWorldName() + "-" + inventoryRegion;
-
-		saveInventory(player, inventoryName);
+		String universe = player.getWorld().getUniverse().getName();
+		this.debugger.debugFine("Running force save for %s in %s", player.getName(), universe);
+		this.inventoryRepository.saveInventory(new PlayerInventory(player, universe));
 	}
 
 	private void saveInventory(IPlayer player, String inventoryName)
@@ -51,14 +52,7 @@ public class InventoryHandler implements IPlayerCustomEvent
 	public void handlePostWorldChange(IPlayer player)
 	{
 		String universeName = player.getWorld().getUniverse().getName();
-
-		PlayerInventory inventory;
-		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
-
-		if (inventoryRegion != null)
-			inventory = inventoryRepository.getInventoryForRegion(player, inventoryRegion);
-		else
-			inventory = inventoryRepository.getInventory(player, universeName); // Get inventory
+		PlayerInventory inventory = this.inventoryRepository.getInventory(player, universeName); // Get inventory
 
 		// If we are null, the player had no stored inventory.
 		if (inventory != null)
@@ -106,5 +100,5 @@ public class InventoryHandler implements IPlayerCustomEvent
 	private final InventoryRepository inventoryRepository;
 	private final TemplateRepository templateRepository;
 	private final IDebug debugger;
-	private final RegionInventoryHandler regionInventoryHandler;
+	//private final RegionInventoryHandler regionInventoryHandler;
 }
