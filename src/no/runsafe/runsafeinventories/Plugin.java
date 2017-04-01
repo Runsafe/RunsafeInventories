@@ -25,7 +25,6 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(UniverseHandler.class);
 		addComponent(InventoryHistory.class);
 		addComponent(InventoryViewer.class);
-		addComponent(RegionInventoryHandler.class);
 
 		// Repositories
 		addComponent(InventoryRepository.class);
