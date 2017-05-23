@@ -22,7 +22,8 @@ public class InventoryHandler implements IPlayerCustomEvent
 	public void saveInventory(IPlayer player)
 	{
 		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
-		String inventoryName = inventoryRegion == null ? player.getWorld().getUniverse().getName() : player.getWorldName() + "-" + inventoryRegion;
+		String universeName = player.getWorld().getUniverse().getName();
+		String inventoryName = inventoryRegion == null ?  universeName : universeName + "-" + inventoryRegion;
 
 		saveInventory(player, inventoryName);
 	}
