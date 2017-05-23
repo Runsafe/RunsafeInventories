@@ -97,8 +97,9 @@ public class InventoryHandler implements IPlayerCustomEvent
 			}
 			else if (eventName.equals("inventory.region.exit"))
 			{
+				// ToDo: Save the player's inventory for this region.
 				// Save the inventory for the region we left.
-				saveInventory(player, data.get("world") + "-" + data.get("region"));
+				//saveInventory(player, data.get("world") + "-" + data.get("region"));
 			}
 		}
 	}
