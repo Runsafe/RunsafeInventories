@@ -62,14 +62,7 @@ public class InventoryHandler implements IPlayerCustomEvent
 
 		// If we are null, the player had no stored inventory.
 		if (inventory != null)
-		{
-			this.debugger.debugFine("Settings inventory for %s to %s", player.getName(), inventory.getInventoryName());
-			player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
-			player.setLevel(inventory.getLevel()); // Restore level
-			player.setXP(inventory.getExperience()); // Restore experience
-			player.setFoodLevel(inventory.getFoodLevel()); // Restore food level
-			player.updateInventory();
-		}
+			setInventory(player, inventory);
 		else
 		{
 			// Lets check if we can give them a template.
@@ -101,6 +94,27 @@ public class InventoryHandler implements IPlayerCustomEvent
 				// Save the inventory for the region we left.
 				//saveInventory(player, data.get("world") + "-" + data.get("region"));
 			}
+		}
+	}
+
+	/**
+	 * Sets a player's inventory.
+	 * Assumes it is already empty.
+	 * Also sets their level, xp and saturation (food level).
+	 * @param player User who's inventory to set.
+	 * @param inventory Player inventory to give to the player.
+	 *                  Null for an empty inventory.
+	 */
+	private void setInventory(IPlayer player, PlayerInventory inventory)
+	{
+		if (inventory != null)
+		{
+			this.debugger.debugFine("Settings inventory for %s to %s", player.getName(), inventory.getInventoryName());
+			player.getInventory().unserialize(inventory.getInventoryString()); // Restore inventory
+			player.setLevel(inventory.getLevel()); // Restore level
+			player.setXP(inventory.getExperience()); // Restore experience
+			player.setFoodLevel(inventory.getFoodLevel()); // Restore food level
+			player.updateInventory();
 		}
 	}
 
