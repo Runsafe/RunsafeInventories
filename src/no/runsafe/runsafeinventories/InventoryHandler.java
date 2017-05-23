@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
@@ -11,12 +12,13 @@ import java.util.Map;
 
 public class InventoryHandler implements IPlayerCustomEvent
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler)
+	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler, IServer server)
 	{
 		this.inventoryRepository = inventoryRepository;
 		this.templateRepository = templateRepository;
 		this.debugger = output;
 		this.regionInventoryHandler = regionInventoryHandler;
+		this.server = server;
 	}
 
 	public void saveInventory(IPlayer player)
@@ -84,16 +86,25 @@ public class InventoryHandler implements IPlayerCustomEvent
 		{
 			IPlayer player = event.getPlayer();
 			Map<String, String> data = (Map<String, String>) event.getData();
+			String universeName = server.getWorld(data.get("world")).getUniverse().getName();
 
 			if (eventName.equals("inventory.region.enter"))
 			{
-				// ToDo: Load the player's inventory for this region.
+				// Assume the player was not already in an inventory region; save and wipe their previous inventory.
+				saveInventory(player, universeName);
+				wipeInventory(player);
+
+				// Load the player's inventory for this region.
+				setInventory(player, inventoryRepository.getInventoryForRegion(player, data.get("region")));
 			}
 			else if (eventName.equals("inventory.region.exit"))
 			{
-				// ToDo: Save the player's inventory for this region.
-				// Save the inventory for the region we left.
-				//saveInventory(player, data.get("world") + "-" + data.get("region"));
+				// Save the inventory for the region we left and clear the current inventory.
+				saveInventory(player, universeName + "-" + data.get("region"));
+				wipeInventory(player);
+
+				// Assume the player has left all inventory regions and get their default universe inventory.
+				setInventory(player, inventoryRepository.getInventory(player, universeName));
 			}
 		}
 	}
@@ -119,6 +130,7 @@ public class InventoryHandler implements IPlayerCustomEvent
 		}
 	}
 
+	private final IServer server;
 	private final InventoryRepository inventoryRepository;
 	private final TemplateRepository templateRepository;
 	private final IDebug debugger;
