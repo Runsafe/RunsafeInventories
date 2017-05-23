@@ -26,6 +26,8 @@ public class InventoryRegionRepository extends Repository
 				"PRIMARY KEY (`worldName`)" +
 			")"
 		);
+		update.addQueries(String.format("ALTER TABLE %s DROP PRIMARY KEY", getTableName()));
+		update.addQueries(String.format("ALTER TABLE %s ADD PRIMARY KEY (`worldName`, `regionName`)", getTableName()));
 
 		return update;
 	}
