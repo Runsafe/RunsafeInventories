@@ -30,6 +30,32 @@ public class InventoryRegionRepository extends Repository
 		return update;
 	}
 
+	/**
+	 * Creates a new inventory region.
+	 * @param worldName The world the region is in.
+	 * @param regionName The region to add.
+	 */
+	public void addInventoryRegion(String worldName, String regionName)
+	{
+		database.execute(
+			"INSERT INTO runsafe_inventories_region (`worldName`,`regionName`) VALUES (?,?)",
+			worldName, regionName
+		);
+	}
+
+	/**
+	 * Removes a specific inventory region.
+	 * @param worldName The world the region is in.
+	 * @param regionName The region to remove.
+ 	 */
+	public void removeInventoryRegion(String worldName, String regionName)
+	{
+		database.execute(
+			"DELETE FROM runsafe_inventories_regions WHERE `worldName`=? AND `regionName`=?",
+			worldName, regionName
+		);
+	}
+
 	public HashMap<String, List<String>> getInventoryRegions()
 	{
 		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
