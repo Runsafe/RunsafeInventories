@@ -42,6 +42,8 @@ public class Plugin extends RunsafeConfigurablePlugin
 		inventoryCommand.addSubCommand(getInstance(RestoreInventory.class));
 		inventoryCommand.addSubCommand(getInstance(CreateTemplate.class));
 		inventoryCommand.addSubCommand(getInstance(ClearInventory.class));
+		inventoryCommand.addSubCommand(getInstance(AddRegion.class));
+		inventoryCommand.addSubCommand(getInstance(RemoveRegion.class));
 		addComponent(inventoryCommand);
 
 		// Events
