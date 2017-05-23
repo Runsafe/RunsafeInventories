@@ -64,8 +64,8 @@ public class InventoryRepository extends Repository
 		String owner = player.getName();
 
 		IRow data = database.queryRow(
-				"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-				owner, universeName
+			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+			owner, universeName
 		);
 
 		if (data.isEmpty())
@@ -74,12 +74,12 @@ public class InventoryRepository extends Repository
 		long level = data.Long("level");
 
 		return new PlayerInventory(
-				owner,
-				universeName,
-				data.String("inventory"),
-				(int) level,
-				data.Float("experience"),
-				data.Integer("foodLevel")
+			owner,
+			universeName,
+			data.String("inventory"),
+			(int) level,
+			data.Float("experience"),
+			data.Integer("foodLevel")
 		);
 	}
 
@@ -101,7 +101,7 @@ public class InventoryRepository extends Repository
 				"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`experience` float unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`owner`,`inventoryName`)" +
-				")"
+			")"
 		);
 
 		update.addQueries("ALTER TABLE `runsafeInventories`" +

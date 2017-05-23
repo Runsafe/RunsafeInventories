@@ -20,11 +20,11 @@ public class InventoryRegionRepository extends Repository
 		ISchemaUpdate update = new SchemaUpdate();
 
 		update.addQueries(
-				"CREATE TABLE `runsafe_inventories_regions` (" +
-						"`worldName` varchar(50) NOT NULL, " +
-						"`regionName` varchar(50) NOT NULL," +
-						"PRIMARY KEY (`worldName`)" +
-						")"
+			"CREATE TABLE `runsafe_inventories_regions` (" +
+				"`worldName` varchar(50) NOT NULL, " +
+				"`regionName` varchar(50) NOT NULL," +
+				"PRIMARY KEY (`worldName`)" +
+			")"
 		);
 
 		return update;
