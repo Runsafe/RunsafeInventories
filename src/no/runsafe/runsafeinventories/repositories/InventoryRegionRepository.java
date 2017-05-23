@@ -38,7 +38,7 @@ public class InventoryRegionRepository extends Repository
 	public void addInventoryRegion(String worldName, String regionName)
 	{
 		database.execute(
-			"INSERT INTO runsafe_inventories_region (`worldName`,`regionName`) VALUES (?,?)",
+			"INSERT INTO runsafe_inventories_regions (`worldName`,`regionName`) VALUES (?,?)",
 			worldName, regionName
 		);
 	}
