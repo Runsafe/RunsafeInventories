@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IUniverse;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
@@ -10,6 +11,11 @@ import no.runsafe.runsafeinventories.PlayerInventory;
 
 public class InventoryRepository extends Repository
 {
+	public InventoryRepository(IServer server)
+	{
+		this.server = server;
+	}
+
 	@Override
 	public String getTableName()
 	{
@@ -21,7 +27,7 @@ public class InventoryRepository extends Repository
 		database.execute(
 			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
-			inventory.getPlayerName(), inventory.getInventoryName(),
+			inventory.getPlayer().getName(), inventory.getInventoryName(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel()
 		);
@@ -74,7 +80,7 @@ public class InventoryRepository extends Repository
 		long level = data.Long("level");
 
 		return new PlayerInventory(
-			owner,
+			server.getPlayer(owner),
 			universeName,
 			data.String("inventory"),
 			(int) level,
@@ -109,4 +115,6 @@ public class InventoryRepository extends Repository
 
 		return update;
 	}
+
+	private final IServer server;
 }
