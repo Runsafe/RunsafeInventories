@@ -196,11 +196,12 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		{
 			Map<String, String> data = (Map<String, String>) event.getData();
 			IPlayer player = event.getPlayer();
+			String world = data.get("world");
 			String region = data.get("region");
 
 			if (eventName.equals("region.enter"))
 			{
-				if (!isRegionEntryIgnored(player, region))
+				if (doesRegionHaveInventory(world, region) && !isRegionEntryIgnored(player, region))
 				{
 					// Fire an inventory region enter event.
 					new InventoryRegionEnter(player, region).Fire();
@@ -214,7 +215,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			else if (eventName.equals("region.leave"))
 			{
 				// Handle region leaving.
-				if (!isRegionExitIgnored(player, region))
+				if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
 				{
 					// Fire an inventory region exit event.
 					new InventoryRegionExit(player, region).Fire();
