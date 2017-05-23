@@ -15,7 +15,7 @@ public class PlayerRegionEvents implements IPlayerCustomEvent
 	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
 		String eventName = event.getEvent();
-		if (eventName.equals("region.enter") || eventName.equals("region.leave"))
+		if (eventName.equals("inventory.region.enter") || eventName.equals("inventory.region.exit"))
 			console.logInformation("EVENT CAUGHT: " + eventName);
 	}
 
