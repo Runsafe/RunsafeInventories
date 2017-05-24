@@ -27,8 +27,9 @@ public class AddRegion extends ExecutableCommand
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		regionInventoryHandler.addInventoryRegion(((IWorld) parameters.getValue(WORLD)).getName(), parameters.getValue(REGION));
-		return "Inventory region added.";
+		if (regionInventoryHandler.addInventoryRegion(((IWorld) parameters.getValue(WORLD)).getName(), parameters.getValue(REGION)))
+			return "Inventory region added.";
+		return "&cInventory region could not be added.";
 	}
 
 	private final RegionInventoryHandler regionInventoryHandler;

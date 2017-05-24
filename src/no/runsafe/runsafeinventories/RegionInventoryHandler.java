@@ -1,6 +1,8 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.ILocation;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
@@ -21,11 +23,13 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * Constructor for RegionInventoryHandler
 	 * @param inventoryRegionRepository Inventory region repository instance.
 	 * @param worldGuard WorldGuard bridge instance.
+	 * @param server The server.
 	 */
-	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard)
+	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard, IServer server)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
 		this.worldGuard = worldGuard;
+		this.server = server;
 	}
 
 	/**
@@ -84,17 +88,38 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * Does nothing if worldName or regionName are null or empty.
 	 * @param worldName Name of the world the region is in.
 	 * @param regionName Name of the region to give an inventory.
+	 * @return True if region inventory region could be added, false otherwise.
 	 */
-	public void addInventoryRegion(String worldName, String regionName)
+	public Boolean addInventoryRegion(String worldName, String regionName)
 	{
+		// Check for null or empty arguments.
 		if ((worldName == null) || (worldName.isEmpty()) || (regionName == null) || (regionName.isEmpty()))
-			return;
+			return false;
 
+		// Disallow giving the __global__ region an inventory. It already gets the default inventory.
+		if (regionName.equals("__global__"))
+			return false;
+
+		// Avoid giving the region an inventory if it already has an inventory.
+		if (doesRegionHaveInventory(worldName, regionName))
+			return false;
+
+		// Make absolutely sure that the region exists.
+		ILocation regionLocation= worldGuard.getRegionLocation(server.getWorld(worldName), regionName);
+		if (regionLocation== null)
+			return false;
+
+		// Check if the region overlaps with any other regions. Nested regions are not currently supported.
+		if (worldGuard.getRegionsAtLocation(regionLocation).size() > 1)
+			return false;
+
+		// World and region passed all checks, give that region an inventory.
 		if (!inventoryRegions.containsKey(worldName))
 			inventoryRegions.put(worldName, new ArrayList<String>(1));
 
 		inventoryRegions.get(worldName).add(regionName);
 		inventoryRegionRepository.addInventoryRegion(worldName, regionName);
+		return true;
 	}
 
 	/**
@@ -105,16 +130,22 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * Does nothing if worldName or regionName are null or empty.
 	 * @param worldName Name of the world the region is in.
 	 * @param regionName Name of the region to remove the inventory of.
+	 * @return True if region inventory region could be removed, false otherwise.
 	 */
-	public void removeInventoryRegion(String worldName, String regionName)
+	public Boolean removeInventoryRegion(String worldName, String regionName)
 	{
+		// Check for null or empty arguments.
 		if ((worldName == null) || (worldName.isEmpty()) || (regionName == null) || (regionName.isEmpty()))
-			return;
+			return false;
 
-		if (inventoryRegions.containsKey(worldName))
-			inventoryRegions.remove(worldName, regionName);
+		// Avoid trying to remove the region inventory if it isn't on the list.
+		if (!doesRegionHaveInventory(worldName, regionName))
+			return false;
 
+		// World and region passed all checks, remove that region's inventory.
+		inventoryRegions.remove(worldName, regionName);
 		inventoryRegionRepository.removeInventoryRegion(worldName, regionName);
+		return true;
 	}
 
 	/**
@@ -229,6 +260,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		}
 	}
 
+	private final IServer server;
 	private final InventoryRegionRepository inventoryRegionRepository;
 	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
 	private List<String> ignoreExitEventRegions = new ArrayList<String>();

@@ -27,8 +27,9 @@ public class RemoveRegion extends ExecutableCommand
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		regionInventoryHandler.removeInventoryRegion(((IWorld) parameters.getValue(WORLD)).getName(), parameters.getValue(REGION));
-		return "Inventory region removed.";
+		if (regionInventoryHandler.removeInventoryRegion(((IWorld) parameters.getValue(WORLD)).getName(), parameters.getValue(REGION)))
+			return "Inventory region removed.";
+		return "&cInventory region could not be removed.";
 	}
 
 	private final RegionInventoryHandler regionInventoryHandler;
