@@ -14,6 +14,7 @@ import no.runsafe.runsafeinventories.events.InventoryRegionExit;
 import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,15 +109,16 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			return false;
 
 		// Make absolutely sure that the region exists.
-		ILocation regionLocation = worldGuard.getRegionLocation(server.getWorld(worldName), regionName);
-		if (regionLocation == null)
+		IWorld world = server.getWorld(worldName);
+		Rectangle2D regionRectangle = worldGuard.getRectangle(world, regionName);
+		if (regionRectangle == null)
 			return false;
 
 		// Check if the region overlaps with any other inventory regions. Nested regions are not currently supported.
-		List<String> regionsAtTargetLocation = worldGuard.getRegionsAtLocation(regionLocation);
-		if (regionsAtTargetLocation.size() != 1)
-			for (String region : regionsAtTargetLocation)
-				if (doesRegionHaveInventory(worldName, region))
+		List<String> allInventoryRegions = getInventoryRegionsInWorld(world);
+		if (allInventoryRegions.size() < 2)
+			for (String region : allInventoryRegions)
+				if (regionRectangle.intersects(worldGuard.getRectangle(world, region)))
 					return false;
 
 		// World and region passed all checks, give that region an inventory.

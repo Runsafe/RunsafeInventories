@@ -7,6 +7,7 @@ import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.runsafeinventories.RegionInventoryHandler;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 public class WorldLoadEvent implements IWorldLoad
@@ -24,17 +25,17 @@ public class WorldLoadEvent implements IWorldLoad
 		List<String> inventoryRegions = regionInventoryHandler.getInventoryRegionsInWorld(world);
 		for(String regionName : inventoryRegions)
 		{
-			ILocation regionLocation = worldGuard.getRegionLocation(world, regionName);
-			if (regionLocation == null) // Check for invalid/removed regions.
+			Rectangle2D regionRectangle = worldGuard.getRectangle(world, regionName);
+			if (regionRectangle == null) // Check for invalid/removed regions.
 				console.logWarning("Invalid or removed region: " + regionName);
 			else
 			{
 				// Check for overlapping inventory regions.
-				List<String> regionsAtTargetLocation = worldGuard.getRegionsAtLocation(regionLocation);
-				if (regionsAtTargetLocation.size() != 1)
-					for (String overlappingRegion : regionsAtTargetLocation)
-						if (!regionName.equals(overlappingRegion) && regionInventoryHandler.doesRegionHaveInventory(world.getName(), overlappingRegion))
-							console.logWarning ("Overlapping inventory regions detected: " + regionName + ", " + overlappingRegion);
+				List<String> allInventoryRegions = regionInventoryHandler.getInventoryRegionsInWorld(world);
+				if (allInventoryRegions.size() < 2)
+					for (String region : allInventoryRegions)
+						if (!regionName.equals(region) && regionRectangle.intersects(worldGuard.getRectangle(world, region)))
+							console.logWarning ("Overlapping inventory regions detected: " + regionName + ", " + region);
 			}
 		}
 	}
