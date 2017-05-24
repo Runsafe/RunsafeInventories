@@ -55,5 +55,6 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(PlayerRespawn.class);
 		addComponent(PlayerDeath.class);
 		addComponent(PlayerRegionEvents.class);
+		addComponent(WorldLoadEvent.class);
 	}
 }
