@@ -8,18 +8,18 @@ public class InventoryHistory
 {
 	public void save(IPlayer player)
 	{
-		this.history.put(player.getName(), player.getInventory().serialize());
+		this.history.put(player, player.getInventory().serialize());
 	}
 
 	public boolean restore(IPlayer player)
 	{
-		if (this.history.containsKey(player.getName()))
+		if (this.history.containsKey(player))
 		{
-			player.getInventory().unserialize(this.history.get(player.getName()));
+			player.getInventory().unserialize(this.history.get(player));
 			return true;
 		}
 		return false;
 	}
 
-	private final HashMap<String, String> history = new HashMap<String, String>();
+	private final HashMap<IPlayer, String> history = new HashMap<IPlayer, String>();
 }
