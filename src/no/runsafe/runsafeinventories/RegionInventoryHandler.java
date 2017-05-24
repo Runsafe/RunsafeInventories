@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IConsole;
@@ -14,6 +15,7 @@ import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,6 +152,19 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		inventoryRegions.remove(worldName, regionName);
 		inventoryRegionRepository.removeInventoryRegion(worldName, regionName);
 		return true;
+	}
+
+	/**
+	 * Gets a list of all the inventory regions in a world.
+	 * @param world World to get inventory regions from.
+	 * @return Inventory regions in a world, if any.
+	 */
+	public List<String> getInventoryRegionsInWorld(IWorld world)
+	{
+		if (world == null)
+			return Collections.emptyList();
+
+		return inventoryRegions.get(world.getName());
 	}
 
 	/**
