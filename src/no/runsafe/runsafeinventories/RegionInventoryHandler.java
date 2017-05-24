@@ -3,8 +3,11 @@ package no.runsafe.runsafeinventories;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.IWorld;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.events.InventoryRegionEnter;
@@ -17,19 +20,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent
+public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent, IServerReady
 {
 	/**
 	 * Constructor for RegionInventoryHandler
 	 * @param inventoryRegionRepository Inventory region repository instance.
 	 * @param worldGuard WorldGuard bridge instance.
 	 * @param server The server.
+	 * @param console Place to output information.
 	 */
-	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard, IServer server)
+	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard, IServer server, IConsole console)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
 		this.worldGuard = worldGuard;
 		this.server = server;
+		this.console = console;
 	}
 
 	/**
@@ -206,6 +211,34 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		return String.format("%s-%s-%s", player.getName(), player.getWorldName(), region);
 	}
 
+	@Override
+	public void OnServerReady()
+	{
+		// Check if any inventory regions are overlapping or are invalid.
+		for (String worldName : inventoryRegions.keySet())
+		{
+			IWorld regionWorld = server.getWorld(worldName);
+			if (regionWorld == null) // Check for invalid region worlds.
+				console.logWarning("Invalid inventory region world detected: " + worldName);
+			else
+				for(String regionName : inventoryRegions.get(worldName))
+				{
+					ILocation regionLocation = worldGuard.getRegionLocation(server.getWorld(worldName), regionName);
+					if (regionLocation == null) // Check for invalid/removed regions.
+						console.logWarning("Invalid or removed region: " + regionName);
+					else
+					{
+						// Check for overlapping inventory regions.
+						List<String> regionsAtTargetLocation = worldGuard.getRegionsAtLocation(regionLocation);
+						if (regionsAtTargetLocation.size() != 1)
+							for (String overlappingRegion : regionsAtTargetLocation)
+								if (!regionName.equals(overlappingRegion) && doesRegionHaveInventory(worldName, overlappingRegion))
+									console.logWarning ("Overlapping inventory regions detected: " + regionName + ", " + overlappingRegion);
+					}
+				}
+		}
+	}
+
 	/**
 	 * Called when the configuration for this plug-in is changed.
 	 * @param configuration Object for accessing this plug-ins configuration.
@@ -264,6 +297,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	}
 
 	private final IServer server;
+	private final IConsole console;
 	private final InventoryRegionRepository inventoryRegionRepository;
 	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
 	private List<String> ignoreExitEventRegions = new ArrayList<String>();
