@@ -105,8 +105,8 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			return false;
 
 		// Make absolutely sure that the region exists.
-		ILocation regionLocation= worldGuard.getRegionLocation(server.getWorld(worldName), regionName);
-		if (regionLocation== null)
+		ILocation regionLocation = worldGuard.getRegionLocation(server.getWorld(worldName), regionName);
+		if (regionLocation == null)
 			return false;
 
 		// Check if the region overlaps with any other regions. Nested regions are not currently supported.
