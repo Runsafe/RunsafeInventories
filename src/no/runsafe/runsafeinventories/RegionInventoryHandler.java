@@ -109,9 +109,12 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		if (regionLocation == null)
 			return false;
 
-		// Check if the region overlaps with any other regions. Nested regions are not currently supported.
-		if (worldGuard.getRegionsAtLocation(regionLocation).size() > 1)
-			return false;
+		// Check if the region overlaps with any other inventory regions. Nested regions are not currently supported.
+		List<String> regionsAtTargetLocation = worldGuard.getRegionsAtLocation(regionLocation);
+		if (regionsAtTargetLocation.size() != 1)
+			for (String region : regionsAtTargetLocation)
+				if (doesRegionHaveInventory(worldName, region))
+					return false;
 
 		// World and region passed all checks, give that region an inventory.
 		if (!inventoryRegions.containsKey(worldName))
