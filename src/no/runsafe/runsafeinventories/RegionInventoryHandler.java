@@ -158,7 +158,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			return false;
 
 		// World and region passed all checks, remove that region's inventory.
-		inventoryRegions.remove(worldName, regionName);
+		inventoryRegions.get(worldName).remove(regionName);
 		inventoryRegionRepository.removeInventoryRegion(worldName, regionName);
 		inventoryRepository.wipeRegionInventories(worldName, regionName);
 		return true;
