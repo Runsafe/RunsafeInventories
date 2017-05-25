@@ -87,9 +87,9 @@ public class InventoryRepository extends Repository
 		);
 	}
 
-	public void wipeWorld(String worldName)
+	public void wipeUniverse(String universeName)
 	{
-		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", worldName);
+		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", universeName);
 	}
 
 	@Override
