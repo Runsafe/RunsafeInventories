@@ -13,15 +13,17 @@ public class WipeWorld extends ExecutableCommand
 	{
 		super(
 			"wipeworld", "Removes all inventories from the database for a world's universe.", "runsafe.inventories.wipeworld",
-			new WorldArgument().require()
+			new WorldArgument(WORLD).require()
 		);
 		this.inventoryHandler = inventoryHandler;
 	}
 
+	private static final String WORLD = "worldName";
+
 	@Override
 	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
 	{
-		IWorld world = parameters.getValue("worldName");
+		IWorld world = parameters.getValue(WORLD);
 		if (world == null)
 			return ("&cInvalid world.");
 
