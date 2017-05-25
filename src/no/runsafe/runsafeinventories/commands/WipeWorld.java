@@ -13,7 +13,7 @@ public class WipeWorld extends ExecutableCommand
 	{
 		super(
 			"wipeworld", "Removes all inventories from the database for a world's universe.", "runsafe.inventories.wipeworld",
-			new WorldArgument()
+			new WorldArgument().require()
 		);
 		this.inventoryHandler = inventoryHandler;
 	}
