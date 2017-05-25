@@ -21,6 +21,7 @@ public class WorldLoadEvent implements IWorldLoad
 		this.regionInventoryHandler = regionInventoryHandler;
 	}
 
+	@Override
 	public void OnWorldLoad(IWorld world)
 	{
 		// Check if any inventory regions are overlapping or are invalid.
