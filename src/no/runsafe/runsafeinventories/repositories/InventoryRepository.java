@@ -87,6 +87,16 @@ public class InventoryRepository extends Repository
 	}
 
 	/**
+	 * Wipes inventories from all players in an inventory region.
+	 * @param worldName Name of the world the region is in. Assumed to be valid.
+	 * @param regionName Name of the region to wipe inventories for. Assumed to be valid.
+	 */
+	public void wipeRegionInventories(String worldName, String regionName)
+	{
+		wipeInventories(server.getWorld(worldName).getUniverse().getName() + "-" + regionName);
+	}
+
+	/**
 	 * Wipes inventories from all players with a given inventory name.
 	 * @param inventoryName Name of the inventory to wipe.
 	 *                      Usually the universe name the inventory is in, unless it's a region inventory.
