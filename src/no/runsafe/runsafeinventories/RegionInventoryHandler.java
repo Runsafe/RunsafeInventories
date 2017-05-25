@@ -3,6 +3,7 @@ package no.runsafe.runsafeinventories;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IWorld;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent
+public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent, IServerReady
 {
 	/**
 	 * Constructor for RegionInventoryHandler
@@ -229,6 +230,16 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	private String getRegionKey(IPlayer player, String region)
 	{
 		return String.format("%s-%s-%s", player.getName(), player.getWorldName(), region);
+	}
+
+	/**
+	 * Called when the server is ready.
+	 * Updates locally stored inventory regions.
+	 */
+	@Override
+	public void OnServerReady()
+	{
+		inventoryRegions = inventoryRegionRepository.getInventoryRegions();
 	}
 
 	/**
