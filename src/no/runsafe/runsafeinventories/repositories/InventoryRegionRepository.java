@@ -20,14 +20,42 @@ public class InventoryRegionRepository extends Repository
 		ISchemaUpdate update = new SchemaUpdate();
 
 		update.addQueries(
-				"CREATE TABLE `runsafe_inventories_regions` (" +
-						"`worldName` varchar(50) NOT NULL, " +
-						"`regionName` varchar(50) NOT NULL," +
-						"PRIMARY KEY (`worldName`)" +
-						")"
+			"CREATE TABLE `runsafe_inventories_regions` (" +
+				"`worldName` varchar(50) NOT NULL, " +
+				"`regionName` varchar(50) NOT NULL," +
+				"PRIMARY KEY (`worldName`)" +
+			")"
 		);
+		update.addQueries(String.format("ALTER TABLE %s DROP PRIMARY KEY", getTableName()));
+		update.addQueries(String.format("ALTER TABLE %s ADD PRIMARY KEY (`worldName`, `regionName`)", getTableName()));
 
 		return update;
+	}
+
+	/**
+	 * Creates a new inventory region.
+	 * @param worldName The world the region is in.
+	 * @param regionName The region to add.
+	 */
+	public void addInventoryRegion(String worldName, String regionName)
+	{
+		database.execute(
+			"INSERT INTO runsafe_inventories_regions (`worldName`,`regionName`) VALUES (?,?)",
+			worldName, regionName
+		);
+	}
+
+	/**
+	 * Removes a specific inventory region.
+	 * @param worldName The world the region is in.
+	 * @param regionName The region to remove.
+ 	 */
+	public void removeInventoryRegion(String worldName, String regionName)
+	{
+		database.execute(
+			"DELETE FROM runsafe_inventories_regions WHERE `worldName`=? AND `regionName`=?",
+			worldName, regionName
+		);
 	}
 
 	public HashMap<String, List<String>> getInventoryRegions()

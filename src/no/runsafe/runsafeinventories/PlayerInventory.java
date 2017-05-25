@@ -8,13 +8,13 @@ public class PlayerInventory
 	{
 		this.inventoryName = inventoryName;
 		this.inventoryString = player.getInventory().serialize();
-		this.owner = player.getName();
+		this.owner = player;
 		this.experience = player.getXP();
 		this.level = player.getLevel();
 		this.foodLevel = player.getFoodLevel();
 	}
 
-	public PlayerInventory(String owner, String inventoryName, String inventory, int level, float experience, int foodLevel)
+	public PlayerInventory(IPlayer owner, String inventoryName, String inventory, int level, float experience, int foodLevel)
 	{
 		this.owner = owner;
 		this.inventoryName = inventoryName;
@@ -29,7 +29,7 @@ public class PlayerInventory
 		return this.inventoryName;
 	}
 
-	public String getPlayerName()
+	public IPlayer getPlayer()
 	{
 		return this.owner;
 	}
@@ -55,7 +55,7 @@ public class PlayerInventory
 	}
 
 	private final String inventoryName;
-	private final String owner;
+	private final IPlayer owner;
 	private final String inventoryString;
 	private final int level;
 	private final float experience;

@@ -25,6 +25,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(UniverseHandler.class);
 		addComponent(InventoryHistory.class);
 		addComponent(InventoryViewer.class);
+		addComponent(RegionInventoryHandler.class);
 
 		// Repositories
 		addComponent(InventoryRepository.class);
@@ -41,14 +42,19 @@ public class Plugin extends RunsafeConfigurablePlugin
 		inventoryCommand.addSubCommand(getInstance(RestoreInventory.class));
 		inventoryCommand.addSubCommand(getInstance(CreateTemplate.class));
 		inventoryCommand.addSubCommand(getInstance(ClearInventory.class));
+		inventoryCommand.addSubCommand(getInstance(AddRegion.class));
+		inventoryCommand.addSubCommand(getInstance(RemoveRegion.class));
 		addComponent(inventoryCommand);
 
 		// Events
+		addComponent(InventoryRegionEnter.class);
+		addComponent(InventoryRegionExit.class);
 		addComponent(PlayerTeleport.class);
 		addComponent(PlayerWorldChange.class);
 		addComponent(PlayerQuit.class);
 		addComponent(PlayerRespawn.class);
 		addComponent(PlayerDeath.class);
 		addComponent(PlayerRegionEvents.class);
+		addComponent(WorldLoadEvent.class);
 	}
 }

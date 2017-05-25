@@ -1,6 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.IUniverse;
+import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
@@ -10,6 +10,11 @@ import no.runsafe.runsafeinventories.PlayerInventory;
 
 public class InventoryRepository extends Repository
 {
+	public InventoryRepository(IServer server)
+	{
+		this.server = server;
+	}
+
 	@Override
 	public String getTableName()
 	{
@@ -21,7 +26,7 @@ public class InventoryRepository extends Repository
 		database.execute(
 			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
-			inventory.getPlayerName(), inventory.getInventoryName(),
+			inventory.getPlayer().getName(), inventory.getInventoryName(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel()
 		);
@@ -41,22 +46,20 @@ public class InventoryRepository extends Repository
 	/**
 	 * Retrieve a player inventory for a specific region.
 	 * @param player The player to grab the inventory for.
+	 *               Must be in the same universe as the region.
 	 * @param regionName The region to grab the inventory for.
 	 * @return A player inventory object or null if none could be found.
 	 */
 	public PlayerInventory getInventoryForRegion(IPlayer player, String regionName)
 	{
-		String regionKey = player.getWorldName(); // Grab the world name.
+		// Check if the player and their world is null; if not the universe will not be null either.
+		if (player == null || player.getWorld() == null)
+			return null;
 
-		// Check if we have a universe associated with this world.
-		IUniverse playerUniverse = player.getUniverse();
-		if (playerUniverse != null)
-			regionKey = playerUniverse.getName(); // Use the universe name instead.
+		String universeName = player.getUniverse().getName(); // Grab the universe name.
 
 		// Append the region name to the end to create a unique key.
-		regionKey = regionKey + "-" + regionName;
-
-		return getInventoryData(player, regionKey);
+		return getInventoryData(player, universeName + "-" + regionName);
 	}
 
 	private PlayerInventory getInventoryData(IPlayer player, String universeName)
@@ -64,8 +67,8 @@ public class InventoryRepository extends Repository
 		String owner = player.getName();
 
 		IRow data = database.queryRow(
-				"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-				owner, universeName
+			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+			owner, universeName
 		);
 
 		if (data.isEmpty())
@@ -74,18 +77,33 @@ public class InventoryRepository extends Repository
 		long level = data.Long("level");
 
 		return new PlayerInventory(
-				owner,
-				universeName,
-				data.String("inventory"),
-				(int) level,
-				data.Float("experience"),
-				data.Integer("foodLevel")
+			server.getPlayer(owner),
+			universeName,
+			data.String("inventory"),
+			(int) level,
+			data.Float("experience"),
+			data.Integer("foodLevel")
 		);
 	}
 
-	public void wipeWorld(String worldName)
+	/**
+	 * Wipes inventories from all players in an inventory region.
+	 * @param worldName Name of the world the region is in. Assumed to be valid.
+	 * @param regionName Name of the region to wipe inventories for. Assumed to be valid.
+	 */
+	public void wipeRegionInventories(String worldName, String regionName)
 	{
-		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", worldName);
+		wipeInventories(server.getWorld(worldName).getUniverse().getName() + "-" + regionName);
+	}
+
+	/**
+	 * Wipes inventories from all players with a given inventory name.
+	 * @param inventoryName Name of the inventory to wipe.
+	 *                      Usually the universe name the inventory is in, unless it's a region inventory.
+	 */
+	public void wipeInventories(String inventoryName)
+	{
+		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
 	}
 
 	@Override
@@ -101,7 +119,7 @@ public class InventoryRepository extends Repository
 				"`level` int(10) unsigned NOT NULL DEFAULT '0'," +
 				"`experience` float unsigned NOT NULL DEFAULT '0'," +
 				"PRIMARY KEY (`owner`,`inventoryName`)" +
-				")"
+			")"
 		);
 
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
@@ -109,4 +127,6 @@ public class InventoryRepository extends Repository
 
 		return update;
 	}
+
+	private final IServer server;
 }

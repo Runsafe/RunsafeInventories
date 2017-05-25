@@ -1,6 +1,9 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.IWorld;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
@@ -8,24 +11,36 @@ import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.events.InventoryRegionEnter;
 import no.runsafe.runsafeinventories.events.InventoryRegionExit;
 import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
+import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent
+public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCustomEvent, IServerReady
 {
 	/**
 	 * Constructor for RegionInventoryHandler
 	 * @param inventoryRegionRepository Inventory region repository instance.
+	 * @param inventoryRepository Inventory repository instance. Used to clear region inventory data.
 	 * @param worldGuard WorldGuard bridge instance.
+	 * @param server The server.
 	 */
-	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard)
+	public RegionInventoryHandler(
+		InventoryRegionRepository inventoryRegionRepository,
+		InventoryRepository inventoryRepository,
+		WorldGuardInterface worldGuard,
+		IServer server
+	)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
+		this.inventoryRepository = inventoryRepository;
 		this.worldGuard = worldGuard;
+		this.server = server;
 	}
 
 	/**
@@ -77,6 +92,89 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		// Get all current regions and blacklist their exit events.
 		for (String region : worldGuard.getApplicableRegions(player))
 			ignoreExitEventRegions.add(getRegionKey(player, region));
+	}
+
+	/**
+	 * Gives a region an inventory.
+	 * Does nothing if worldName or regionName are null or empty.
+	 * @param worldName Name of the world the region is in.
+	 * @param regionName Name of the region to give an inventory.
+	 * @return True if region inventory region could be added, false otherwise.
+	 */
+	public Boolean addInventoryRegion(String worldName, String regionName)
+	{
+		// Check for null or empty arguments.
+		if ((worldName == null) || (worldName.isEmpty()) || (regionName == null) || (regionName.isEmpty()))
+			return false;
+
+		// Disallow giving the __global__ region an inventory. It already gets the default inventory.
+		if (regionName.equals("__global__"))
+			return false;
+
+		// Avoid giving the region an inventory if it already has an inventory.
+		if (doesRegionHaveInventory(worldName, regionName))
+			return false;
+
+		// Make absolutely sure that the region exists.
+		IWorld world = server.getWorld(worldName);
+		Rectangle2D regionRectangle = worldGuard.getRectangle(world, regionName);
+		if (regionRectangle == null)
+			return false;
+
+		// Check if the region overlaps with any other inventory regions. Nested regions are not currently supported.
+		List<String> allInventoryRegions = getInventoryRegionsInWorld(world);
+		if ((allInventoryRegions != null) && allInventoryRegions.size() > 1)
+			for (String region : allInventoryRegions)
+				if (regionRectangle.intersects(worldGuard.getRectangle(world, region)))
+					return false;
+
+		// World and region passed all checks, give that region an inventory.
+		if (!inventoryRegions.containsKey(worldName))
+			inventoryRegions.put(worldName, new ArrayList<String>(1));
+
+		inventoryRegions.get(worldName).add(regionName);
+		inventoryRegionRepository.addInventoryRegion(worldName, regionName);
+		return true;
+	}
+
+	/**
+	 * Removes an inventory from a region.
+	 * Inventory data from that region will be removed.
+	 * Region itself will not be removed.
+	 * Make sure all players are out of this region before removing it.
+	 * Does nothing if worldName or regionName are null or empty.
+	 * @param worldName Name of the world the region is in.
+	 * @param regionName Name of the region to remove the inventory of.
+	 * @return True if region inventory region could be removed, false otherwise.
+	 */
+	public Boolean removeInventoryRegion(String worldName, String regionName)
+	{
+		// Check for null or empty arguments.
+		if ((worldName == null) || (worldName.isEmpty()) || (regionName == null) || (regionName.isEmpty()))
+			return false;
+
+		// Avoid trying to remove the region inventory if it isn't on the list.
+		if (!doesRegionHaveInventory(worldName, regionName))
+			return false;
+
+		// World and region passed all checks, remove that region's inventory.
+		inventoryRegions.get(worldName).remove(regionName);
+		inventoryRegionRepository.removeInventoryRegion(worldName, regionName);
+		inventoryRepository.wipeRegionInventories(worldName, regionName);
+		return true;
+	}
+
+	/**
+	 * Gets a list of all the inventory regions in a world.
+	 * @param world World to get inventory regions from.
+	 * @return Inventory regions in a world, if any.
+	 */
+	public List<String> getInventoryRegionsInWorld(IWorld world)
+	{
+		if (world == null)
+			return Collections.emptyList();
+
+		return inventoryRegions.get(world.getName());
 	}
 
 	/**
@@ -135,6 +233,16 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	}
 
 	/**
+	 * Called when the server is ready.
+	 * Updates locally stored inventory regions.
+	 */
+	@Override
+	public void OnServerReady()
+	{
+		inventoryRegions = inventoryRegionRepository.getInventoryRegions();
+	}
+
+	/**
 	 * Called when the configuration for this plug-in is changed.
 	 * @param configuration Object for accessing this plug-ins configuration.
 	 */
@@ -158,11 +266,12 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		{
 			Map<String, String> data = (Map<String, String>) event.getData();
 			IPlayer player = event.getPlayer();
+			String world = data.get("world");
 			String region = data.get("region");
 
 			if (eventName.equals("region.enter"))
 			{
-				if (!isRegionEntryIgnored(player, region))
+				if (doesRegionHaveInventory(world, region) && !isRegionEntryIgnored(player, region))
 				{
 					// Fire an inventory region enter event.
 					new InventoryRegionEnter(player, region).Fire();
@@ -176,7 +285,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			else if (eventName.equals("region.leave"))
 			{
 				// Handle region leaving.
-				if (!isRegionExitIgnored(player, region))
+				if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
 				{
 					// Fire an inventory region exit event.
 					new InventoryRegionExit(player, region).Fire();
@@ -190,7 +299,9 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		}
 	}
 
+	private final IServer server;
 	private final InventoryRegionRepository inventoryRegionRepository;
+	private final InventoryRepository inventoryRepository;
 	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
 	private List<String> ignoreExitEventRegions = new ArrayList<String>();
 	private HashMap<String, List<String>> inventoryRegions = new HashMap<String, List<String>>();

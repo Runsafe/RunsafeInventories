@@ -1,7 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.ILocation;
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;
@@ -24,7 +23,7 @@ public class DropItems extends ExecutableCommand
 	{
 		IPlayer player = parameters.getValue("player");
 		if (player == null)
-			return null;
+			return "&cInvalid player.";
 
 		this.dropItems(player);
 		if (executor instanceof IPlayer && executor.getName().equals(player.getName()))

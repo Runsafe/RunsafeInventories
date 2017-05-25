@@ -42,7 +42,7 @@ public class TemplateRepository extends Repository
 				"`universeName` varchar(50) NOT NULL, " +
 				"`inventory` longtext, " +
 				"PRIMARY KEY (`universeName`)" +
-				")"
+			")"
 		);
 
 		return update;
