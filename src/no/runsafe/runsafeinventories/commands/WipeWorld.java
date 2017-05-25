@@ -28,7 +28,7 @@ public class WipeWorld extends ExecutableCommand
 	private static final String WORLD = "worldName";
 
 	@Override
-	public String OnExecute(ICommandExecutor executor, IArgumentList parameters)
+	public String OnExecute(final ICommandExecutor executor, IArgumentList parameters)
 	{
 		IWorld world = parameters.getValue(WORLD);
 		if (world == null)
