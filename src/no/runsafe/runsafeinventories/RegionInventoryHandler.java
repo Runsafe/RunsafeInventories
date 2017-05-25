@@ -12,6 +12,7 @@ import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.events.InventoryRegionEnter;
 import no.runsafe.runsafeinventories.events.InventoryRegionExit;
 import no.runsafe.runsafeinventories.repositories.InventoryRegionRepository;
+import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.worldguardbridge.WorldGuardInterface;
 
 import java.awt.geom.Rectangle2D;
@@ -26,12 +27,20 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	/**
 	 * Constructor for RegionInventoryHandler
 	 * @param inventoryRegionRepository Inventory region repository instance.
+	 * @param inventoryRepository Inventory repository instance. Used to clear region inventory data.
 	 * @param worldGuard WorldGuard bridge instance.
 	 * @param server The server.
 	 */
-	public RegionInventoryHandler(InventoryRegionRepository inventoryRegionRepository, WorldGuardInterface worldGuard, IServer server, IConsole console)
+	public RegionInventoryHandler(
+		InventoryRegionRepository inventoryRegionRepository,
+		InventoryRepository inventoryRepository,
+		WorldGuardInterface worldGuard,
+		IServer server,
+		IConsole console
+	)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
+		this.inventoryRepository = inventoryRepository;
 		this.worldGuard = worldGuard;
 		this.server = server;
 	}
@@ -132,7 +141,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 	/**
 	 * Removes an inventory from a region.
-	 * Inventory data from that region won't be removed.
+	 * Inventory data from that region will be removed.
 	 * Region itself will not be removed.
 	 * Make sure all players are out of this region before removing it.
 	 * Does nothing if worldName or regionName are null or empty.
@@ -153,6 +162,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		// World and region passed all checks, remove that region's inventory.
 		inventoryRegions.remove(worldName, regionName);
 		inventoryRegionRepository.removeInventoryRegion(worldName, regionName);
+		inventoryRepository.wipeInventories(server.getWorld(worldName).getUniverse().getName() + "-" + regionName);
 		return true;
 	}
 
@@ -283,6 +293,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 	private final IServer server;
 	private final InventoryRegionRepository inventoryRegionRepository;
+	private final InventoryRepository inventoryRepository;
 	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
 	private List<String> ignoreExitEventRegions = new ArrayList<String>();
 	private HashMap<String, List<String>> inventoryRegions = new HashMap<String, List<String>>();
