@@ -73,6 +73,11 @@ public class InventoryHandler implements IPlayerCustomEvent
 		}
 	}
 
+	public void wipeUniverse(String universeName)
+	{
+		inventoryRepository.wipeInventories(universeName);
+	}
+
 	/**
 	 * Called when a custom event is fired from within the framework.
 	 * @param event Object containing event related data.

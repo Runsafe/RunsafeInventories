@@ -87,9 +87,14 @@ public class InventoryRepository extends Repository
 		);
 	}
 
-	public void wipeUniverse(String universeName)
+	/**
+	 * Wipes inventories from all players with a given inventory name.
+	 * @param inventoryName Name of the inventory to wipe.
+	 *                      Usually the universe name the inventory is in, unless it's a region inventory.
+	 */
+	public void wipeInventories(String inventoryName)
 	{
-		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", universeName);
+		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
 	}
 
 	@Override
