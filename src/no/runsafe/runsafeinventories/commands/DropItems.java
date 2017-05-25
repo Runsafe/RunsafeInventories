@@ -1,7 +1,6 @@
 package no.runsafe.runsafeinventories.commands;
 
 import no.runsafe.framework.api.ILocation;
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.command.ExecutableCommand;
 import no.runsafe.framework.api.command.ICommandExecutor;
 import no.runsafe.framework.api.command.argument.IArgumentList;

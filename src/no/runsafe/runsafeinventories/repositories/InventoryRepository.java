@@ -1,7 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.api.IServer;
-import no.runsafe.framework.api.IUniverse;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;

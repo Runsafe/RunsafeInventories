@@ -1,12 +1,10 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
-import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.events.InventoryRegionEnter;

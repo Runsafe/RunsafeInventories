@@ -1,6 +1,5 @@
 package no.runsafe.runsafeinventories.events;
 
-import no.runsafe.framework.api.ILocation;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.world.IWorldLoad;
 import no.runsafe.framework.api.log.IConsole;
