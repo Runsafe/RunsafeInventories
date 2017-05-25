@@ -35,8 +35,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		InventoryRegionRepository inventoryRegionRepository,
 		InventoryRepository inventoryRepository,
 		WorldGuardInterface worldGuard,
-		IServer server,
-		IConsole console
+		IServer server
 	)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
