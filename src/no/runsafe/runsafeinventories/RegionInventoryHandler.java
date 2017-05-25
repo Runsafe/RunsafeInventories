@@ -116,7 +116,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 		// Check if the region overlaps with any other inventory regions. Nested regions are not currently supported.
 		List<String> allInventoryRegions = getInventoryRegionsInWorld(world);
-		if (allInventoryRegions.size() < 2)
+		if (allInventoryRegions.size() > 1)
 			for (String region : allInventoryRegions)
 				if (regionRectangle.intersects(worldGuard.getRectangle(world, region)))
 					return false;

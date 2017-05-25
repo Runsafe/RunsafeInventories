@@ -32,7 +32,7 @@ public class WorldLoadEvent implements IWorldLoad
 			{
 				// Check for overlapping inventory regions.
 				List<String> allInventoryRegions = regionInventoryHandler.getInventoryRegionsInWorld(world);
-				if (allInventoryRegions.size() < 2)
+				if (allInventoryRegions.size() > 1)
 					for (String region : allInventoryRegions)
 						if (!regionName.equals(region) && regionRectangle.intersects(worldGuard.getRectangle(world, region)))
 							console.logWarning ("Overlapping inventory regions detected: " + regionName + ", " + region);
