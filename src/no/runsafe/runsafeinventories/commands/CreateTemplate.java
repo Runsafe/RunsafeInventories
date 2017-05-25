@@ -18,7 +18,7 @@ public class CreateTemplate extends PlayerCommand
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		String universe = parameters.get("universe");
+		String universe = parameters.getValue("universe");
 		if (universe == null)
 		{
 			IWorld world = executor.getWorld();

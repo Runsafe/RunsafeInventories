@@ -20,7 +20,7 @@ public class OpenInventory extends PlayerCommand
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
 		IPlayer target = parameters.getValue("player");
-		String universeName = parameters.get("universe");
+		String universeName = parameters.getValue("universe");
 		if (universeName != null)
 		{
 			if (!this.universeHandler.universeExists(universeName) && !this.universeHandler.worldExists(universeName))
