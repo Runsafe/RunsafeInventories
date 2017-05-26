@@ -109,20 +109,6 @@ public class InventoryRepository extends Repository
 		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
 	}
 
-	/**
-	 * Makes sure the player is stored in the database using their UUID.
-	 * Does nothing if the player has already had their data converted.
-	 * Throws MySQLIntegrityConstraintViolationException if the player has their data stored using their username and UUID.
-	 * @param player User of which to convert their username to UUID in the inventory database.
-	 */
-	public void updatePlayerUniqueId(IPlayer player)
-	{
-		database.execute(
-			"UPDATE runsafeInventories SET owner = ? WHERE owner = ?",
-			player.getUniqueId().toString(), player.getName()
-		);
-	}
-
 	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
@@ -141,6 +127,15 @@ public class InventoryRepository extends Repository
 
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
 			"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
+
+		update.addQueries( // Update UUIDs
+			String.format(
+				"UPDATE `%s` SET `owner` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`),'owner') " +
+					"WHERE length(`owner`) != 36",
+				getTableName(), getTableName()
+			)
+		);
 
 		return update;
 	}
