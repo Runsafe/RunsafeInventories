@@ -26,7 +26,7 @@ public class InventoryRepository extends Repository
 		database.execute(
 			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
-			inventory.getPlayer().getName(), inventory.getInventoryName(),
+			inventory.getPlayer().getUniqueId().toString(), inventory.getInventoryName(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel()
 		);
@@ -66,8 +66,15 @@ public class InventoryRepository extends Repository
 	{
 		IRow data = database.queryRow(
 			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-			player.getName(), universeName
+			player.getUniqueId().toString(), universeName
 		);
+
+		// Check if the player is offline and hasn't had their username converted to a unique id yet.
+		if (!player.isOnline() && data.isEmpty())
+			data = database.queryRow(
+				"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+				player.getName(), universeName
+			);
 
 		if (data.isEmpty())
 			return null; // We have no inventory, so no need to return a blank one.
@@ -100,6 +107,20 @@ public class InventoryRepository extends Repository
 	public void wipeInventories(String inventoryName)
 	{
 		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
+	}
+
+	/**
+	 * Makes sure the player is stored in the database using their UUID.
+	 * Does nothing if the player has already had their data converted.
+	 * Throws MySQLIntegrityConstraintViolationException if the player has their data stored using their username and UUID.
+	 * @param player User of which to convert their username to UUID in the inventory database.
+	 */
+	public void updatePlayerUniqueId(IPlayer player)
+	{
+		database.execute(
+			"UPDATE runsafeInventories SET owner = ? WHERE owner = ?",
+			player.getUniqueId().toString(), player.getName()
+		);
 	}
 
 	@Override
