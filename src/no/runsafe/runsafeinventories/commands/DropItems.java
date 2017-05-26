@@ -26,7 +26,7 @@ public class DropItems extends ExecutableCommand
 			return "&cInvalid player.";
 
 		this.dropItems(player);
-		if (executor instanceof IPlayer && executor.getName().equals(player.getName()))
+		if (executor instanceof IPlayer && executor.equals(player))
 			return "&cYour items have been dropped.";
 		return "&2Caused " + player.getPrettyName() + "&2 to drop their items.";
 	}

@@ -26,7 +26,7 @@ public class InventoryRepository extends Repository
 		database.execute(
 			"INSERT INTO runsafeInventories (owner, inventoryName, inventory, level, experience, foodLevel) VALUES(?, ?, ?, ?, ?, ?)" +
 				" ON DUPLICATE KEY UPDATE inventory = ?, level = ?, experience = ?, foodLevel = ?",
-			inventory.getPlayer().getName(), inventory.getInventoryName(),
+			inventory.getPlayer().getUniqueId().toString(), inventory.getInventoryName(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel(),
 			inventory.getInventoryString(), inventory.getLevel(), inventory.getExperience(), inventory.getFoodLevel()
 		);
@@ -64,23 +64,26 @@ public class InventoryRepository extends Repository
 
 	private PlayerInventory getInventoryData(IPlayer player, String universeName)
 	{
-		String owner = player.getName();
-
 		IRow data = database.queryRow(
 			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-			owner, universeName
+			player.getUniqueId().toString(), universeName
 		);
+
+		// Check if the player is offline and hasn't had their username converted to a unique id yet.
+		if (!player.isOnline() && data.isEmpty())
+			data = database.queryRow(
+				"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
+				player.getName(), universeName
+			);
 
 		if (data.isEmpty())
 			return null; // We have no inventory, so no need to return a blank one.
 
-		long level = data.Long("level");
-
 		return new PlayerInventory(
-			server.getPlayer(owner),
+			player,
 			universeName,
 			data.String("inventory"),
-			(int) level,
+			data.Integer("level"),
 			data.Float("experience"),
 			data.Integer("foodLevel")
 		);
@@ -124,6 +127,15 @@ public class InventoryRepository extends Repository
 
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
 			"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
+
+		update.addQueries( // Update UUIDs
+			String.format(
+				"UPDATE `%s` SET `owner` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`),'owner') " +
+					"WHERE length(`owner`) != 36",
+				getTableName(), getTableName()
+			)
+		);
 
 		return update;
 	}

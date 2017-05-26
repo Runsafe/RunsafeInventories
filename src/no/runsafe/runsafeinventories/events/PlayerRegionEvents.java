@@ -1,14 +1,14 @@
 package no.runsafe.runsafeinventories.events;
 
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
-import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 
 public class PlayerRegionEvents implements IPlayerCustomEvent
 {
-	public PlayerRegionEvents(IConsole console)
+	public PlayerRegionEvents(IDebug debugger)
 	{
-		this.console = console;
+		this.debugger = debugger;
 	}
 
 	@Override
@@ -16,8 +16,8 @@ public class PlayerRegionEvents implements IPlayerCustomEvent
 	{
 		String eventName = event.getEvent();
 		if (eventName.equals("inventory.region.enter") || eventName.equals("inventory.region.exit"))
-			console.logInformation("EVENT CAUGHT: " + eventName);
+			debugger.debugFine("EVENT CAUGHT: " + eventName + " FOR PLAYER : " + event.getPlayer().getPrettyName());
 	}
 
-	private final IConsole console;
+	private final IDebug debugger;
 }
