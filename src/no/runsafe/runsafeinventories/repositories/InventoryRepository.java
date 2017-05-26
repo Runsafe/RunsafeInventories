@@ -64,23 +64,19 @@ public class InventoryRepository extends Repository
 
 	private PlayerInventory getInventoryData(IPlayer player, String universeName)
 	{
-		String owner = player.getName();
-
 		IRow data = database.queryRow(
 			"SELECT inventory, level, experience, foodLevel FROM runsafeInventories WHERE owner = ? AND inventoryName = ?",
-			owner, universeName
+			player.getName(), universeName
 		);
 
 		if (data.isEmpty())
 			return null; // We have no inventory, so no need to return a blank one.
 
-		long level = data.Long("level");
-
 		return new PlayerInventory(
-			server.getPlayer(owner),
+			player,
 			universeName,
 			data.String("inventory"),
-			(int) level,
+			data.Integer("level"),
 			data.Float("experience"),
 			data.Integer("foodLevel")
 		);
