@@ -128,6 +128,13 @@ public class InventoryRepository extends Repository
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
 			"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
 
+		update.addQueries( // Clean up empty inventories before updating UUIDs to reduce issues.
+			String.format(
+				"DELETE FROM `%s` where `inventory` = 'contents: {}\narmour: {}\n'",
+				getTableName()
+			)
+		);
+
 		update.addQueries( // Update UUIDs
 			String.format(
 				"UPDATE `%s` SET `owner` = " +
