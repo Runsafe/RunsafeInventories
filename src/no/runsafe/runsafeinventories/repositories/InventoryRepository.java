@@ -131,7 +131,7 @@ public class InventoryRepository extends Repository
 		update.addQueries( // Update UUIDs
 			String.format(
 				"UPDATE `%s` SET `owner` = " +
-					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`),'owner') " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`), `owner`) " +
 					"WHERE length(`owner`) != 36",
 				getTableName(), getTableName()
 			)
