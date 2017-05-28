@@ -16,8 +16,8 @@ public class InventoryRegionRepository extends Repository
 		return "runsafe_inventories_regions";
 	}
 
-	@Override
 	@Nonnull
+	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
 		ISchemaUpdate update = new SchemaUpdate();
