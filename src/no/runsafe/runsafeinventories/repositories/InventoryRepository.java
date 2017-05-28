@@ -8,6 +8,8 @@ import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
+import javax.annotation.Nonnull;
+
 public class InventoryRepository extends Repository
 {
 	public InventoryRepository(IServer server)
@@ -15,6 +17,7 @@ public class InventoryRepository extends Repository
 		this.server = server;
 	}
 
+	@Nonnull
 	@Override
 	public String getTableName()
 	{
@@ -109,6 +112,7 @@ public class InventoryRepository extends Repository
 		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
 	}
 
+	@Nonnull
 	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
