@@ -174,7 +174,11 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		if (world == null)
 			return Collections.emptyList();
 
-		return inventoryRegions.get(world.getName());
+		List<String> worldInventoryRegions = inventoryRegions.get(world.getName());
+		if (worldInventoryRegions == null)
+			return Collections.emptyList();
+		else
+			return worldInventoryRegions;
 	}
 
 	/**
