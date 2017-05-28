@@ -2,18 +2,21 @@ package no.runsafe.runsafeinventories.repositories;
 
 import no.runsafe.framework.api.database.*;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class InventoryRegionRepository extends Repository
 {
+	@Nonnull
 	@Override
 	public String getTableName()
 	{
 		return "runsafe_inventories_regions";
 	}
 
+	@Nonnull
 	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{

@@ -5,8 +5,11 @@ import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 
+import javax.annotation.Nonnull;
+
 public class TemplateRepository extends Repository
 {
+	@Nonnull
 	@Override
 	public String getTableName()
 	{
@@ -32,6 +35,7 @@ public class TemplateRepository extends Repository
 			playerInventory.unserialize(serialized);
 	}
 
+	@Nonnull
 	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{

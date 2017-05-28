@@ -8,6 +8,8 @@ import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
+import javax.annotation.Nonnull;
+
 public class InventoryRepository extends Repository
 {
 	public InventoryRepository(IServer server)
@@ -15,6 +17,7 @@ public class InventoryRepository extends Repository
 		this.server = server;
 	}
 
+	@Nonnull
 	@Override
 	public String getTableName()
 	{
@@ -109,6 +112,7 @@ public class InventoryRepository extends Repository
 		database.execute("DELETE FROM runsafeInventories WHERE inventoryName = ?", inventoryName);
 	}
 
+	@Nonnull
 	@Override
 	public ISchemaUpdate getSchemaUpdateQueries()
 	{
@@ -128,10 +132,17 @@ public class InventoryRepository extends Repository
 		update.addQueries("ALTER TABLE `runsafeInventories`" +
 			"ADD COLUMN `foodLevel` TINYINT(2) UNSIGNED NOT NULL DEFAULT '20' AFTER `experience`");
 
+		update.addQueries( // Clean up empty inventories before updating UUIDs to reduce issues.
+			String.format(
+				"DELETE FROM `%s` where `inventory` = 'contents: {}\narmour: {}\n'",
+				getTableName()
+			)
+		);
+
 		update.addQueries( // Update UUIDs
 			String.format(
-				"UPDATE `%s` SET `owner` = " +
-					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`),'owner') " +
+				"UPDATE IGNORE `%s` SET `owner` = " +
+					"COALESCE((SELECT `uuid` FROM player_db WHERE `name`=`%s`.`owner`), `owner`) " +
 					"WHERE length(`owner`) != 36",
 				getTableName(), getTableName()
 			)
