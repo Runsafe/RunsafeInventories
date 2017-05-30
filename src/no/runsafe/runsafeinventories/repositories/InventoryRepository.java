@@ -1,20 +1,20 @@
 package no.runsafe.runsafeinventories.repositories;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
 import no.runsafe.framework.api.database.SchemaUpdate;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IWorldManager;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 import javax.annotation.Nonnull;
 
 public class InventoryRepository extends Repository
 {
-	public InventoryRepository(IServer server)
+	public InventoryRepository(IWorldManager worldManager)
 	{
-		this.server = server;
+		this.worldManager = worldManager;
 	}
 
 	@Nonnull
@@ -99,7 +99,7 @@ public class InventoryRepository extends Repository
 	 */
 	public void wipeRegionInventories(String worldName, String regionName)
 	{
-		wipeInventories(server.getWorld(worldName).getUniverse().getName() + "-" + regionName);
+		wipeInventories(worldManager.getWorld(worldName).getUniverse().getName() + "-" + regionName);
 	}
 
 	/**
@@ -151,5 +151,5 @@ public class InventoryRepository extends Repository
 		return update;
 	}
 
-	private final IServer server;
+	private final IWorldManager worldManager;
 }

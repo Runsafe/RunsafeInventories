@@ -1,9 +1,9 @@
 package no.runsafe.runsafeinventories;
 
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IWorldManager;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 import no.runsafe.runsafeinventories.repositories.TemplateRepository;
@@ -12,13 +12,13 @@ import java.util.Map;
 
 public class InventoryHandler implements IPlayerCustomEvent
 {
-	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler, IServer server)
+	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler, IWorldManager worldManager)
 	{
 		this.inventoryRepository = inventoryRepository;
 		this.templateRepository = templateRepository;
 		this.debugger = output;
 		this.regionInventoryHandler = regionInventoryHandler;
-		this.server = server;
+		this.worldManager = worldManager;
 	}
 
 	public void saveInventory(IPlayer player)
@@ -91,7 +91,7 @@ public class InventoryHandler implements IPlayerCustomEvent
 		{
 			IPlayer player = event.getPlayer();
 			Map<String, String> data = (Map<String, String>) event.getData();
-			String universeName = server.getWorld(data.get("world")).getUniverse().getName();
+			String universeName = worldManager.getWorld(data.get("world")).getUniverse().getName();
 
 			if (eventName.equals("inventory.region.enter"))
 			{
@@ -135,7 +135,7 @@ public class InventoryHandler implements IPlayerCustomEvent
 		}
 	}
 
-	private final IServer server;
+	private final IWorldManager worldManager;
 	private final InventoryRepository inventoryRepository;
 	private final TemplateRepository templateRepository;
 	private final IDebug debugger;

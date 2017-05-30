@@ -2,11 +2,11 @@ package no.runsafe.runsafeinventories;
 
 import com.google.common.collect.Lists;
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IUniverseManager;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.hook.IUniverseMapper;
 import no.runsafe.framework.api.log.IConsole;
+import no.runsafe.framework.api.server.IWorldManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +15,10 @@ import java.util.Map;
 
 public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 {
-	public UniverseHandler(IConsole output, IServer server)
+	public UniverseHandler(IConsole output, IWorldManager worldManager)
 	{
 		this.output = output;
-		this.server = server;
+		this.worldManager = worldManager;
 	}
 
 	public boolean universeExists(String universeName)
@@ -28,7 +28,7 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 
 	public boolean worldExists(String worldName)
 	{
-		return server.getWorld(worldName) != null;
+		return worldManager.getWorld(worldName) != null;
 	}
 
 	@Override
@@ -81,6 +81,6 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 	private final HashMap<String, String> universes = new HashMap<String, String>();
 	private final HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
 	private final IConsole output;
-	private final IServer server;
+	private final IWorldManager worldManager;
 	private IUniverseManager manager;
 }
