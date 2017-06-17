@@ -10,11 +10,10 @@ import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
 public class InventoryViewer implements IConfigurationChanged
 {
-	public InventoryViewer(IServer server, InventoryRepository repository, UniverseHandler universeHandler)
+	public InventoryViewer(IServer server, InventoryRepository repository)
 	{
 		this.server = server;
 		this.repository = repository;
-		this.universeHandler = universeHandler;
 	}
 
 	public boolean viewUniverseInventory(IPlayer viewer, IPlayer owner)
@@ -60,5 +59,4 @@ public class InventoryViewer implements IConfigurationChanged
 	private final IServer server;
 	private final InventoryRepository repository;
 	private String defaultUniverse;
-	private final UniverseHandler universeHandler;
 }
