@@ -15,7 +15,7 @@ public class RestoreInventory extends ExecutableCommand
 			"restore",
 			"Reverts the last inventory switch/deletion",
 			"runsafe.inventories.restore",
-			new Player().defaultToExecutor()
+			new Player().onlineOnly().defaultToExecutor()
 		);
 		this.history = history;
 	}

@@ -15,8 +15,8 @@ public class SwitchInventory extends PlayerCommand
 			"switch",
 			"Moves a players inventory to the target.",
 			"runsafe.inventories.switch",
-			new Player("source").require(),
-			new Player("target").defaultToExecutor()
+			new Player("source").onlineOnly().require(),
+			new Player("target").onlineOnly().defaultToExecutor()
 		);
 		this.history = history;
 	}
