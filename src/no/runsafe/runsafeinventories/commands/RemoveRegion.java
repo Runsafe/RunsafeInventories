@@ -15,7 +15,8 @@ public class RemoveRegion extends ExecutableCommand
 {
 	public RemoveRegion(RegionInventoryHandler regionInventoryHandler, IScheduler scheduler)
 	{
-		super("removeregion",
+		super(
+			"removeregion",
 			"Removes an inventory region and wipes its inventory data.",
 			"runsafe.inventories.region.remove",
 			new WorldArgument(WORLD).require(),

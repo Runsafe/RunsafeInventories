@@ -12,8 +12,11 @@ public class SwitchInventory extends PlayerCommand
 	public SwitchInventory(InventoryHistory history)
 	{
 		super(
-			"switch", "Moves a players inventory to the target.", "runsafe.inventories.switch",
-			new Player("source").require(), new Player("target").defaultToExecutor()
+			"switch",
+			"Moves a players inventory to the target.",
+			"runsafe.inventories.switch",
+			new Player("source").require(),
+			new Player("target").defaultToExecutor()
 		);
 		this.history = history;
 	}

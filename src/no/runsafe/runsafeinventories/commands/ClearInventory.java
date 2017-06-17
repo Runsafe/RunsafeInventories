@@ -11,7 +11,12 @@ public class ClearInventory extends ExecutableCommand
 {
 	public ClearInventory(InventoryHistory history)
 	{
-		super("clear", "Clears a players inventory", "runsafe.inventories.clear", new Player().onlineOnly().defaultToExecutor());
+		super(
+			"clear",
+			"Clears a players inventory",
+			"runsafe.inventories.clear",
+			new Player().onlineOnly().defaultToExecutor()
+		);
 		this.history = history;
 	}
 

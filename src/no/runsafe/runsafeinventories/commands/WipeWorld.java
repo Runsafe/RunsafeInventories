@@ -17,7 +17,9 @@ public class WipeWorld extends ExecutableCommand
 	public WipeWorld(InventoryHandler inventoryHandler, IScheduler scheduler, UniverseHandler universeHandler)
 	{
 		super(
-			"wipeworld", "Removes all inventories from the database for a world's universe.", "runsafe.inventories.wipeworld",
+			"wipeworld",
+			"Removes all inventories from the database for a world's universe.",
+			"runsafe.inventories.wipeworld",
 			new WorldArgument(WORLD).require()
 		);
 		this.scheduler = scheduler;
