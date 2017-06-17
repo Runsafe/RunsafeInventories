@@ -47,16 +47,12 @@ public class WipeWorld extends ExecutableCommand
 		}
 		else
 		{
-			wipers.put(executor, scheduler.startSyncTask(new Runnable()
+			wipers.put(executor, scheduler.startSyncTask(() ->
 			{
-				@Override
-				public void run()
+				if (wipers.containsKey(executor))
 				{
-					if (wipers.containsKey(executor))
-					{
-						executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
-						wipers.remove(executor);
-					}
+					executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
+					wipers.remove(executor);
 				}
 			}, 15));
 
