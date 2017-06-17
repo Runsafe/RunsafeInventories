@@ -72,14 +72,14 @@ public class UniverseHandler implements IConfigurationChanged, IUniverseMapper
 				this.universes.put(worldName, name);
 
 			if (!this.worlds.containsKey(name))
-				this.worlds.put(name, new ArrayList<String>());
+				this.worlds.put(name, new ArrayList<>());
 			this.worlds.get(name).addAll(worlds);
 		}
 		manager.flush();
 	}
 
-	private final HashMap<String, String> universes = new HashMap<String, String>();
-	private final HashMap<String, List<String>> worlds = new HashMap<String, List<String>>();
+	private final HashMap<String, String> universes = new HashMap<>();
+	private final HashMap<String, List<String>> worlds = new HashMap<>();
 	private final IConsole output;
 	private final IWorldManager worldManager;
 	private IUniverseManager manager;

@@ -75,6 +75,6 @@ public class WipeWorld extends ExecutableCommand
 
 	private final IScheduler scheduler;
 	private final UniverseHandler universeHandler;
-	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<ICommandExecutor, Integer>();
+	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<>();
 	private final InventoryHandler inventoryHandler;
 }

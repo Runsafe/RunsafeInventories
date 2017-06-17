@@ -130,7 +130,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 		// World and region passed all checks, give that region an inventory.
 		if (!inventoryRegions.containsKey(worldName))
-			inventoryRegions.put(worldName, new ArrayList<String>(1));
+			inventoryRegions.put(worldName, new ArrayList<>(1));
 
 		inventoryRegions.get(worldName).add(regionName);
 		inventoryRegionRepository.addInventoryRegion(worldName, regionName);
@@ -306,8 +306,8 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	private final IWorldManager worldManager;
 	private final InventoryRegionRepository inventoryRegionRepository;
 	private final InventoryRepository inventoryRepository;
-	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
-	private List<String> ignoreExitEventRegions = new ArrayList<String>();
-	private HashMap<String, List<String>> inventoryRegions = new HashMap<String, List<String>>();
+	private List<String> ignoreEntryEventRegions = new ArrayList<>();
+	private List<String> ignoreExitEventRegions = new ArrayList<>();
+	private HashMap<String, List<String>> inventoryRegions = new HashMap<>();
 	private final WorldGuardInterface worldGuard;
 }

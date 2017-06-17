@@ -24,12 +24,12 @@ public class WorldLoadEvent implements IWorldLoad
 	public void OnWorldLoad(IWorld world)
 	{
 		// Check if any inventory regions are overlapping or are invalid.
-		List<String> inventoryRegions = new ArrayList<String>(regionInventoryHandler.getInventoryRegionsInWorld(world));
+		List<String> inventoryRegions = new ArrayList<>(regionInventoryHandler.getInventoryRegionsInWorld(world));
 		if (inventoryRegions.size() < 2)
 			return;
 
 		// Obtain all of the region's rectangles and remove invalid regions.
-		List<Rectangle2D> inventoryRectangles = new ArrayList<Rectangle2D>(inventoryRegions.size());
+		List<Rectangle2D> inventoryRectangles = new ArrayList<>(inventoryRegions.size());
 		for (Iterator<String> iterator = inventoryRegions.iterator(); iterator.hasNext();)
 		{
 			String regionName = iterator.next();

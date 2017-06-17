@@ -73,6 +73,6 @@ public class RemoveRegion extends ExecutableCommand
 	}
 
 	private final IScheduler scheduler;
-	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<ICommandExecutor, Integer>();
+	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<>();
 	private final RegionInventoryHandler regionInventoryHandler;
 }
