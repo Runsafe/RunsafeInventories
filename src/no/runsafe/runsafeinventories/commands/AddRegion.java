@@ -12,7 +12,8 @@ public class AddRegion extends ExecutableCommand
 {
 	public AddRegion(RegionInventoryHandler regionInventoryHandler)
 	{
-		super("addregion",
+		super(
+			"addregion",
 			"Add a custom inventory to a region.",
 			"runsafe.inventories.region.add",
 			new WorldArgument(WORLD).require(),

@@ -21,5 +21,5 @@ public class InventoryHistory
 		return false;
 	}
 
-	private final HashMap<IPlayer, String> history = new HashMap<IPlayer, String>();
+	private final HashMap<IPlayer, String> history = new HashMap<>();
 }

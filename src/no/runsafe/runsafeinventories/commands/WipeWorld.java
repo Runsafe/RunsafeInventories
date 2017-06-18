@@ -17,7 +17,9 @@ public class WipeWorld extends ExecutableCommand
 	public WipeWorld(InventoryHandler inventoryHandler, IScheduler scheduler, UniverseHandler universeHandler)
 	{
 		super(
-			"wipeworld", "Removes all inventories from the database for a world's universe.", "runsafe.inventories.wipeworld",
+			"wipeworld",
+			"Removes all inventories from the database for a world's universe.",
+			"runsafe.inventories.wipeworld",
 			new WorldArgument(WORLD).require()
 		);
 		this.scheduler = scheduler;
@@ -45,16 +47,12 @@ public class WipeWorld extends ExecutableCommand
 		}
 		else
 		{
-			wipers.put(executor, scheduler.startSyncTask(new Runnable()
+			wipers.put(executor, scheduler.startSyncTask(() ->
 			{
-				@Override
-				public void run()
+				if (wipers.containsKey(executor))
 				{
-					if (wipers.containsKey(executor))
-					{
-						executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
-						wipers.remove(executor);
-					}
+					executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
+					wipers.remove(executor);
 				}
 			}, 15));
 
@@ -73,6 +71,6 @@ public class WipeWorld extends ExecutableCommand
 
 	private final IScheduler scheduler;
 	private final UniverseHandler universeHandler;
-	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<ICommandExecutor, Integer>();
+	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<>();
 	private final InventoryHandler inventoryHandler;
 }

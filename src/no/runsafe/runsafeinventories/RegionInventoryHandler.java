@@ -1,12 +1,12 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
-import no.runsafe.framework.api.IServer;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.api.server.IWorldManager;
 import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
 import no.runsafe.runsafeinventories.events.InventoryRegionEnter;
 import no.runsafe.runsafeinventories.events.InventoryRegionExit;
@@ -28,19 +28,19 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * @param inventoryRegionRepository Inventory region repository instance.
 	 * @param inventoryRepository Inventory repository instance. Used to clear region inventory data.
 	 * @param worldGuard WorldGuard bridge instance.
-	 * @param server The server.
+	 * @param worldManager Interface for getting worlds.
 	 */
 	public RegionInventoryHandler(
 		InventoryRegionRepository inventoryRegionRepository,
 		InventoryRepository inventoryRepository,
 		WorldGuardInterface worldGuard,
-		IServer server
+		IWorldManager worldManager
 	)
 	{
 		this.inventoryRegionRepository = inventoryRegionRepository;
 		this.inventoryRepository = inventoryRepository;
 		this.worldGuard = worldGuard;
-		this.server = server;
+		this.worldManager = worldManager;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			return false;
 
 		// Make absolutely sure that the region exists.
-		IWorld world = server.getWorld(worldName);
+		IWorld world = worldManager.getWorld(worldName);
 		Rectangle2D regionRectangle = worldGuard.getRectangle(world, regionName);
 		if (regionRectangle == null)
 			return false;
@@ -130,7 +130,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 		// World and region passed all checks, give that region an inventory.
 		if (!inventoryRegions.containsKey(worldName))
-			inventoryRegions.put(worldName, new ArrayList<String>(1));
+			inventoryRegions.put(worldName, new ArrayList<>(1));
 
 		inventoryRegions.get(worldName).add(regionName);
 		inventoryRegionRepository.addInventoryRegion(worldName, regionName);
@@ -174,7 +174,11 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		if (world == null)
 			return Collections.emptyList();
 
-		return inventoryRegions.get(world.getName());
+		List<String> worldInventoryRegions = inventoryRegions.get(world.getName());
+		if (worldInventoryRegions == null)
+			return Collections.emptyList();
+		else
+			return worldInventoryRegions;
 	}
 
 	/**
@@ -299,11 +303,11 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 		}
 	}
 
-	private final IServer server;
+	private final IWorldManager worldManager;
 	private final InventoryRegionRepository inventoryRegionRepository;
 	private final InventoryRepository inventoryRepository;
-	private List<String> ignoreEntryEventRegions = new ArrayList<String>();
-	private List<String> ignoreExitEventRegions = new ArrayList<String>();
-	private HashMap<String, List<String>> inventoryRegions = new HashMap<String, List<String>>();
+	private List<String> ignoreEntryEventRegions = new ArrayList<>();
+	private List<String> ignoreExitEventRegions = new ArrayList<>();
+	private HashMap<String, List<String>> inventoryRegions = new HashMap<>();
 	private final WorldGuardInterface worldGuard;
 }

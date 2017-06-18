@@ -21,5 +21,5 @@ public abstract class InventoryRegionEvent extends RunsafeCustomEvent
 		return data;
 	}
 
-	private final Map<String, String> data = new HashMap<String, String>();
+	private final Map<String, String> data = new HashMap<>();
 }

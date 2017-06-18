@@ -11,7 +11,12 @@ public class CreateTemplate extends PlayerCommand
 {
 	public CreateTemplate(TemplateRepository templateRepository, UniverseHandler universeHandler)
 	{
-		super("createtemplate", "Creates a default inventory template", "runsafe.inventories.templates.create", new UniverseArgument(universeHandler));
+		super(
+			"createtemplate",
+			"Creates a default inventory template",
+			"runsafe.inventories.templates.create",
+			new UniverseArgument(universeHandler)
+		);
 		this.templateRepository = templateRepository;
 	}
 

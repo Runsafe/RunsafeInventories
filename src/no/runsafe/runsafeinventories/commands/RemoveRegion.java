@@ -15,7 +15,8 @@ public class RemoveRegion extends ExecutableCommand
 {
 	public RemoveRegion(RegionInventoryHandler regionInventoryHandler, IScheduler scheduler)
 	{
-		super("removeregion",
+		super(
+			"removeregion",
 			"Removes an inventory region and wipes its inventory data.",
 			"runsafe.inventories.region.remove",
 			new WorldArgument(WORLD).require(),
@@ -48,16 +49,12 @@ public class RemoveRegion extends ExecutableCommand
 		}
 		else
 		{
-			wipers.put(executor, scheduler.startSyncTask(new Runnable()
+			wipers.put(executor, scheduler.startSyncTask(() ->
 			{
-				@Override
-				public void run()
+				if (wipers.containsKey(executor))
 				{
-					if (wipers.containsKey(executor))
-					{
-						executor.sendColouredMessage("&cCancelling remove inventory region attempt.");
-						wipers.remove(executor);
-					}
+					executor.sendColouredMessage("&cCancelling remove inventory region attempt.");
+					wipers.remove(executor);
 				}
 			}, 15));
 
@@ -72,6 +69,6 @@ public class RemoveRegion extends ExecutableCommand
 	}
 
 	private final IScheduler scheduler;
-	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<ICommandExecutor, Integer>();
+	private final ConcurrentHashMap<ICommandExecutor, Integer> wipers = new ConcurrentHashMap<>();
 	private final RegionInventoryHandler regionInventoryHandler;
 }

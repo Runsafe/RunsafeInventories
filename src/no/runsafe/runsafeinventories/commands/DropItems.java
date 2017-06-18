@@ -15,7 +15,12 @@ public class DropItems extends ExecutableCommand
 {
 	public DropItems()
 	{
-		super("drop", "Causes a player to drop all of their items", "runsafe.inventories.drop", new Player().onlineOnly().defaultToExecutor());
+		super(
+			"drop",
+			"Causes a player to drop all of their items",
+			"runsafe.inventories.drop",
+			new Player().onlineOnly().defaultToExecutor()
+		);
 	}
 
 	@Override

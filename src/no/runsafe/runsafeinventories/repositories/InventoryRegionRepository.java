@@ -63,14 +63,14 @@ public class InventoryRegionRepository extends Repository
 
 	public HashMap<String, List<String>> getInventoryRegions()
 	{
-		HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+		HashMap<String, List<String>> map = new HashMap<>();
 
 		ISet result = database.query("SELECT `worldName`, `regionName` FROM runsafe_inventories_regions");
 		for (IRow row : result)
 		{
 			String worldName = row.String("worldName");
 			if (!map.containsKey(worldName))
-				map.put(worldName, new ArrayList<String>(1));
+				map.put(worldName, new ArrayList<>(1));
 
 			map.get(worldName).add(row.String("regionName"));
 		}
