@@ -1,5 +1,6 @@
 # default config.yml
 defaultOpenInventoryUniverse: survival
+maxInventoryDataSize: 500000
 universes:
   survival:
   - world
