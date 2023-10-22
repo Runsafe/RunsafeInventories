@@ -46,7 +46,7 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 		if (inventoryDataSize > maxInventoryDataSize)
 		{
 			Plugin.console.logInformation(
-				"Player inventory: " + player.getName() + "too large to be saved. Size: " + inventoryDataSize
+				"Player inventory: " + player.getName() + " too large to be saved. Size: " + inventoryDataSize
 			);
 			debugger.debugFine(
 				"Could not save inventory %s for %s. Size: %d", inventoryName, player.getName(), inventoryDataSize
