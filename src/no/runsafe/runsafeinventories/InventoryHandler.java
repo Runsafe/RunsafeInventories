@@ -27,6 +27,7 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		maxInventoryDataSize = configuration.getConfigValueAsInt("maxInventoryDataSize");
+		overloadedWarningMessage = configuration.getConfigValueAsString("overloadedWarningMessage");
 	}
 
 	public void saveInventory(IPlayer player)
@@ -50,6 +51,8 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 			debugger.debugFine(
 				"Could not save inventory %s for %s. Size: %d", inventoryName, player.getName(), inventoryDataSize
 			);
+			player.getInventory().clear();
+			player.sendColouredMessage(overloadedWarningMessage);
 			return;
 		}
 
@@ -156,6 +159,7 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 		}
 	}
 
+	private String overloadedWarningMessage;
 	private int maxInventoryDataSize;
 	private final IWorldManager worldManager;
 	private final InventoryRepository inventoryRepository;
