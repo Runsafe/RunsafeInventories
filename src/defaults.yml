@@ -1,5 +1,7 @@
 # default config.yml
 defaultOpenInventoryUniverse: survival
+maxInventoryDataSize: 500000
+overloadedWarningMessage: "&cAttempted to exceed inventory storage size. Contact a staff member for more information."
 universes:
   survival:
   - world

@@ -306,8 +306,8 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	private final IWorldManager worldManager;
 	private final InventoryRegionRepository inventoryRegionRepository;
 	private final InventoryRepository inventoryRepository;
-	private List<String> ignoreEntryEventRegions = new ArrayList<>();
-	private List<String> ignoreExitEventRegions = new ArrayList<>();
+	private final List<String> ignoreEntryEventRegions = new ArrayList<>();
+	private final List<String> ignoreExitEventRegions = new ArrayList<>();
 	private HashMap<String, List<String>> inventoryRegions = new HashMap<>();
 	private final WorldGuardInterface worldGuard;
 }

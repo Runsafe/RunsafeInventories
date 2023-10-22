@@ -1,6 +1,8 @@
 package no.runsafe.runsafeinventories;
 
+import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
+import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.api.server.IWorldManager;
@@ -10,7 +12,7 @@ import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 import java.util.Map;
 
-public class InventoryHandler implements IPlayerCustomEvent
+public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChanged
 {
 	public InventoryHandler(InventoryRepository inventoryRepository, TemplateRepository templateRepository, IDebug output, RegionInventoryHandler regionInventoryHandler, IWorldManager worldManager)
 	{
@@ -19,6 +21,13 @@ public class InventoryHandler implements IPlayerCustomEvent
 		this.debugger = output;
 		this.regionInventoryHandler = regionInventoryHandler;
 		this.worldManager = worldManager;
+	}
+
+	@Override
+	public void OnConfigurationChanged(IConfiguration configuration)
+	{
+		maxInventoryDataSize = configuration.getConfigValueAsInt("maxInventoryDataSize");
+		overloadedWarningMessage = configuration.getConfigValueAsString("overloadedWarningMessage");
 	}
 
 	public void saveInventory(IPlayer player)
@@ -32,8 +41,23 @@ public class InventoryHandler implements IPlayerCustomEvent
 
 	private void saveInventory(IPlayer player, String inventoryName)
 	{
+		PlayerInventory inventory = new PlayerInventory(player, inventoryName);
+		int inventoryDataSize = inventory.getInventoryString().length();
+		if (inventoryDataSize > maxInventoryDataSize)
+		{
+			Plugin.console.logInformation(
+				"Player inventory: " + player.getName() + "too large to be saved. Size: " + inventoryDataSize
+			);
+			debugger.debugFine(
+				"Could not save inventory %s for %s. Size: %d", inventoryName, player.getName(), inventoryDataSize
+			);
+			player.getInventory().clear();
+			player.sendColouredMessage(overloadedWarningMessage);
+			return;
+		}
+
 		debugger.debugFine("Saving inventory %s for %s", inventoryName, player.getName());
-		inventoryRepository.saveInventory(new PlayerInventory(player, inventoryName));
+		inventoryRepository.saveInventory(inventory);
 	}
 
 	public void handlePreWorldChange(IPlayer player)
@@ -135,6 +159,8 @@ public class InventoryHandler implements IPlayerCustomEvent
 		}
 	}
 
+	private String overloadedWarningMessage;
+	private int maxInventoryDataSize;
 	private final IWorldManager worldManager;
 	private final InventoryRepository inventoryRepository;
 	private final TemplateRepository templateRepository;

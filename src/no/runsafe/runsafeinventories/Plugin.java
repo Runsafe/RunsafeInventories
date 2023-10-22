@@ -2,6 +2,7 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.framework.api.command.Command;
+import no.runsafe.framework.api.log.IConsole;
 import no.runsafe.framework.features.*;
 import no.runsafe.runsafeinventories.commands.*;
 import no.runsafe.runsafeinventories.events.*;
@@ -11,9 +12,13 @@ import no.runsafe.runsafeinventories.repositories.TemplateRepository;
 
 public class Plugin extends RunsafeConfigurablePlugin
 {
+	public static IConsole console;
+
 	@Override
 	protected void pluginSetup()
 	{
+		console = getComponent(IConsole.class);
+
 		// Framework features
 		addComponent(Commands.class);
 		addComponent(Events.class);
