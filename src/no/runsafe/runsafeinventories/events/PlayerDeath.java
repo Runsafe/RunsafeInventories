@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.events;
 
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerDeathEvent;
 import no.runsafe.framework.api.log.IDebug;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerDeathEvent;
@@ -18,7 +19,8 @@ public class PlayerDeath implements IPlayerDeathEvent
 	{
 		this.debugger.debugFine("Detected death event for " + event.getEntity().getName());
 		// Check if the keep inventory gamerule is off before wiping the player's inventory.
-		if (event.getEntity().getWorld().getGameRuleValue("keepInventory").equalsIgnoreCase("false"))
+		IWorld world = event.getEntity().getWorld();
+		if (world != null && world.getGameRuleValue("keepInventory").equalsIgnoreCase("false"))
 		{
 			this.inventoryHandler.wipeInventory(event.getEntity());
 			this.inventoryHandler.saveInventory(event.getEntity());

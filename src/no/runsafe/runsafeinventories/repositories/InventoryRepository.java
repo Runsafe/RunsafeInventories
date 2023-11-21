@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
 import no.runsafe.framework.api.database.Repository;
@@ -99,7 +100,11 @@ public class InventoryRepository extends Repository
 	 */
 	public void wipeRegionInventories(String worldName, String regionName)
 	{
-		wipeInventories(worldManager.getWorld(worldName).getUniverse().getName() + "-" + regionName);
+		IWorld world = worldManager.getWorld(worldName);
+		if (world == null)
+			return;
+
+		wipeInventories(world.getUniverse().getName() + "-" + regionName);
 	}
 
 	/**

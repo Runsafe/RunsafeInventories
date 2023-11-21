@@ -24,13 +24,10 @@ public class InventoryViewer implements IConfigurationChanged
 	public boolean viewUniverseInventory(IPlayer viewer, IPlayer owner, String universeName)
 	{
 		// Is the player online and in the same world? If so, get their current inventory from memory.
-		if (owner.isOnline())
+		if (owner.isOnline() && owner.isInUniverse(universeName))
 		{
-			if (owner.isInUniverse(universeName))
-			{
-				viewer.openInventory(owner.getInventory());
-				return true;
-			}
+			viewer.openInventory(owner.getInventory());
+			return true;
 		}
 
 		// Player is not online, pull inventory data from database.
