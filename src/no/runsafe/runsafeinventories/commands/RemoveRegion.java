@@ -47,25 +47,23 @@ public class RemoveRegion extends ExecutableCommand
 				return String.format("Inventory region %s removed.", regionName);
 			return String.format("&cInventory region %s could not be removed.", regionName);
 		}
-		else
-		{
-			wipers.put(executor, scheduler.startSyncTask(() ->
-			{
-				if (wipers.containsKey(executor))
-				{
-					executor.sendColouredMessage("&cCancelling remove inventory region attempt.");
-					wipers.remove(executor);
-				}
-			}, 15));
 
-			executor.sendMessage(
-				String.format(
-					"Are you sure you want to delete the inventory region %s in %s? This cannot be undone.",
-					regionName, worldName
-				)
-			);
-			return "Run the command again to confirm inventory region deletion.";
-		}
+		wipers.put(executor, scheduler.startSyncTask(() ->
+		{
+			if (wipers.containsKey(executor))
+			{
+				executor.sendColouredMessage("&cCancelling remove inventory region attempt.");
+				wipers.remove(executor);
+			}
+		}, 15));
+
+		executor.sendMessage(
+			String.format(
+				"Are you sure you want to delete the inventory region %s in %s? This cannot be undone.",
+				regionName, worldName
+			)
+		);
+		return "Run the command again to confirm inventory region deletion.";
 	}
 
 	private final IScheduler scheduler;

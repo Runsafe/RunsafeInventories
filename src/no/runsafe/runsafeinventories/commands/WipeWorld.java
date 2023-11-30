@@ -45,28 +45,26 @@ public class WipeWorld extends ExecutableCommand
 			this.inventoryHandler.wipeUniverse(universeName);
 			return String.format("Deleted all database inventories for the %s universe.", universeName);
 		}
-		else
+
+		wipers.put(executor, scheduler.startSyncTask(() ->
 		{
-			wipers.put(executor, scheduler.startSyncTask(() ->
+			if (wipers.containsKey(executor))
 			{
-				if (wipers.containsKey(executor))
-				{
-					executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
-					wipers.remove(executor);
-				}
-			}, 15));
+				executor.sendColouredMessage("&cCancelling universe inventory wipe attempt.");
+				wipers.remove(executor);
+			}
+		}, 15));
 
-			executor.sendMessage(String.format("Are you sure you want to wipe inventories for the universe %s? This cannot be undone.", universeName));
-			executor.sendMessage(String.format("The universe %s contains the worlds: ", universeName));
+		executor.sendMessage(String.format("Are you sure you want to wipe inventories for the universe %s? This cannot be undone.", universeName));
+		executor.sendMessage(String.format("The universe %s contains the worlds: ", universeName));
 
-			List<String> universeWorlds = universeHandler.GetWorlds(universeName);
-			if (universeWorlds != null)
-				for (String worldName : universeWorlds)
-					executor.sendMessage(worldName);
-			else
-				executor.sendMessage(world.getName());
-			return "Run the command again to confirm universe inventory wipe.";
-		}
+		List<String> universeWorlds = universeHandler.GetWorlds(universeName);
+		if (universeWorlds != null)
+			for (String worldName : universeWorlds)
+				executor.sendMessage(worldName);
+		else executor.sendMessage(world.getName());
+
+		return "Run the command again to confirm universe inventory wipe.";
 	}
 
 	private final IScheduler scheduler;
