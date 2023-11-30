@@ -9,8 +9,6 @@ import no.runsafe.framework.api.player.IPlayer;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.framework.minecraft.item.meta.RunsafeMeta;
 
-import javax.annotation.Nonnull;
-
 public class DropItems extends ExecutableCommand
 {
 	public DropItems()
@@ -39,11 +37,13 @@ public class DropItems extends ExecutableCommand
 	private void dropItems(IPlayer player)
 	{
 		RunsafeInventory inventory = player.getInventory();
+		ILocation location = player.getLocation();
+		if (location == null)
+			return;
 
 		for (RunsafeMeta itemStack : inventory.getContents())
 		{
 			inventory.remove(itemStack);
-			ILocation location = player.getLocation();
 			location.getWorld().dropItem(location, itemStack);
 		}
 		player.updateInventory();

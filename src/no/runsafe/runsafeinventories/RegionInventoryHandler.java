@@ -266,39 +266,39 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	{
 		String eventName = event.getEvent();
 
-		if (eventName.equals("region.enter") || eventName.equals("region.leave"))
-		{
-			Map<String, String> data = (Map<String, String>) event.getData();
-			IPlayer player = event.getPlayer();
-			String world = data.get("world");
-			String region = data.get("region");
+		if (!eventName.equals("region.enter") && !eventName.equals("region.leave"))
+			return;
 
-			if (eventName.equals("region.enter"))
+		Map<String, String> data = (Map<String, String>) event.getData();
+		IPlayer player = event.getPlayer();
+		String world = data.get("world");
+		String region = data.get("region");
+
+		if (eventName.equals("region.enter"))
+		{
+			if (doesRegionHaveInventory(world, region) && !isRegionEntryIgnored(player, region))
 			{
-				if (doesRegionHaveInventory(world, region) && !isRegionEntryIgnored(player, region))
-				{
-					// Fire an inventory region enter event.
-					new InventoryRegionEnter(player, region).Fire();
-				}
-				else
-				{
-					// The region is ignored, so let's remove it so next time it isn't ignored.
-					removeIgnoredRegionEntry(player, region);
-				}
+				// Fire an inventory region enter event.
+				new InventoryRegionEnter(player, region).Fire();
 			}
-			else if (eventName.equals("region.leave"))
+			else
 			{
-				// Handle region leaving.
-				if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
-				{
-					// Fire an inventory region exit event.
-					new InventoryRegionExit(player, region).Fire();
-				}
-				else
-				{
-					// The region is ignored, so let's remove it so next time it isn't ignored.
-					removeIgnoredRegionExit(player, region);
-				}
+				// The region is ignored, so let's remove it so next time it isn't ignored.
+				removeIgnoredRegionEntry(player, region);
+			}
+		}
+		else
+		{
+			// Handle region leaving.
+			if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
+			{
+				// Fire an inventory region exit event.
+				new InventoryRegionExit(player, region).Fire();
+			}
+			else
+			{
+				// The region is ignored, so let's remove it so next time it isn't ignored.
+				removeIgnoredRegionExit(player, region);
 			}
 		}
 	}

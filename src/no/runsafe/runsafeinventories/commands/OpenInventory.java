@@ -25,7 +25,7 @@ public class OpenInventory extends PlayerCommand
 	@Override
 	public String OnExecute(IPlayer executor, IArgumentList parameters)
 	{
-		IPlayer target = parameters.getValue("player");
+		IPlayer target = parameters.getRequired("player");
 		String universeName = parameters.getValue("universe");
 		if (universeName != null)
 		{
