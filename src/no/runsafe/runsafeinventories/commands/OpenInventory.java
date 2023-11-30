@@ -34,15 +34,16 @@ public class OpenInventory extends PlayerCommand
 
 			if (!this.inventoryViewer.viewUniverseInventory(executor, target, universeName))
 				return "&cThat player does not have an inventory in that universe.";
-		}
-		else
-		{
-			if (!this.inventoryViewer.hasDefaultUniverse())
-				return "&cNo default universe has been defined, please specify one.";
 
-			if (!this.inventoryViewer.viewUniverseInventory(executor, target))
-				return "&cThat player does not have an inventory in that universe.";
+			return null;
 		}
+
+		if (!this.inventoryViewer.hasDefaultUniverse())
+			return "&cNo default universe has been defined, please specify one.";
+
+		if (!this.inventoryViewer.viewUniverseInventory(executor, target))
+			return "&cThat player does not have an inventory in that universe.";
+
 		return null;
 	}
 

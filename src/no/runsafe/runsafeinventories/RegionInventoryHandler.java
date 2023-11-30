@@ -280,27 +280,24 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 			{
 				// Fire an inventory region enter event.
 				new InventoryRegionEnter(player, region).Fire();
+				return;
 			}
-			else
-			{
-				// The region is ignored, so let's remove it so next time it isn't ignored.
-				removeIgnoredRegionEntry(player, region);
-			}
+
+			// The region is ignored, so let's remove it so next time it isn't ignored.
+			removeIgnoredRegionEntry(player, region);
+			return;
 		}
-		else
+
+		// Handle region leaving.
+		if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
 		{
-			// Handle region leaving.
-			if (doesRegionHaveInventory(world, region) && !isRegionExitIgnored(player, region))
-			{
-				// Fire an inventory region exit event.
-				new InventoryRegionExit(player, region).Fire();
-			}
-			else
-			{
-				// The region is ignored, so let's remove it so next time it isn't ignored.
-				removeIgnoredRegionExit(player, region);
-			}
+			// Fire an inventory region exit event.
+			new InventoryRegionExit(player, region).Fire();
+			return;
 		}
+
+		// The region is ignored, so let's remove it so next time it isn't ignored.
+		removeIgnoredRegionExit(player, region);
 	}
 
 	private final IWorldManager worldManager;
