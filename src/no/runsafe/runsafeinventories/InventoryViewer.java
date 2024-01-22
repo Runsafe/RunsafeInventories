@@ -2,12 +2,16 @@ package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.IServer;
+import no.runsafe.framework.api.event.inventory.IInventoryClosed;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.event.inventory.RunsafeInventoryCloseEvent;
 import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 import no.runsafe.runsafeinventories.repositories.InventoryRepository;
 
-public class InventoryViewer implements IConfigurationChanged
+import java.util.HashMap;
+
+public class InventoryViewer implements IConfigurationChanged, IInventoryClosed
 {
 	public InventoryViewer(IServer server, InventoryRepository repository)
 	{
@@ -37,6 +41,7 @@ public class InventoryViewer implements IConfigurationChanged
 		RunsafeInventory inventory = server.createInventory(null, 45, String.format("%s's Inventory", owner.getName()));
 		inventory.unserialize(inventoryData.getInventoryString());
 		viewer.openInventory(inventory);
+		inventoryEditors.put(viewer, inventoryData);
 
 		return true;
 	}
@@ -47,6 +52,18 @@ public class InventoryViewer implements IConfigurationChanged
 	}
 
 	@Override
+	public void OnInventoryClosed(RunsafeInventoryCloseEvent event)
+	{
+		if (inventoryEditors.isEmpty() || !inventoryEditors.containsKey(event.getPlayer()))
+			return;
+
+		PlayerInventory inventory = inventoryEditors.get(event.getPlayer());
+		inventory.setInventory(event.getInventory());
+		repository.saveInventory(inventory);
+		inventoryEditors.remove(event.getPlayer());
+	}
+
+	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		this.defaultUniverse = configuration.getConfigValueAsString("defaultOpenInventoryUniverse");
@@ -54,5 +71,6 @@ public class InventoryViewer implements IConfigurationChanged
 
 	private final IServer server;
 	private final InventoryRepository repository;
+	private static final HashMap<IPlayer, PlayerInventory> inventoryEditors = new HashMap<>();
 	private String defaultUniverse;
 }

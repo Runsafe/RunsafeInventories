@@ -1,6 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.player.IPlayer;
+import no.runsafe.framework.minecraft.inventory.RunsafeInventory;
 
 public class PlayerInventory
 {
@@ -39,6 +40,11 @@ public class PlayerInventory
 		return this.inventoryString;
 	}
 
+	public void setInventory(RunsafeInventory inventory)
+	{
+		inventoryString = inventory.serialize();
+	}
+
 	public int getLevel()
 	{
 		return this.level;
@@ -56,7 +62,7 @@ public class PlayerInventory
 
 	private final String inventoryName;
 	private final IPlayer owner;
-	private final String inventoryString;
+	private String inventoryString;
 	private final int level;
 	private final float experience;
 	private final int foodLevel;
