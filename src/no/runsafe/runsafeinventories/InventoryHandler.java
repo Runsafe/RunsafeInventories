@@ -1,6 +1,7 @@
 package no.runsafe.runsafeinventories;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.api.log.IDebug;
@@ -33,7 +34,10 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 	public void saveInventory(IPlayer player)
 	{
 		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
-		String universeName = player.getWorld().getUniverse().getName();
+		IWorld world = player.getWorld();
+		if (world == null)
+			return;
+		String universeName = world.getUniverse().getName();
 		String inventoryName = inventoryRegion == null ?  universeName : universeName + "-" + inventoryRegion;
 
 		saveInventory(player, inventoryName);
@@ -77,7 +81,10 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 
 	public void handlePostWorldChange(IPlayer player)
 	{
-		String universeName = player.getWorld().getUniverse().getName();
+		IWorld world = player.getWorld();
+		if (world == null)
+			return;
+		String universeName = world.getUniverse().getName();
 
 		PlayerInventory inventory;
 		String inventoryRegion = regionInventoryHandler.getPlayerInventoryRegion(player);
@@ -115,7 +122,10 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 		{
 			IPlayer player = event.getPlayer();
 			Map<String, String> data = (Map<String, String>) event.getData();
-			String universeName = worldManager.getWorld(data.get("world")).getUniverse().getName();
+			IWorld world = worldManager.getWorld(data.get("world"));
+			if (world == null)
+				return;
+			String universeName = world.getUniverse().getName();
 
 			if (eventName.equals("inventory.region.enter"))
 			{

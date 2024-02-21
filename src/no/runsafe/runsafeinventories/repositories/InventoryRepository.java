@@ -1,5 +1,6 @@
 package no.runsafe.runsafeinventories.repositories;
 
+import no.runsafe.framework.api.IUniverse;
 import no.runsafe.framework.api.IWorld;
 import no.runsafe.framework.api.database.IRow;
 import no.runsafe.framework.api.database.ISchemaUpdate;
@@ -10,6 +11,7 @@ import no.runsafe.framework.api.server.IWorldManager;
 import no.runsafe.runsafeinventories.PlayerInventory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class InventoryRepository extends Repository
 {
@@ -54,13 +56,16 @@ public class InventoryRepository extends Repository
 	 * @param regionName The region to grab the inventory for.
 	 * @return A player inventory object or null if none could be found.
 	 */
+	@Nullable
 	public PlayerInventory getInventoryForRegion(IPlayer player, String regionName)
 	{
 		// Check if the player and their world is null; if not the universe will not be null either.
-		if (player == null || player.getWorld() == null)
+		if (player == null)
 			return null;
-
-		String universeName = player.getUniverse().getName(); // Grab the universe name.
+		IUniverse universe = player.getUniverse();
+		if (universe == null)
+			return null;
+		String universeName = universe.getName(); // Grab the universe name.
 
 		// Append the region name to the end to create a unique key.
 		return getInventoryData(player, universeName + "-" + regionName);
