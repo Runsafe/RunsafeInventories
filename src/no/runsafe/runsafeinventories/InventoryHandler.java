@@ -99,7 +99,7 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 			setInventory(player, inventory);
 		else
 		{
-			// Lets check if we can give them a template.
+			// Let's check if we can give them a template.
 			this.templateRepository.setToTemplate(universeName, player.getInventory());
 		}
 	}
@@ -152,7 +152,7 @@ public class InventoryHandler implements IPlayerCustomEvent, IConfigurationChang
 	 * Sets a player's inventory.
 	 * Assumes it is already empty.
 	 * Also sets their level, xp and saturation (food level).
-	 * @param player User who's inventory to set.
+	 * @param player User whose inventory to set.
 	 * @param inventory Player inventory to give to the player.
 	 *                  Null for an empty inventory.
 	 */

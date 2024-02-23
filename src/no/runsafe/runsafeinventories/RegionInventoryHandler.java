@@ -65,7 +65,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 	 * Check if a region has a separate inventory associated with it.
 	 * @param worldName Name of the world the region is in.
 	 * @param regionName Name of the region to check.
-	 * @return True if the region has it's own inventory associated with it.
+	 * @return True if the region has its own inventory associated with it.
 	 */
 	public boolean doesRegionHaveInventory(String worldName, String regionName)
 	{
@@ -248,7 +248,7 @@ public class RegionInventoryHandler implements IConfigurationChanged, IPlayerCus
 
 	/**
 	 * Called when the configuration for this plug-in is changed.
-	 * @param configuration Object for accessing this plug-ins configuration.
+	 * @param configuration Object for accessing this plug-ins' configuration.
 	 */
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)

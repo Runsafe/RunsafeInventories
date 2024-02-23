@@ -28,7 +28,7 @@ public class WorldLoadEvent implements IWorldLoad
 		if (inventoryRegions.size() < 2)
 			return;
 
-		// Obtain all of the region's rectangles and remove invalid regions.
+		// Obtain all the regions rectangles and remove invalid regions.
 		List<Rectangle2D> inventoryRectangles = new ArrayList<>(inventoryRegions.size());
 		for (Iterator<String> iterator = inventoryRegions.iterator(); iterator.hasNext();)
 		{
